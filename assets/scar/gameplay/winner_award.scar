@@ -1,0 +1,73 @@
+-- 胜者的奖励
+import("cardinal.scar")							-- Contains sfx references, UI templates, and Civ/Age helper functions
+import("ScarUtil.scar")							-- Contains game helper functions
+
+Core_RegisterModule("WinnerAward")
+
+function WinnerAward_OnGameSetup()
+	Setup_GetWinConditionOptions(_mod.options)
+	
+	if not _mod.options.resource_settings.enable_winner_award then 
+		Core_UnregisterModule("WinnerAward")
+	end
+end
+
+function WinnerAward_OnInit()
+	for i, player in pairs(PLAYERS) do
+		-- 剩余军队价值
+		player.leftMilitaryValues = 0
+	end
+end
+
+
+
+function WinnerAward_Start()
+
+end
+
+function WinnerAward_OnRoundStart()
+	for i, player in pairs(PLAYERS) do
+		if player.leftMilitaryValues > 0 then 
+			Player_GiftResource(player.id, RT_Food, math.floor(player.leftMilitaryValues * 0.2))
+		end
+			
+		player.leftMilitaryValues = 0
+	end
+end
+
+function WinnerAward_OnRoundEnd()
+	for i, player in pairs(PLAYERS) do 
+		local count = SGroup_CountSpawned(player.sg)
+		local values = 0
+		if count > 0 then 
+			for j = 1, count do 
+				local s = SGroup_GetSquadAt(player.sg, j)
+				local cost = Player_GetSquadBPCost(player.id, Squad_GetBlueprint(s))
+				values = values + cost.food
+			end
+			
+		end
+		
+		local eg = Player_GetEntities(player.id)
+		local egc = EGroup_Count(eg)
+		for j = 1, egc do
+			local entity = EGroup_GetEntityAt(eg, j)
+			if Entity_HasProductionQueue(entity) then 
+				local size = Entity_GetProductionQueueSize(entity)
+				
+				if size > 0 then 
+					for k = size-1, 0, -1 do  
+						local bp = Entity_GetProductionQueueItem(entity, k)
+						local bpType = Entity_GetProductionQueueItemType(entity, k)
+						if bp ~= nil and bpType == PITEM_Spawn then
+							local bpName = BP_GetName(bp)
+							local cost = Player_GetSquadBPCost(player.id, BP_GetSquadBlueprint(bpName))
+							values = values + cost.food
+						end
+					end
+				end
+			end
+		end
+		player.leftMilitaryValues = values
+	end
+end

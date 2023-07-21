@@ -1,0 +1,474 @@
+_arena_buildings = {
+	abbasid = {
+		cavalry = "building_unit_cavalry_control_abb",
+		infantry = "building_unit_infantry_control_abb",
+		ranged = "building_unit_ranged_control_abb",
+		religious = "building_unit_religious_control_abb",
+		siege = "building_unit_siege_control_abb",
+		techInfantry = "building_tech_unit_infantry_control_abb",
+		techUniversity = "building_tech_university_control_abb" ,
+	},
+	chinese = {
+		cavalry = "building_unit_cavalry_control_chi",
+		infantry = "building_unit_infantry_control_chi",
+		ranged = "building_unit_ranged_control_chi",
+		religious = "building_unit_religious_control_chi",
+		siege = "building_unit_siege_control_chi",
+		techInfantry = "building_tech_unit_infantry_control_chi",
+		techUniversity = "building_tech_university_control_chi" ,
+	},
+	english = {
+		cavalry = "building_unit_cavalry_control_eng",
+		infantry = "building_unit_infantry_control_eng",
+		ranged = "building_unit_ranged_control_eng",
+		religious = "building_unit_religious_control_eng",
+		siege = "building_unit_siege_control_eng",
+		techInfantry = "building_tech_unit_infantry_control_eng",
+		techUniversity = "building_tech_university_control_eng" ,
+	},
+	french = {
+		cavalry = "building_unit_cavalry_control_fre",
+		infantry = "building_unit_infantry_control_fre",
+		ranged = "building_unit_ranged_control_fre",
+		religious = "building_unit_religious_control_fre",
+		siege = "building_unit_siege_control_fre",
+		techInfantry = "building_tech_unit_infantry_control_fre",
+		techUniversity = "building_tech_university_control_fre" ,
+	},
+	hre = {
+		cavalry = "building_unit_cavalry_control_hre",
+		infantry = "building_unit_infantry_control_hre",
+		ranged = "building_unit_ranged_control_hre",
+		religious = "building_unit_religious_control_hre",
+		siege = "building_unit_siege_control_hre",
+		techInfantry = "building_tech_unit_infantry_control_hre",
+		techUniversity = "building_tech_university_control_hre" ,
+	},
+	malian = {
+		cavalry = "building_unit_cavalry_mal",
+		infantry = "building_unit_infantry_mal",
+		ranged = "building_unit_ranged_mal",
+		religious = "building_unit_religious_mal",
+		siege = "building_unit_siege_mal",
+		techInfantry = "building_tech_unit_infantry_mal",
+		techUniversity = "building_tech_university_mal" ,
+	},
+	mongol = {
+		cavalry = "building_unit_cavalry_mon",
+		infantry = "building_unit_infantry_mon",
+		ranged = "building_unit_ranged_mon",
+		religious = "building_unit_religious_mon",
+		siege = "building_unit_siege_mon",
+		techInfantry = "building_tech_unit_infantry_mon",
+		techUniversity = nil ,
+	},
+	ottoman = {
+		cavalry = "building_unit_cavalry_ott",
+		infantry = "building_unit_infantry_ott",
+		ranged = "building_unit_ranged_ott",
+		religious = "building_unit_religious_ott",
+		siege = "building_unit_siege_ott",
+		techInfantry = "building_tech_unit_infantry_ott",
+		techUniversity = "building_tech_university_ott" ,
+	},
+	rus = {
+		cavalry = "building_unit_cavalry_control_rus",
+		infantry = "building_unit_infantry_control_rus",
+		ranged = "building_unit_ranged_control_rus",
+		religious = "building_unit_religious_control_rus",
+		siege = "building_unit_siege_control_rus",
+		techInfantry = "building_tech_unit_infantry_control_rus",
+		techUniversity = "building_tech_university_control_rus" ,
+	},
+	sultanate = {
+		cavalry = "building_unit_cavalry_control_sul",
+		infantry = "building_unit_infantry_control_sul",
+		ranged = "building_unit_ranged_control_sul",
+		religious = "building_unit_religious_control_sul",
+		siege = "building_unit_siege_control_sul",
+		techInfantry = "building_tech_unit_infantry_control_sul",
+		techUniversity = "building_tech_university_control_sul" ,
+	},
+}
+
+function ArenaBuilding_GetBuilding(playerId, buildingType)
+	local raceName = Player_GetRaceName(playerId)
+	return _arena_buildings[raceName][buildingType]
+end
+
+
+
+function Mod_GetRaceSimpleName(playerId)
+	local player_civ =  Player_GetRaceName(playerId)
+	 if player_civ == "english" then
+		return "eng"
+		
+	elseif player_civ == "chinese" then 
+		return "chi"
+		
+	elseif player_civ == "malian" then
+		return "mal"
+		
+	elseif player_civ == "ottoman" then
+		return ott
+		
+	elseif player_civ == "french" then
+		return "fre"
+		
+	elseif player_civ == "hre" then
+		return "hre"
+		
+	elseif player_civ == "mongol" then
+		return "mon"
+		
+	elseif player_civ == "rus" then
+		return "rus"
+		
+	elseif player_civ == "sultanate" then
+		return "sul"
+		
+	elseif player_civ == "abbasid" then		
+		return "abb"
+	end
+	
+	
+	
+end
+
+function Mod_GetBuilding(playerId, buildingType) 
+	local player_civ =  string.upper(Player_GetRaceName(playerId))
+	for i, build in pairs(EBP[player_civ]) do 
+		if scartype(build) ==  ST_PBG then 
+			local bpName = BP_GetName(build)
+			if string.find(bpName, buildingType) ~= nil and string.find(bpName, "building_") ~= nil and string.find(bpName, "moving_") == nil then 
+				return bpName
+			end
+		end
+	end
+	return nil
+	
+	
+end
+
+function Mod_ModifyUnitBuildTime(playerId)
+	local player_civ =  Player_GetRaceName(playerId)
+	local entityBps = BP_GetEntityBlueprintsWithType({"military", "monk"})
+	for j, bp in pairs(entityBps) do
+		Modify_EntityBuildTime(playerId, bp, 200)
+		local cost = Player_GetEntityBPCost(playerId, bp)
+		local food = cost.food + cost.stone + cost.gold + cost.wood
+		if player_civ == "malian" and BP_GetName(bp) ~= "unit_scout_1_mal" then 
+			food = math.ceil(food * 0.9)
+		end
+		if  BP_GetName(bp) == "unit_abbey_king_2" then 
+			if AUTO_COMBAT then 
+				food = 300
+			else 
+				food = 600
+			end
+		elseif BP_GetName(bp) == "unit_landsknecht_3_hre" then 
+			food = 250
+		end
+		
+		Modify_EntityCost(playerId, bp, RT_Food, food, MUT_Set, true)
+		Modify_EntityCost(playerId, bp, RT_Gold, 0, MUT_Set, true)
+		Modify_EntityCost(playerId, bp, RT_Wood, 0, MUT_Set, true)
+		Modify_EntityCost(playerId, bp, RT_Stone, 0, MUT_Set, true)
+	end
+
+	local upgs = BP_GetUpgradesMatchingTypes({ "military_upgrade", "abbasid_upgrade", "chinese_upgrade", "sultinate_upgrade", "english_upgrade", "french_upgrade", "hre_upgrade", "malian_upgrade", "mongol_upgrade", "ottoman_upgrade", "rus_upgrade", "scar_military_upgrade"})
+	for i, bp in pairs(upgs) do
+		local cost = Player_GetUpgradeBPCost(playerId, bp)
+		local ubpName = BP_GetName(bp)
+		if not string.starts(ubpName, "castle_age_") and not string.starts(ubpName, "imperial_age_")  then 
+			local food = cost.food + cost.stone + cost.gold + cost.wood
+			if player_civ == "sultanate" and ubpName ~= "castle_age" and ubpName ~= "imperial_age" then 
+				local bpName = BP_GetName(bp)
+				food = Delhi_GetCost(bpName)
+				Modify_UpgradeCost(playerId, bp, RT_Food, food, MUT_Set, true)
+			else 
+				Modify_UpgradeCost(playerId, bp, RT_Food, food, MUT_Set, true)
+				Modify_UpgradeCost(playerId, bp, RT_Gold, 0, MUT_Set, true)
+				Modify_UpgradeCost(playerId, bp, RT_Wood, 0, MUT_Set, true)
+				Modify_UpgradeCost(playerId, bp, RT_Stone, 0, MUT_Set, true)
+			end
+			
+			
+			Modify_UpgradeBuildTime(playerId, bp, 0.001)
+		end		
+	end   
+	 
+	
+	Rule_Add(Mod_ResetStateModel)
+end
+
+
+
+function Mod_Building()
+	for i, player in pairs(PLAYERS) do 
+		Mod_BuildingRealTime(player)
+	end
+end
+
+
+function Mod_BuildingRealTime(player) 
+	-- building_unit_ranged_control_abb
+	--[[
+		local bp = BP_GetEntityBlueprint(Mod_GetBuilding(player.id, "building_unit_cavalry"))
+		local position = Util_GetOffsetPosition(player.startingPos, 18, 16)
+	    local entity = Entity_CreateFacing(bp, player.id, position, position, true)
+		Entity_Spawn(entity)
+		Entity_ForceConstruct(entity)
+		--]]
+	
+	Mod_ConstructBuilding(player, "cavalry", 18, 16)
+	--[[
+		bp = BP_GetEntityBlueprint(Mod_GetBuilding(player.id, "building_unit_infantry"))
+		position = Util_GetOffsetPosition(player.startingPos, 18, -30)
+	    entity = Entity_CreateFacing(bp, player.id, position, position, true)
+		Entity_Spawn(entity)
+		Entity_ForceConstruct(entity)
+		-- ]]
+	
+	Mod_ConstructBuilding(player, "infantry", 18, -30)
+	
+	--[[
+		bp = BP_GetEntityBlueprint(Mod_GetBuilding(player.id, "building_unit_ranged"))
+		position = Util_GetOffsetPosition(player.startingPos, -18, 16)
+	    entity = Entity_CreateFacing(bp, player.id, position, position, true)
+		Entity_Spawn(entity)
+		Entity_ForceConstruct(entity)
+		--]]
+	
+	Mod_ConstructBuilding(player, "ranged", -18, 16)
+	
+	--[[
+		bp = BP_GetEntityBlueprint(Mod_GetBuilding(player.id, "tech_unit_infantry"))
+		position = Util_GetOffsetPosition(player.startingPos, -18, -30)
+	    entity = Entity_CreateFacing(bp, player.id, position, position, true)
+		Entity_Spawn(entity)
+		Entity_ForceConstruct(entity)
+		--]]
+
+	Mod_ConstructBuilding(player, "techInfantry",  -18, -30)
+	
+	--if Player_GetRaceName(player.id) == "sultanate" then 
+	-- Mod_ConstructBuilding(player, "religious",  0, 0)
+	--end
+	
+	if not DELAY_BUIDING then 
+		-- Mod_ConstructBuilding(player, "religious",  0, 0)
+		local bp = BP_GetEntityBlueprint(ArenaBuilding_GetBuilding(player.id, "religious"))
+		local position = Util_GetOffsetPosition(player.startingPos, 0, 46)
+		local entity = Entity_Create(bp, player.id, player.startingPos, true)
+		Entity_Spawn(entity)
+		Entity_ForceConstruct(entity)
+		
+		
+	end
+	
+	
+	if Player_GetRaceName(player.id) == "abbasid" then 
+		Mod_BuildingAbbasidWidsom(player)
+	end
+	
+
+end
+
+function Mod_BuildingAbbasidWidsom(player)
+	
+	
+	Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("upgrade_add_culture_wing"), ITEM_REMOVED)
+	Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("upgrade_add_economy_wing"), ITEM_REMOVED)
+	--Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("upgrade_add_military_wing"), ITEM_REMOVED)
+	Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("upgrade_add_trade_wing"), ITEM_REMOVED)
+	Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("upgrade_add_culture_wing_feudal"), ITEM_REMOVED)
+	Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("upgrade_add_economy_wing_feudal"), ITEM_REMOVED)
+	Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("upgrade_add_military_wing_feudal"), ITEM_REMOVED)
+	Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("upgrade_add_trade_wing_feudal"), ITEM_REMOVED)
+	Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("upgrade_add_culture_wing_castle"), ITEM_REMOVED)
+	Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("upgrade_add_economy_wing_castle"), ITEM_REMOVED)
+	Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("upgrade_add_military_wing_castle"), ITEM_REMOVED)
+	Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("upgrade_add_trade_wing_castle"), ITEM_REMOVED)
+	Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("upgrade_add_culture_wing_imperial"), ITEM_REMOVED)
+	Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("upgrade_add_economy_wing_imperial"), ITEM_REMOVED)
+	Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("upgrade_add_military_wing_imperial"), ITEM_REMOVED)
+	Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("upgrade_add_trade_wing_imperial"), ITEM_REMOVED)
+	Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("upgrade_econ_agriculture_abb"), ITEM_REMOVED)
+	Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("upgrade_econ_improved_processing_abb"), ITEM_REMOVED)
+	Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("upgrade_trade_commodity_trade_abb"), ITEM_REMOVED)
+	Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("upgrade_trade_gold_income_abb"), ITEM_REMOVED)
+	Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("upgrade_trade_trader_armor_abb"), ITEM_REMOVED)
+	Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("upgrade_cul_cheaper_research_abb"), ITEM_REMOVED)
+	Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("upgrade_cul_conversion_invuln_abb"), ITEM_REMOVED)
+	Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("upgrade_cul_medical_centers_abb"), ITEM_REMOVED)
+	--Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("upgrade_mameluke_damage_abb"), ITEM_REMOVED)
+	Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("upgrade_econ_fertile_crescent_abb"), ITEM_REMOVED)
+end 
+
+function Mod_ResetStateModel()
+	
+	for i,player in pairs(PLAYERS) do 
+		if Player_GetRaceName(player.id) == "ottoman" then 
+			Player_SetStateModelFloat(player.id, "imperial_council_exp_ott", 0)
+			Player_SetStateModelFloat(player.id, "imperial_council_level_ott", 0)
+			Player_SetStateModelInt(player.id, "vizier_limit_ott", 0)
+			Player_SetStateModelInt(player.id, "janissary_increase_ott", 0)
+			Player_SetStateModelInt(player.id, "total_viziers_ott", 0)
+		end
+	end
+end
+
+
+function Mod_GetTechInfantryPos(playerId) 
+	local techBp = ArenaBuilding_GetBuilding(playerId, "techInfantry")
+	local eg = Player_GetEntities(playerId)
+	local egCount = EGroup_Count(eg)
+	for j = 1, egCount do 
+		local tempTechEntity = EGroup_GetEntityAt(eg, j)
+		local tempBp = Entity_GetBlueprint(tempTechEntity) 
+		if techBp == BP_GetName(tempBp) then 
+			local position = Entity_GetPosition(tempTechEntity)
+			return position
+		end
+	end
+	return nil
+end
+
+function Mod_ConstructCastleBuilding(playerId)
+
+	local position = Mod_GetTechInfantryPos(playerId)
+	
+	if Player_GetRaceName(playerId) == "english" then 
+		-- 白塔
+		if Player_GetCurrentAge(playerId) == AGE_CASTLE then 
+			local bp = BP_GetEntityBlueprint("building_landmark_age2_white_tower_eng")
+			local tempPosition = Util_GetOffsetPosition(position, 16, 30)
+			local entity = Entity_CreateFacing(bp, playerId, tempPosition, world_center, true)
+			Entity_Spawn(entity)
+			Entity_ForceConstruct(entity)
+		end
+		
+	elseif Player_GetRaceName(playerId) == "mongol" and Player_GetCurrentAge(playerId) == AGE_CASTLE  then 
+		local bp = BP_GetEntityBlueprint("building_wonder_age1_kurultai_mon")
+		local tempPosition = Util_GetOffsetPosition(position, 16, 16)
+		local entity = Entity_CreateFacing(bp, playerId, tempPosition, world_center, true)
+		Entity_Spawn(entity)
+		Entity_ForceConstruct(entity)
+	end 
+	
+	if ENABLE_SIEGE and Player_GetCurrentAge(playerId) == AGE_CASTLE then 
+
+		local bp = BP_GetEntityBlueprint(ArenaBuilding_GetBuilding(playerId, "siege"))
+		local player = Core_GetPlayersTableEntry(playerId)
+		position = Util_GetOffsetPosition(player.startingPos, -18, -46)
+	    local entity = Entity_Create(bp, player.id, position, true)
+		Entity_Spawn(entity)
+		Entity_ForceConstruct(entity)
+	end
+	
+end
+
+function Mod_ConstructImpireBuilding(playerId)
+
+	local position = Mod_GetTechInfantryPos(playerId)
+	if Player_GetRaceName(playerId) == "chinese" and Player_GetCurrentAge(playerId) == AGE_IMPERIAL then 
+		local bp = BP_GetEntityBlueprint("building_landmark_age3_spirit_way_control_chi")
+		local tempPosition = Util_GetOffsetPosition(position, 16, 16)
+	    local entity = Entity_CreateFacing(bp, playerId, tempPosition, world_center, true)
+		Entity_Spawn(entity)
+		Entity_ForceConstruct(entity)
+	end
+	
+	if Player_GetCurrentAge(playerId) == AGE_IMPERIAL then 
+		local bpName = ArenaBuilding_GetBuilding(playerId, "techUniversity")
+		if bpName ~= nil then 
+			local bp = BP_GetEntityBlueprint(bpName)
+			local tempPosition = Util_GetOffsetPosition(position, 16, -16)
+			entity = Entity_CreateFacing(bp, playerId, tempPosition, world_center, true)
+			Entity_Spawn(entity)
+			Entity_ForceConstruct(entity)
+		end
+	end
+
+end
+
+function Mod_ConstructBuilding(player, buildingType, offset, distance)
+	local bp = BP_GetEntityBlueprint(ArenaBuilding_GetBuilding(player.id, buildingType))
+	local position = Util_GetOffsetPosition(player.startingPos, offset, distance)
+    local entity = Entity_CreateFacing(bp, player.id, position, world_center, true)
+	Entity_Spawn(entity)
+	Entity_ForceConstruct(entity)
+	if Player_GetRaceName(player.id) == "mongol" then 
+		Entity_SetStateModelBool(entity, "district_stupa_monastery_ovoo_aura", true)
+		Entity_SetStateModelFloat(entity, "building_district_monastery_count_mon", 1)
+		Player_SetStateModelBool(player.id, "district_stupa_monastery_ovoo_aura", true)
+	end
+	
+	if buildingType == "techInfantry" then 
+		
+		
+		
+		if Player_GetRaceName(player.id) == "abbasid" then 
+			bp = BP_GetEntityBlueprint("building_house_of_wisdom_control_abb")
+			tempPosition = Util_GetOffsetPosition(position, 16, 16)
+		    entity = Entity_CreateFacing(bp, player.id, tempPosition, world_center, true)
+			Entity_Spawn(entity)
+			Entity_ForceConstruct(entity)
+		end
+		
+		
+		
+		if Player_GetRaceName(player.id) == "english" then 
+			bp = BP_GetEntityBlueprint("building_landmark_age1_westminster_abbey_eng")
+			tempPosition = Util_GetOffsetPosition(position, 16, 16)
+		    entity = Entity_CreateFacing(bp, player.id, tempPosition, world_center, true)
+			Entity_Spawn(entity)
+			Entity_ForceConstruct(entity)
+			
+		end
+		
+		if Player_GetRaceName(player.id) == "hre" then 
+			local bp = BP_GetEntityBlueprint("building_landmark_age1_imperial_palace_of_paderborn_hre")
+			local tempPosition = Util_GetOffsetPosition(position, 16, 16)
+			local entity = Entity_Create(bp, player.id, tempPosition, true)
+			Entity_Spawn(entity)
+			Entity_ForceConstruct(entity)
+		end
+	else
+		
+		--[[
+		local tempPosition = Util_GetOffsetPosition(position, 16, -16)
+		entity = Entity_CreateFacing(bp, player.id, tempPosition, world_center, true)
+		Entity_Spawn(entity)
+		Entity_ForceConstruct(entity)
+		
+		tempPosition = Util_GetOffsetPosition(position, 16, 16)
+		entity = Entity_CreateFacing(bp, player.id, tempPosition, world_center, true)
+		Entity_Spawn(entity)
+		Entity_ForceConstruct(entity)
+		
+		if Player_GetCurrentAge(player.id) >= AGE_CASTLE then 
+			tempPosition = Util_GetOffsetPosition(position, 16, 30)
+			entity = Entity_CreateFacing(bp, player.id, tempPosition, world_center, true)
+			Entity_Spawn(entity)
+			Entity_ForceConstruct(entity)
+			
+			tempPosition = Util_GetOffsetPosition(position, 16, -30)
+			entity = Entity_CreateFacing(bp, player.id, tempPosition, world_center, true)
+			Entity_Spawn(entity)
+			Entity_ForceConstruct(entity)
+		end
+		--]]
+		
+		if buildingType == "religious"  then 
+			Entity_Destroy(entity)
+			
+			local bp = BP_GetEntityBlueprint(Mod_GetBuilding(player.id, buildingType))
+			local position = Util_GetOffsetPosition(player.startingPos, offset, distance)
+		    local entity = Entity_CreateFacing(bp, player.id, position, world_center, true)
+			Entity_Spawn(entity)
+			Entity_ForceConstruct(entity)
+		end
+	end
+end

@@ -1,0 +1,547 @@
+import("cardinal.scar")							-- Contains sfx references, UI templates, and Civ/Age helper functions
+import("ScarUtil.scar")							-- Contains game helper functions
+import("gameplay/researches_ui.scar")
+
+--[[
+default：各民族默认的科技
+age：当前科技所需的时代
+researchType: 科技类型（有些科技会有多个等级，占用同一个科技槽），如没有指定，则代表这是非等级科技
+--]]
+
+_researches = {
+	upgrade_melee_damage_i = {
+		default = {"upgrade_melee_damage_i"},
+		age = AGE_FEUDAL,
+		pickCount = 0,
+		roundPickCount = 0,
+		researchType = upgrade_melee_damage,
+		sultanate = {"upgrade_melee_damage_i_sul"},
+	},
+	upgrade_melee_damage_ii = {
+		default = {"upgrade_melee_damage_ii"},
+		age = AGE_CASTLE,
+		pickCount = 0,
+		roundPickCount = 0,
+		researchType = upgrade_melee_damage,
+		sultanate = {"upgrade_melee_damage_ii_sul"},
+	},
+	upgrade_melee_damage_iii = {
+		default = {"upgrade_melee_damage_iii"},
+		age = AGE_IMPERIAL,
+		pickCount = 0,
+		roundPickCount = 0,
+		researchType = upgrade_melee_damage,
+		mongol = {"upgrade_melee_damage_iii_mon"},
+		sultanate = {"upgrade_melee_damage_iii_sul"},
+	},
+	upgrade_melee_armor_i = {
+		default = {"upgrade_melee_armor_i"},
+		age = AGE_FEUDAL,
+		pickCount = 0,
+		roundPickCount = 0,
+		researchType = upgrade_melee_armor,
+		sultanate = {"upgrade_melee_armor_i_sul"},
+	},
+	upgrade_melee_armor_ii = {
+		default = {"upgrade_melee_armor_ii"},
+		age = AGE_CASTLE,
+		pickCount = 0,
+		roundPickCount = 0,
+		researchType = upgrade_melee_armor,
+		sultanate = {"upgrade_melee_armor_ii_sul"},
+	},
+	upgrade_melee_armor_iii = {
+		default = {"upgrade_melee_armor_iii"},
+		age = AGE_IMPERIAL,
+		pickCount = 0,
+		roundPickCount = 0,
+		researchType = upgrade_melee_armor,
+		mongol = {"upgrade_melee_armor_iii_mon"},
+		sultanate = {"upgrade_melee_armor_iii_sul"},
+	},
+	upgrade_ranged_damage_i = {
+		default = {"upgrade_ranged_damage_i"},
+		age = AGE_FEUDAL,
+		pickCount = 0,
+		roundPickCount = 0,
+		researchType = upgrade_ranged_damage,
+		sultanate = {"upgrade_ranged_damage_i_sul"},
+	},
+	upgrade_ranged_damage_ii = {
+		default = {"upgrade_ranged_damage_ii"},
+		age = AGE_CASTLE,
+		pickCount = 0,
+		roundPickCount = 0,
+		researchType = upgrade_ranged_damage,
+		sultanate = {"upgrade_ranged_damage_ii_sul"},
+	},
+	upgrade_ranged_damage_iii = {
+		default = {"upgrade_ranged_damage_iii"},
+		age = AGE_IMPERIAL,
+		pickCount = 0,
+		roundPickCount = 0,
+		researchType = upgrade_ranged_damage,
+		mongol = {"upgrade_ranged_damage_iii_mon"},
+		sultanate = {"upgrade_ranged_damage_iii_sul"},
+	},
+	upgrade_ranged_armor_i = {
+		default = {"upgrade_ranged_armor_i"},
+		age = AGE_FEUDAL,
+		pickCount = 0,
+		roundPickCount = 0,
+		researchType = upgrade_ranged_armor,
+		sultanate = {"upgrade_ranged_armor_i_sul"},
+	},
+	upgrade_ranged_armor_ii = {
+		default = {"upgrade_ranged_armor_ii"},
+		age = AGE_CASTLE,
+		pickCount = 0,
+		roundPickCount = 0,
+		researchType = upgrade_ranged_armor,
+		sultanate = {"upgrade_ranged_armor_ii_sul"},
+	},
+	upgrade_ranged_armor_iii = {
+		default = {"upgrade_ranged_armor_iii"},
+		age = AGE_IMPERIAL,
+		pickCount = 0,
+		roundPickCount = 0,
+		researchType = upgrade_ranged_armor,
+		mongol = {"upgrade_ranged_armor_iii_mon"},
+		sultanate = {"upgrade_ranged_armor_iii_sul"},
+	},
+	upgrade_siege_chemistry = {
+		default = {"upgrade_siege_chemistry"},
+		age = AGE_IMPERIAL,
+		pickCount = 0,
+		roundPickCount = 0,
+		mongol = {"upgrade_siege_chemistry_mon"},
+		sultanate = {"upgrade_siege_chemistry_sul"},
+	},
+	upgrade_tech_university_biology = {
+		default = {"upgrade_tech_university_biology"},
+		age = AGE_IMPERIAL,
+		pickCount = 0,
+		roundPickCount = 0,
+		mongol = {"upgrade_tech_university_biology_mon", 
+			"upgrade_tech_university_biology_improved_mon"},
+		sultanate = {"upgrade_tech_university_biology_sul"},
+	},
+	upgrade_manatarms_elite_army_tactics = {
+		default = {"upgrade_manatarms_elite_army_tactics"},
+		age = AGE_IMPERIAL,
+		pickCount = 0,
+		roundPickCount = 0,
+		mongol = {"upgrade_manatarms_elite_army_tactics_mon", 
+			"upgrade_manatarms_elite_army_tactics_improved_mon"},
+		sultanate = {"upgrade_manatarms_elite_army_tactics_sul"},
+	},
+	upgrade_ranged_incendiary = {
+		default = {"upgrade_ranged_incendiary"},
+		age = AGE_IMPERIAL,
+		pickCount = 0,
+		roundPickCount = 0,
+		mongol = {"upgrade_ranged_incendiary_mon"},
+		sultanate = {"upgrade_ranged_incendiary_sul"},
+	},
+	upgrade_siege_works = {
+		default = {"upgrade_siege_works"},
+		age = AGE_IMPERIAL,
+		pickCount = 0,
+		roundPickCount = 0,
+		mongol = {"upgrade_siege_works_mon", 
+			"upgrade_siege_works_improved_mon"},
+		sultanate = {"upgrade_siege_works_sul"},
+	},
+	upgrade_siege_roller_trigger = {
+		default = {"upgrade_siege_roller_trigger"},
+		age = AGE_IMPERIAL,
+		pickCount = 0,
+		roundPickCount = 0,
+		mongol = {"upgrade_siege_roller_trigger_mon", 
+			"upgrade_siege_roller_trigger_improved_mon"},
+		sultanate = {"upgrade_siege_roller_trigger_sul"},
+	},
+	upgrade_siege_weapon_speed = {
+		default = {"upgrade_siege_weapon_speed"},
+		age = AGE_CASTLE,
+		pickCount = 0,
+		roundPickCount = 0,
+		mongol = {"upgrade_siege_weapon_speed_mon", 
+			"upgrade_siege_weapon_speed_improved_mon"},
+		sultanate = {"upgrade_siege_weapon_speed_sul"},
+	},
+	upgrade_siege_mathematics = {
+		default = {"upgrade_siege_mathematics"},
+		age = AGE_IMPERIAL,
+		pickCount = 0,
+		roundPickCount = 0,
+		mongol = {"upgrade_siege_mathematics_mon", 
+			"upgrade_siege_mathematics_improved_mon"},
+		sultanate = {"upgrade_siege_mathematics_sul"},
+	},
+	upgrade_ram_scaling = {
+		default = {"upgrade_ram_scaling"},
+		age = AGE_IMPERIAL,
+		pickCount = 0,
+		roundPickCount = 0,
+		mongol = {"upgrade_ram_scaling_mon", 
+			"upgrade_ram_scaling_improved_mon"},
+		sultanate = {"upgrade_ram_scaling_sul"},
+	},
+}
+
+-- 当前轮可以被选择的科技
+_research_ui = {
+		ui = "_research_ui",
+		context = {
+			
+		}
+	}
+
+repeat_pick_max = 4
+
+--[[
+	{
+		
+	}
+--]]
+-- 科技的时代分布情况
+_researches_age_dis = {
+	
+}
+
+Core_RegisterModule("Researches")
+
+
+function Researches_OnGameSetup()
+	Setup_GetWinConditionOptions(_mod.options)
+	
+	if not _mod.options.resource_settings.enable_card_system then 
+		Core_UnregisterModule("Researches")
+	end
+	
+end
+
+
+function Researches_OnInit()
+	Network_RegisterEvent("Researches_PlayerPickNtw")
+	Researches_DataInit()
+	Researches_InitUI()
+	Researches_Disable()
+	repeat_pick_max = math.floor(#PLAYERS/2)
+end
+
+
+function Researches_InitUI()
+	_research_ui.context.is_ui_expanded = false
+	-- 禁用按钮
+	_research_ui.context.enableBtn = false
+	_research_ui.context.command = {
+		toggle_ui = UI_CreateCommand("Researches_ToggleUI"),
+	},
+	UI_AddChild("ScarDefault", "XamlPresenter", _research_ui.ui, { IsHitTestVisible = true, Xaml = _researches_ui_xaml, DataContext = UI_CreateDataContext(_research_ui.context)})
+	--UI_AddCommandBinding("hud_game", "toggle_researches_panel", "Researches_ToggleUI")
+	Rule_Add(Researches_UpdateUI)
+end
+
+function Researches_ToggleUI()
+	Rule_AddOneShot(Rule_ToggleUI, 0.1)
+end
+
+function Rule_ToggleUI()
+	print("...........")
+	_research_ui.context.is_ui_expanded = not _research_ui.context.is_ui_expanded	
+	print(_research_ui.context.is_ui_expanded)
+	if(_research_ui.context.is_ui_expanded) then
+		UI_AddEventHandler("Scar", "HUDPageBase.Cancel", "Researches_HideUI")
+	else
+		UI_RemoveEventHandler("Scar", "HUDPageBase.Cancel", "Researches_HideUI")
+	end
+	Researches_UpdateUI()
+end
+
+-- Force menu open or closed (more for use by mission scripts)
+function Researches_ShowUI(show)
+	if(_research_ui.context.is_ui_expanded ~= show) then
+		Researches_ToggleUI()
+	end
+end
+
+-- callback invoked by pressing the ESC key while Diplomacy panel is open
+function Researches_HideUI(context)
+	if(_research_ui.context.is_ui_expanded) then
+		Researches_ToggleUI()
+	end
+end
+
+
+function Researches_UpdateUI()
+	UI_SetDataContext(_research_ui.ui, _research_ui.context)
+end
+
+function Researches_DataInit()
+	for researchKey, val in pairs(_researches) do 
+		local age = val.age
+		local data = {}
+		local ageKey = "age" .. age
+		if _researches_age_dis[ageKey] ~= nil then 
+			data = _researches_age_dis[ageKey]
+		end
+		_researches_age_dis[ageKey] = data
+		table.insert(data, researchKey)
+	end
+	
+	-- 玩家已选择的科技列表
+	for i, player in pairs(PLAYERS) do 
+		player.pickResearches = {}
+		player.uniqPickResearches = {}
+	end
+end
+
+-- 玩家选择科技, researchKey为_researches的第一层key
+function Researches_PlayerDoPick(researchKey)
+	_research_ui.context.playerPicked = true
+	-- 如果玩家选择了，就要禁用全部
+	if _research_ui.context.playerPicked then 
+		for _,stack in pairs(_research_ui.context.researchStacks) do 
+			for _, r in pairs(stack.researches) do 
+				r.notPicked = false
+			end
+		end
+	end
+	Network_CallEvent("Researches_PlayerPickNtw", researchKey)
+end
+
+-- 玩家选择科技的网络事件
+function Researches_PlayerPickNtw(playerId, researchKey)
+	local player = Core_GetPlayersTableEntry(playerId)
+	-- 从ui中移除
+	local realResearchKey = string.split(researchKey, "$")[1]
+	for _, stack in pairs(_research_ui.context.researchStacks) do 
+		for _, rs in pairs(stack.researches) do 
+			if rs.key == researchKey then 
+				if rs.picker ~= nil then 
+					--TODO 提示技能已被选择，更新ui
+					if playerId == localPlayer.id then 
+						_research_ui.context.playerPicked = false
+						-- 如果没有选择，那只禁用其它玩家已经选择了的
+						local localPlayerId = Player_GetID(localPlayer.id)
+						for _,stack in pairs(_research_ui.context.researchStacks) do 
+							for _, r in pairs(stack.researches) do 
+								if r.picker == nil then 
+									r.notPicked = true
+								end
+							end
+						end	
+					end
+					return 
+				end
+				-- 设置当前选择的玩家
+				rs.notPicked = false
+				rs.picker = Player_GetID(player.id)
+				if playerId == localPlayer.id then 
+					-- 是否为本地玩家选择
+					rs.localPlayerPicked = true
+				end
+				UI_CreateEventCue(Loc_FormatText("$eca6173149134b76b78757235af2aa36:70", Player_GetDisplayName(player.id), rs.name), nil, "", "", "sfx_ui_event_queue_high_priority_play")
+			end
+		end
+	end
+	
+
+	
+	-- 当前科技没有研究过
+	player.pickResearches[researchKey] = false
+	player.uniqPickResearches[realResearchKey] = false
+	local research = _researches[realResearchKey]
+	-- 选中次数+1
+	research.pickCount = research.pickCount + 1
+	Researches_EnableResearchByPlayer(player.id)
+	
+	-- 如果是当前玩家
+	if playerId == localPlayer.id then 
+		_research_ui.context.playerPicked = true
+		
+	end
+end
+
+
+function Researches_EnableResearchByPlayer(playerId)
+	local player = Core_GetPlayersTableEntry(playerId)
+	local raceName = Player_GetRaceName(player.id)
+	for researchKey, flag in pairs(player.pickResearches) do 
+		local realResearchKey = string.split(researchKey, "$")[1]
+		local research = _researches[realResearchKey]
+		if research[raceName] ~= nil then 
+			for i, bp in pairs(research[raceName]) do 
+				Player_SetUpgradeAvailability(playerId, BP_GetUpgradeBlueprint(bp), ITEM_DEFAULT)	
+			end
+		else
+			for i, bp in pairs(research.default) do 
+				Player_SetUpgradeAvailability(playerId, BP_GetUpgradeBlueprint(bp), ITEM_DEFAULT)	
+			end
+		end
+		
+	end
+end
+
+-- 每轮开始时
+function Researches_OnRoundStart()
+	if ROUND % 2 == 1 then 
+		-- 随机卡牌
+		local count = Researches_RoundPick()
+		
+		if count > 0 then 
+			_research_ui.context.playerPicked = false
+			
+			-- 显示ui
+			_research_ui.context.enableBtn = true
+			Researches_ShowUI(true)
+		end
+	end
+end
+
+-- 每轮战斗开始时
+function Researches_OnRoundCombatStart()
+	_research_ui.context.enableBtn = false
+	Researches_HideUI(true)
+end
+
+-- 为当前轮选择卡牌
+function Researches_RoundPick()
+	_research_ui.context.researchStacks = {}
+	local temp_round_researches  = {}
+	
+	local maxAge = AGE_CASTLE
+	for i, player in pairs(PLAYERS) do 
+		local age = Player_GetCurrentAge(player.id)
+		if age > maxAge then 
+			maxAge = age
+		end
+	end
+	
+	for key, data in pairs(_researches) do 
+		data.roundPickCount = 0
+	end
+	
+	local currentPickCount = 0
+	local rs = Researches_DoPickRsLimitMaxPickCount(maxAge)
+	
+	local canPickCount = #PLAYERS + 1
+	for i = 1, canPickCount do 
+		local rsCount = #rs
+		if rsCount == 0 then 
+			rs = Researches_DoPickRsLimitMaxPickCount(maxAge)
+			if #rs == 0 then 
+				-- 如果还是为0就中止
+				break
+			end
+			rsCount = #rs
+		end
+		local pickIdx = World_GetRand(1, rsCount) 
+		local researchKey = rs[pickIdx]
+		local research = _researches[researchKey]
+		research.roundPickCount = research.roundPickCount + 1
+		local bp = BP_GetUpgradeBlueprint(researchKey)
+		local uiinfo = BP_GetUpgradeUIInfo(bp)
+		local researchInfo = {
+			key = researchKey .. "$" .. research.roundPickCount,
+			icon = UnitUI_GetIconNameFromUpgradeBlueprintUnsafe(bp),
+			extra = uiinfo.extraText,
+			name = uiinfo.screenName,
+			help = uiinfo.helpText,
+			IsAcquiredUpgrade = true,
+			pickCommand = UI_CreateCommand("Researches_PlayerDoPick"),
+			pickCommandParameter = researchKey .. "$" .. research.roundPickCount,
+			notPicked = true,
+			picker = nil,
+			localPlayerPicked = false,
+		}
+		
+		-- 如果本地玩家已经有这个科技了，就需要标注下
+		if localPlayer.uniqPickResearches[researchKey] ~= nil then 
+			researchInfo.localPlayerHad = true
+		else 
+			researchInfo.localPlayerHad = false
+		end
+		
+		table.insert(temp_round_researches, researchInfo)
+		table.remove(rs, pickIdx)
+	end
+	
+	local temp_researches = {
+		researches = {},
+	}
+	table.insert(_research_ui.context.researchStacks, temp_researches)
+	for i, research in pairs(temp_round_researches) do 
+		table.insert(temp_researches.researches, research)
+		if i % 3 == 0 then 
+			temp_researches = {
+					researches = {},
+				}
+			table.insert(_research_ui.context.researchStacks, temp_researches)
+		end
+	end
+	
+	return #temp_round_researches
+end
+
+
+function Researches_DoPickRsLimitMaxPickCount(maxAge)
+	local rs = {}
+	for i = 0, repeat_pick_max-1 do 
+		rs = Researches_CanPickRs(maxAge, i)
+		if #rs > 0 then 
+			return rs
+		end
+	end
+	return rs
+end
+
+-- 可以选择的科技
+function Researches_CanPickRs(maxAge, pickCount)
+	local rs = {}
+	for age = 1, maxAge do 
+		local ageRs = _researches_age_dis["age"..age]
+		if ageRs ~= nil then 
+			for i, researchKey in pairs(ageRs) do 
+				local research = _researches[researchKey]
+				if (research.pickCount + research.roundPickCount) == pickCount then 
+					-- 将科技都添加到随机池中
+					table.insert(rs, researchKey)
+				end
+			end
+		end
+	end
+	return rs
+end
+
+
+
+-- 禁用卡牌池中的科技
+function Researches_Disable()   
+	for i, player in pairs(PLAYERS) do 
+		Researches_DisableByPlayer(player.id)
+	end
+end
+
+function Researches_DisableByPlayer(playerId)
+	local raceName = Player_GetRaceName(playerId)
+	local player = Core_GetPlayersTableEntry(playerId)
+	for key, val in pairs(_researches) do 
+		if Misc_IsDevMode() then 
+			player.pickResearches[key] = false
+			player.uniqPickResearches[key] = false
+		end
+		if val[raceName] ~= nil then 
+			for i, bp in pairs(val[raceName]) do 
+				Player_SetUpgradeAvailability(playerId, BP_GetUpgradeBlueprint(bp), ITEM_REMOVED)
+			end
+		else
+			for i, bp in pairs(val.default) do 
+				Player_SetUpgradeAvailability(playerId, BP_GetUpgradeBlueprint(bp), ITEM_REMOVED)
+			end
+		end
+	end
+end
+

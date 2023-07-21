@@ -1,0 +1,760 @@
+XamlTeamVTeam = 
+[[<Grid
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:engineSharedEffects="clr-namespace:WPFGUI.Shared.Effects;assembly=EngineUI.Shaders"
+		xmlns:engineUtility="clr-namespace:WPFGUI.Shared.Utility;assembly=EngineUI"
+		xmlns:esControls="clr-namespace:WPFGUI.Shared.Controls;assembly=EngineUI" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:model="clr-namespace:HUDModelTypes" xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:utility="clr-namespace:WPFGUI.Shared.Utility;assembly=EngineUI" xmlns:wm="clr-namespace:WPFGUI.Shared.MarkupExtensions;assembly=EngineUI"
+                    mc:Ignorable="d">
+	
+	<Grid.Resources>
+	    <DropShadowEffect x:Key="ObserverUiHeaderDropShadow" BlurRadius="0.5" ShadowDepth="1.5"  />
+	    <Style x:Key="ObserverUiHeaderPrimaryText" TargetType="TextBlock">
+	        <Setter Property="FontSize" Value="18"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+	        <Setter Property="Foreground" Value="#FFFFFF"/>
+	        <Setter Property="FontWeight" Value="Bold" />
+	        <Setter Property="FontFamily" Value="{StaticResource Syntax}"/>
+	        <Setter Property="Effect" Value="{StaticResource ObserverUiHeaderDropShadow}"/>
+	        <Setter Property="Margin" Value="0,0,0,0"/>
+	    </Style>
+		   
+		<DropShadowEffect x:Key="DropShadow" BlurRadius="0.5" ShadowDepth="1.5"  />
+		<Style x:Key="PrimaryText" TargetType="TextBlock">
+			<Setter Property="FontSize" Value="20"/>
+			<Setter Property="Foreground" Value="#FFFFFF"/>
+			<Setter Property="FontWeight" Value="Bold" />
+			<Setter Property="FontFamily" Value="{StaticResource Syntax}"/>
+			<Setter Property="Effect" Value="{StaticResource DropShadow}"/>
+			<Setter Property="Margin" Value="0,0,0,0"/>
+		</Style>
+		<Style x:Key="SecondaryText" TargetType="TextBlock">
+			<Setter Property="FontSize" Value="18"/>
+			<Setter Property="Foreground" Value="#C2C2C2"/>
+			<Setter Property="FontStyle" Value="Italic" />
+			<Setter Property="FontFamily" Value="{StaticResource Syntax}"/>
+			<Setter Property="Effect" Value="{StaticResource DropShadow}"/>
+			<Setter Property="Margin" Value="0,0,0,0"/>
+		</Style>
+		<Style x:Key="TimeText" TargetType="TextBlock">
+			<Setter Property="FontSize" Value="18"/>
+			<Setter Property="Foreground" Value="#FFFFFF"/>
+			<Setter Property="FontFamily" Value="{StaticResource Syntax}"/>
+			<Setter Property="Effect" Value="{StaticResource DropShadow}"/>
+			<Setter Property="Margin" Value="0,0,0,0"/>
+		</Style>
+
+		<Style x:Key="StyleDockPanelDockRight" TargetType="ContentPresenter">
+			<Setter Property="DockPanel.Dock" Value="Right"/>
+		</Style>
+		
+		<Style x:Key="StyleDockPanelDockLeft" TargetType="ContentPresenter">
+			<Setter Property="DockPanel.Dock" Value="Left"/>
+		</Style>
+		
+        <DataTemplate x:Key="ObserverUIResource">
+            <Grid Width="100">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"
+                        Style="{StaticResource ObserverUiHeaderPrimaryText}"
+                        Text="{Binding [amount], Converter={StaticResource CastToIntOperator}}" 
+						TextAlignment="Right" />
+				
+                <Image Grid.Column="1"
+                    	Width="30" Height="30"
+                    	HorizontalAlignment="Center"
+                    	VerticalAlignment="Center"
+                    	Source="{Binding [icon]}" />
+				
+                <TextBlock Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+						Foreground="White"
+						FontWeight="Bold"
+                    	Text="{Binding [workers], Converter={StaticResource CastToIntOperator}}" />
+            </Grid>
+        </DataTemplate>
+		
+		<DataTemplate x:Key="ObserverUiTeam">
+			<Grid>
+				<Rectangle>
+					<Rectangle.Fill>
+						<ImageBrush ImageSource="pack://application:,,,/WPFGUI;component/icons/caster_mode/balance_panel/background.png" TileMode="Tile"
+							Viewport="0,0,128,138" ViewportUnits="Absolute" />
+					</Rectangle.Fill>
+				</Rectangle>
+				<Border BorderThickness="2,0,2,2" BorderBrush="#3e5369">
+					<ItemsControl ItemsSource="{Binding}" AlternationCount="2">
+			            <ItemsControl.ItemTemplate>
+			                <DataTemplate>
+								<Grid Height="34">
+		                            <Rectangle Name="AlternationTarget" Fill="LightSkyBlue" Opacity="0"/>
+									
+									<Grid Width="300">
+		                                <Image Name="ObserverUiPlayerCivFlag" Height="26" Margin="5,0,5,0" 
+												VerticalAlignment="Center" HorizontalAlignment="Left"
+												Source="{Binding [civIcon]}"/>
+										<Grid Margin="38,0" HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"
+                                              IsHitTestVisible="False"
+                                              Visibility="{Binding [roundReady], Converter={StaticResource BoolToVis}}">
+                                            <Ellipse Width="26" Height="26"
+                                                     Fill="{DynamicResource BlackTransparent40Brush}"
+                                                     Stroke="{DynamicResource PrimaryColorLightBrush}"
+                                                     StrokeThickness="2" />
+                                            <Viewbox Width="15">
+                                                <Path HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                      Style="{StaticResource FrontEndCheckMark}" />
+                                            </Viewbox>
+                                        </Grid>
+										
+										
+										<Grid Margin="5,0,0,0" MaxWidth="185">
+			                                <TextBlock Name="ObserverUiPlayerName"  
+													VerticalAlignment="Center" TextAlignment="Center"
+													esControls:TextBlockExtensions.AutoToolTip="True"
+													TextTrimming="CharacterEllipsis" ToolTipService.InitialShowDelay="0"
+	                                           		ToolTipService.ShowDuration="86400000" ToolTipService.ShowOnDisabled="True"
+													Style="{StaticResource nHUDBaseTextBlockStyle}"
+													Foreground="{Binding [color]}" 
+		                        					Text="{Binding [name]}">
+													<TextBlock.ToolTip>
+				                                        <ToolTip Style="{StaticResource HUDBaseAutoTooltipStyle}" />
+				                                    </TextBlock.ToolTip>
+				                            </TextBlock>
+											<Separator Effect="{StaticResource DropShadowTextStyle}" Visibility="{Binding [isRoundOver], Converter={StaticResource BoolToVis}}">
+				                                <Separator.Background>
+				                                    <SolidColorBrush Color="{Binding [color]}" />
+				                                </Separator.Background>
+				                            </Separator>
+										</Grid>
+		                                <Grid Name="ObserverUiPlayerAgeIcon" Height="30" Width="41" Margin="2,0,2,0" 
+												VerticalAlignment="Center" HorizontalAlignment="Right">
+			                                <Image Height="30" 
+													VerticalAlignment="Center" HorizontalAlignment="Center"
+													Source="{Binding [ageIcon]}"/>
+										</Grid>
+		                            </Grid>
+								</Grid>
+		                        
+		                        <DataTemplate.Triggers>
+		                            <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+		                                <Setter TargetName="AlternationTarget" Property="Opacity" Value="0.2"/>
+		                            </Trigger>
+							        <DataTrigger Binding="{Binding [IsRightSide]}" Value="true">
+							            <Setter TargetName="ObserverUiPlayerAgeIcon" Property="HorizontalAlignment" Value="Left"/>
+							            <Setter TargetName="ObserverUiPlayerCivFlag" Property="HorizontalAlignment" Value="Right"/>
+										<Setter TargetName="ObserverUiPlayerName" Property="Margin" Value="0,0,20,0"/>
+							        </DataTrigger>
+		                        </DataTemplate.Triggers>
+			                </DataTemplate>
+			            </ItemsControl.ItemTemplate>
+			        </ItemsControl>
+				</Border>
+			</Grid>
+			
+		</DataTemplate>
+		
+		<DataTemplate x:Key="ObserverUIMessageTribute">
+			<DockPanel>
+				<TextBlock Style="{StaticResource HUDWhiteBodyTextBlock18ptSemiBoldStyle}"
+						Foreground="{Binding [SenderColor]}"
+                    	Text="{Binding [SenderName]}" />
+				
+				<TextBlock Style="{StaticResource HUDWhiteBodyTextBlock18ptSemiBoldStyle}"
+                    	Text=" sent " />
+				
+                <Image Width="25" Height="25"
+                    	Source="{Binding [ResourceIcon]}" />
+				
+				<TextBlock Style="{StaticResource HUDWhiteBodyTextBlock18ptSemiBoldStyle}"
+						Foreground="{DynamicResource Gray80Brush}"
+                    	Text="{Binding [Amount], Converter={StaticResource CastToIntOperator}}" />
+				
+				<TextBlock Style="{StaticResource HUDWhiteBodyTextBlock18ptSemiBoldStyle}"
+                    	Text=" to " />
+				<TextBlock Style="{StaticResource HUDWhiteBodyTextBlock18ptSemiBoldStyle}"
+						Foreground="{Binding [ReceiverColor]}"
+                    	Text="{Binding [ReceiverName]}" />
+				<TextBlock Style="{StaticResource HUDWhiteBodyTextBlock18ptSemiBoldStyle}"
+                    	Text="." />
+			</DockPanel>
+		</DataTemplate>
+		
+		<DataTemplate x:Key="CasterAgeImageTemplate" DataType="{x:Type casterModel:CasterTeamModel}">
+	        <Image Name="AgeIcon" Height="32" Source="../../../icons/caster_mode/balance_panel/age_1.png" />
+	        <DataTemplate.Triggers>
+	            <DataTrigger Binding="{Binding CurrentAge}" Value="{x:Static casterModel:CasterAge.FeudalAge}">
+	                <Setter TargetName="AgeIcon" Property="Source" Value="../../../icons/caster_mode/balance_panel/age_2.png" />
+	            </DataTrigger>
+	            <DataTrigger Binding="{Binding CurrentAge}" Value="{x:Static casterModel:CasterAge.CastleAge}">
+	                <Setter TargetName="AgeIcon" Property="Source" Value="../../../icons/caster_mode/balance_panel/age_3.png" />
+	            </DataTrigger>
+	            <DataTrigger Binding="{Binding CurrentAge}" Value="{x:Static casterModel:CasterAge.ImperialAge}">
+	                <Setter TargetName="AgeIcon" Property="Source" Value="../../../icons/caster_mode/balance_panel/age_4.png" />
+	            </DataTrigger>
+	        </DataTemplate.Triggers>
+	    </DataTemplate>
+	    
+	    <DataTemplate x:Key="ObserverUiBalancePanel">
+	        <DataTemplate.Resources>
+	            <SolidColorBrush x:Key="BalanceBorderBrush" Color="#5e6989"/>
+	            <SolidColorBrush x:Key="BalanceTickBrush" Color="#41485C"/>
+	        </DataTemplate.Resources>
+	        
+	        <Grid>
+	            <Grid HorizontalAlignment="Center">
+					<Grid Width="280" Height="140" >
+						<Border BorderThickness="2" BorderBrush="#3e5369"/>
+						<Grid.Background>
+							<ImageBrush ImageSource="pack://application:,,,/WPFGUI;component/icons/caster_mode/balance_panel/background.png" TileMode="Tile"
+								Viewport="0,0,128,138" ViewportUnits="Absolute" />
+						</Grid.Background>
+						<StackPanel>
+							<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,4,0,0">
+								<!--
+								<StackPanel Name="LeftIdleCount" Width="75" Orientation="Horizontal">
+									<Image Height="26" Source="../../../icons/races/common/units/trade_cart.png" VerticalAlignment="Bottom"/>
+									<TextBlock Margin="0,0,0,2" Text="{Binding [TeamSummaryLeft][TradePopulation], Converter={StaticResource CastToIntOperator}}" FontStyle="Italic" FontSize="18"  TextAlignment="Left" Foreground="#FFD6D6D6" VerticalAlignment="Bottom" />
+								</StackPanel>
+								-->
+								<StackPanel Width="75" Name="LeftIdleCount" Orientation="Horizontal" >
+									<TextBlock Margin="0,0,0,2" Text="{Binding [RoundInfo]}" FontStyle="Italic" FontSize="16"  TextAlignment="Left" Foreground="#FFD6D6D6" VerticalAlignment="Bottom" />
+								</StackPanel>
+								
+								<TextBlock Margin="-2,0,0,0" Width="46" Text="{Binding [TeamSummaryLeft][WorkerNonTradePopulation], Converter={StaticResource CastToIntOperator}}" Foreground="PaleGoldenrod" TextAlignment="Right" VerticalAlignment="Bottom" Style="{StaticResource PrimaryText}"/>
+								
+								<Grid Width="24" Height="24" Margin="10,0,10,0">
+									<Ellipse Width="24" Height="24"   Fill="{DynamicResource BlackTransparent40Brush}"
+                                                     Stroke="{DynamicResource PrimaryColorLightBrush}"
+                                                     StrokeThickness="2" HorizontalAlignment="Left"/>
+									<TextBlock Text="{Binding [MaxRound], Converter={StaticResource CastToIntOperator} }" Style="{StaticResource nHUDBaseTextBlockStyle}" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" /> 
+								</Grid>
+								
+								
+								
+								<!--
+								<Image Margin="-3,0,-3,0" Height="42" Source="../../../icons/caster_mode/balance_panel/villager_count.png">
+									<Image.RenderTransform>
+										<TranslateTransform X="1"/>
+									</Image.RenderTransform>
+								</Image> 
+								-->
+								
+
+								<TextBlock Margin="0,0,-2,0" Width="46" Text="{Binding [TeamSummaryRight][WorkerNonTradePopulation], Converter={StaticResource CastToIntOperator}}" Foreground="PaleGoldenrod" TextAlignment="Left"  VerticalAlignment="Bottom" Style="{StaticResource PrimaryText}"/>	
+
+								
+								<!--
+								<StackPanel Name="RightIdleCount" Width="75" Orientation="Horizontal" FlowDirection="RightToLeft">
+									<Image Height="26" Source="../../../icons/races/common/units/trade_cart.png" VerticalAlignment="Bottom"/>
+									<TextBlock Margin="0,0,0,2" Text="{Binding [TeamSummaryRight][TradePopulation], Converter={StaticResource CastToIntOperator}}" FontStyle="Italic" FontSize="18"  TextAlignment="Left" Foreground="#FFD6D6D6" VerticalAlignment="Bottom" />
+								</StackPanel>
+								-->
+								<StackPanel Name="RightIdleCount" Width="75" Orientation="Horizontal" FlowDirection="RightToLeft">
+									<TextBlock Margin="0,0,0,2" Text="{Binding [RoundTime]}" FontStyle="Italic" FontSize="16"  TextAlignment="Left" Foreground="#FFD6D6D6" VerticalAlignment="Bottom" />
+								</StackPanel>
+							</StackPanel>
+							<!-- population bars -->
+							<StackPanel Width="232" Canvas.Top="200">
+								<Grid>
+									<Border Height="10" HorizontalAlignment="Left" BorderBrush="{StaticResource BalanceBorderBrush}" BorderThickness="1">
+										<Border.Width>
+											<MultiBinding Converter="{StaticResource MultiDivideOperator}">
+												<Binding Path="[TeamSummaryLeft][WorkerPopulation]" Converter="{StaticResource MultiplyOperator}" ConverterParameter="233" />
+												<Binding Path="[AllPlayersSummary][CombinedWorkerPop]" />
+											</MultiBinding>
+										</Border.Width>
+										<Grid>
+											<Rectangle Fill="{Binding [TeamLeft][0][color]}" />
+											<Rectangle Fill="{DynamicResource CasterTransparentToWhiteOverlayBrush}" RenderTransformOrigin=".5,.5">
+												<Rectangle.RenderTransform>
+													<ScaleTransform ScaleX="-1" />
+												</Rectangle.RenderTransform>
+											</Rectangle>
+										</Grid>
+									</Border>
+									
+									<Border Height="10" HorizontalAlignment="Right" BorderBrush="{StaticResource BalanceBorderBrush}" BorderThickness="1">
+										<Border.Width>
+											<MultiBinding Converter="{StaticResource MultiDivideOperator}">
+												<Binding Path="[TeamSummaryRight][WorkerPopulation]" Converter="{StaticResource MultiplyOperator}" ConverterParameter="233" />
+												<Binding Path="[AllPlayersSummary][CombinedWorkerPop]" />
+											</MultiBinding>
+										</Border.Width>
+										<Grid>
+											<Rectangle Fill="{Binding [TeamRight][0][color]}" />
+											<Rectangle Fill="{DynamicResource CasterTransparentToWhiteOverlayBrush}" RenderTransformOrigin=".5,.5">
+												<Rectangle.RenderTransform>
+													<ScaleTransform ScaleX="1" />
+												</Rectangle.RenderTransform>
+											</Rectangle>
+										</Grid>
+									</Border>
+									<Path HorizontalAlignment="Center" VerticalAlignment="Top" Data="M3,8 L6,0 L0,0 Z" Fill="{StaticResource BalanceTickBrush}" />
+
+									<Path HorizontalAlignment="Left" Margin="77,0,0,0" VerticalAlignment="Top" Data="M0,5 L-3,0 L3,0 Z" Fill="{StaticResource BalanceTickBrush}" />
+									<Path HorizontalAlignment="Left" Margin="155,0,0,0" VerticalAlignment="Top" Data="M0,5 L-3,0 L3,0 Z" Fill="{StaticResource BalanceTickBrush}" />
+								</Grid>
+								<Grid Margin="0,4,0,0">
+									<Border Height="10" HorizontalAlignment="Left" BorderBrush="{StaticResource BalanceBorderBrush}" BorderThickness="1">
+										<Border.Width>
+											<MultiBinding Converter="{StaticResource MultiDivideOperator}">
+												<Binding Path="[TeamSummaryLeft][MilitaryPopulation]" Converter="{StaticResource MultiplyOperator}" ConverterParameter="233" />
+												<Binding Path="[AllPlayersSummary][CombinedMilitaryPop]" />
+											</MultiBinding>
+										</Border.Width>
+										<Grid>
+											<Rectangle Fill="{Binding [TeamLeft][0][color]}" />
+											<Rectangle Fill="{DynamicResource CasterTransparentToWhiteOverlayBrush}" RenderTransformOrigin=".5,.5">
+												<Rectangle.RenderTransform>
+													<ScaleTransform ScaleX="-1" />
+												</Rectangle.RenderTransform>
+											</Rectangle>
+										</Grid>
+									</Border>
+									<Border Height="10" HorizontalAlignment="Right" BorderBrush="{StaticResource BalanceBorderBrush}" BorderThickness="1">
+										<Border.Width>
+											<MultiBinding Converter="{StaticResource MultiDivideOperator}">
+												<Binding Path="[TeamSummaryRight][MilitaryPopulation]" Converter="{StaticResource MultiplyOperator}" ConverterParameter="233" />
+												<Binding Path="[AllPlayersSummary][CombinedMilitaryPop]" />
+											</MultiBinding>
+										</Border.Width>
+										<Grid>
+											<Rectangle Fill="{Binding [TeamRight][0][color]}" />
+											<Rectangle Fill="{DynamicResource CasterTransparentToWhiteOverlayBrush}" RenderTransformOrigin=".5,.5">
+												<Rectangle.RenderTransform>
+													<ScaleTransform ScaleX="1" />
+												</Rectangle.RenderTransform>
+											</Rectangle>
+										</Grid>
+									</Border>
+									<Path HorizontalAlignment="Center" VerticalAlignment="Bottom" Data="M3,0 L6,8 L0,8 Z" Fill="{StaticResource BalanceTickBrush}" />
+
+									<Path HorizontalAlignment="Left" Margin="77,0,0,0" VerticalAlignment="Bottom" Data="M0,0 L-3,5 L3,5 Z" Fill="{StaticResource BalanceTickBrush}" />
+									<Path HorizontalAlignment="Left" Margin="155,0,0,0" VerticalAlignment="Bottom" Data="M0,0 L-3,5 L3,5 Z" Fill="{StaticResource BalanceTickBrush}" />
+								</Grid>
+							</StackPanel>
+							<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+								<StackPanel Name="LeftSiegePop" Width="75" Orientation="Horizontal">
+									<Image Height="26" Source="../../../icons/caster_mode/balance_panel/siege_population.png"/>
+									<TextBlock VerticalAlignment="Center" Text="{Binding [TeamSummaryLeft][SiegePopulation], Converter={StaticResource CastToIntOperator}}" FontStyle="Italic" FontSize="18"  TextAlignment="Left" Foreground="#FFD6D6D6" />
+								</StackPanel>
+								<TextBlock Margin="-2,0,0,0" VerticalAlignment="Center" Width="46" Text="{Binding [TeamSummaryLeft][MilitaryNoSiegePopulation], Converter={StaticResource CastToIntOperator}}" TextAlignment="Right" Style="{StaticResource PrimaryText}"/>
+								<Image Margin="-3,0,-3,0" Height="42" Source="../../../icons/caster_mode/balance_panel/military_population.png"/>
+								<TextBlock Margin="0,0,-2,0" VerticalAlignment="Center" Width="46" Text="{Binding [TeamSummaryRight][MilitaryNoSiegePopulation], Converter={StaticResource CastToIntOperator}}" TextAlignment="Left"  Style="{StaticResource PrimaryText}"/>
+								<StackPanel Name="RightSiegePop" Width="75" Orientation="Horizontal" FlowDirection="RightToLeft">
+									<Image Height="26" Source="../../../icons/caster_mode/balance_panel/siege_population.png"/>
+									<TextBlock VerticalAlignment="Center" Text="{Binding [TeamSummaryRight][SiegePopulation], Converter={StaticResource CastToIntOperator}}" FontStyle="Italic" FontSize="18"  TextAlignment="Left" Foreground="#FFD6D6D6" FlowDirection="LeftToRight" />
+								</StackPanel>
+							</StackPanel>
+							<StackPanel Margin="0,-4,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
+								<StackPanel Orientation="Horizontal" Width="80" FlowDirection="RightToLeft" Visibility="Hidden">
+									<Image Width="24" Source="../../../icons/common/orders/back.png" RenderTransformOrigin=".5,.5">
+										<Image.RenderTransform>
+											<RotateTransform Angle="-90"/>
+										</Image.RenderTransform>
+									</Image>
+									<TextBlock HorizontalAlignment="Right" Text="78%" FontStyle="Italic" FontSize="18" FlowDirection="LeftToRight"/>
+								</StackPanel>
+								<TextBlock Width="140" Text="{Binding ElapsedTime, Source={x:Static hudModels:HUDModel.Instance}, Converter={StaticResource ShorthandTimeFormat}}" TextAlignment="Center"  VerticalAlignment="Top" Style="{StaticResource TimeText}"/>
+								<StackPanel Orientation="Horizontal" Width="80" Visibility="Hidden">
+									<Image Width="24" Source="../../../icons/common/orders/back.png" RenderTransformOrigin=".5,.5">
+										<Image.RenderTransform>
+											<RotateTransform Angle="90"/>
+										</Image.RenderTransform>
+									</Image>
+								</StackPanel>
+							</StackPanel>
+						</StackPanel>
+					</Grid>
+	            </Grid>
+	        </Grid>
+	
+	        <DataTemplate.Triggers>
+	            <DataTrigger Binding="{Binding [TeamSummaryLeft][SiegePopulation]}" Value="0">
+	                <Setter TargetName="LeftSiegePop"  Property="Visibility" Value="Hidden" />
+	            </DataTrigger>
+	            <DataTrigger Binding="{Binding [TeamSummaryRight][SiegePopulation]}" Value="0">
+	                <Setter TargetName="RightSiegePop" Property="Visibility" Value="Hidden" />
+	            </DataTrigger>
+	        </DataTemplate.Triggers>
+	    </DataTemplate>
+		
+		
+		<DataTemplate x:Key="ObserverUiUnits">
+	        <ItemsControl Name="ObserverUiUnitsListOfPlayer" 
+					ItemsSource="{Binding [units]}"
+					ItemContainerStyle="{StaticResource StyleDockPanelDockRight}" 
+					HorizontalAlignment="Left">
+	            <ItemsControl.ItemsPanel>
+	                <ItemsPanelTemplate>
+	                    <DockPanel/>
+	                </ItemsPanelTemplate>
+	            </ItemsControl.ItemsPanel>
+	
+	            <ItemsControl.ItemTemplate>
+	                <DataTemplate>
+						<Border Margin="2,4,2,0" BorderThickness="2" BorderBrush="{Binding [Color]}">
+							<Grid>
+								<Rectangle Name="UnitBackground1"
+									Width="{StaticResource HUDBuildQueueIconSize}"
+									Height="{StaticResource HUDBuildQueueIconSize}"
+									Visibility="{Binding [isMilitary], Converter={StaticResource BoolToVis}}"
+									Fill="{StaticResource MilitaryButtonBgBrush}" />
+					
+							<Rectangle Name="UnitBackground4"
+									Width="{StaticResource HUDBuildQueueIconSize}"
+									Height="{StaticResource HUDBuildQueueIconSize}"
+									Visibility="{Binding [isUpgrade], Converter={StaticResource BoolToVis}}"
+									Fill="{StaticResource ResearchButtonBgBrush}" />
+					
+					
+							<Rectangle Name="UnitBackground2"
+									Width="{StaticResource HUDBuildQueueIconSize}"
+									Height="{StaticResource HUDBuildQueueIconSize}"
+									Visibility="{Binding [isMilitary], Converter={StaticResource BoolToVis}}"
+									Fill="{StaticResource MilitaryLightButtonBgHighlightBrush}" />
+					
+							<Rectangle Name="UnitBackground3"
+									Width="{StaticResource HUDBuildQueueIconSize}"
+									Height="{StaticResource HUDBuildQueueIconSize}"
+									Visibility="{Binding [isUpgrade], Converter={StaticResource BoolToVis}}"
+									Fill="{StaticResource ResearchLightButtonBgHighlightBrush}" />
+					
+								<Image 
+										Width="{StaticResource HUDBuildQueueIconSize}"
+	           							Height="{StaticResource HUDBuildQueueIconSize}"
+										Source="{Binding [icon]}"/>
+	                            <TextBlock 
+										VerticalAlignment="Top"
+										HorizontalAlignment="Left"
+										Style="{StaticResource SecondaryText}"
+	                                	Text="{Binding [queued], Converter={StaticResource CastToIntOperator}}"
+										FontSize="14"
+										Visibility="{Binding [queuedNot0], Converter={StaticResource BoolToVis}}" />
+	                            <TextBlock 
+										VerticalAlignment="Bottom"
+										HorizontalAlignment="Right"
+										Style="{StaticResource HUDCommandCardButtonTextBlockStyle}"
+	                                	Text="{Binding [count], Converter={StaticResource CastToIntOperator}}"
+										Visibility="{Binding [countNot0], Converter={StaticResource BoolToVis}}" />
+								
+							</Grid>
+						</Border>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+			
+			<DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding [IsRightSide]}" Value="true">
+		            <Setter TargetName="ObserverUiUnitsListOfPlayer" Property="HorizontalAlignment" Value="Right"/>
+		            <Setter TargetName="ObserverUiUnitsListOfPlayer" Property="ItemContainerStyle" Value="{StaticResource StyleDockPanelDockLeft}" />
+		        </DataTrigger>
+            </DataTemplate.Triggers>
+		</DataTemplate>
+
+		<LinearGradientBrush x:Key="ObserverUiBackgroundLeft" StartPoint="0,0" EndPoint="1,0">
+			<GradientStop Offset="0" Color="#80000000" />
+			<GradientStop Offset="0.85" Color="#80000000" />
+			<GradientStop Offset="1" />
+		</LinearGradientBrush>
+		<LinearGradientBrush x:Key="ObserverUiBackgroundRight" StartPoint="0,0" EndPoint="1,0">
+			<GradientStop Offset="0" />
+			<GradientStop Offset="0.15" Color="#80000000" />
+			<GradientStop Offset="1" Color="#80000000" />
+		</LinearGradientBrush>
+		
+		
+		<DataTemplate x:Key="ObserverUiTeamUnits">
+			<StackPanel Name="ObserverUiTeamDetails">
+				<ItemsControl ItemsSource="{Binding}">
+		            <ItemsControl.ItemTemplate>
+		                <DataTemplate>
+							<ContentControl
+								ContentTemplate="{StaticResource ObserverUiUnits}"
+								Content="{Binding}" />
+		                </DataTemplate>
+		            </ItemsControl.ItemTemplate>
+		        </ItemsControl>
+			</StackPanel>
+			
+			<DataTrigger Binding="{Binding [0][IsRightSide]}" Value="true">
+				<Setter TargetName="ObserverUiTeamDetails" Property="FlowDirection" Value="RightToLeft"/>
+			</DataTrigger>
+		</DataTemplate>
+	</Grid.Resources>
+	
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="2*" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+		
+	    <Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+	        
+			<ContentControl HorizontalAlignment="Left" Margin="0,126,0,0"
+				ContentTemplate="{StaticResource ObserverUiTeamUnits}"
+				Content="{Binding [TeamLeft]}" />
+			
+		    <Grid Margin="0,0,-2,0">
+				<ContentControl	HorizontalAlignment="Right" VerticalAlignment="Top"
+						ContentTemplate="{StaticResource ObserverUiTeam}"
+						Content="{Binding [TeamLeft]}" />
+		    </Grid>
+			
+			<ContentControl Grid.Column="2" HorizontalAlignment="Right" Margin="0,126,0,0"
+				ContentTemplate="{StaticResource ObserverUiTeamUnits}"
+				Content="{Binding [TeamRight]}" />
+			
+		    <Grid Grid.Column="2" Margin="-2,0,0,0">
+				<ContentControl	
+						HorizontalAlignment="Left" VerticalAlignment="Top"
+						ContentTemplate="{StaticResource ObserverUiTeam}"
+						Content="{Binding [TeamRight]}" />
+		    </Grid>
+			
+			<Grid Grid.Column="1">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="*" />
+				</Grid.RowDefinitions>
+				
+				<ContentControl	Grid.ColumnSpan="2"
+						HorizontalAlignment="Center" VerticalAlignment="Top"
+						Margin="0,-2,0,0"
+						ContentTemplate="{StaticResource ObserverUiBalancePanel}"
+						Content="{Binding}" />
+			</Grid>
+
+	    </Grid>
+		
+	    
+	</Grid>
+</Grid>
+]]
+
+function AdaptIconPathForXaml(iconPath)
+	return string.format("pack://application:,,,/WPFGUI;component/%s.png", string.gsub(iconPath, "\\", "/" ))
+end
+
+_AgeIconsForAnimation = {
+	{	[false] = AdaptIconPathForXaml("icons/hud/age/age_display_persistent_1"), 
+		[true] = AdaptIconPathForXaml("icons/hud/age/age_display_afford_1")},
+	{	[false] = AdaptIconPathForXaml("icons/hud/age/age_display_persistent_2"),
+		[true] = AdaptIconPathForXaml("icons/hud/age/age_display_afford_2")},
+	{	[false] = AdaptIconPathForXaml("icons/hud/age/age_display_persistent_3"),
+		[true] = AdaptIconPathForXaml("icons/hud/age/age_display_afford_3")},
+	{	[false] = AdaptIconPathForXaml("icons/hud/age/age_display_persistent_4"),
+		[true] = AdaptIconPathForXaml("icons/hud/age/age_display_afford_4")}
+}
+
+_AgeIcons = {
+	{	[false] = AdaptIconPathForXaml("icons/hud/age/age_display_persistent_1"), 
+		[true] = AdaptIconPathForXaml("icons/races/common/abilities/age_1")},
+	{	[false] = AdaptIconPathForXaml("icons/hud/age/age_display_persistent_2"),
+		[true] = AdaptIconPathForXaml("icons/races/common/abilities/age_2")},
+	{	[false] = AdaptIconPathForXaml("icons/hud/age/age_display_persistent_3"),
+		[true] = AdaptIconPathForXaml("icons/races/common/abilities/age_3")},
+	{	[false] = AdaptIconPathForXaml("icons/hud/age/age_display_persistent_4"),
+		[true] = AdaptIconPathForXaml("icons/races/common/abilities/age_4")}
+}
+
+_RaceImage = {
+	abbasid = AdaptIconPathForXaml("images/civ_flags/flag_abbasid"),
+	chinese = AdaptIconPathForXaml("images/civ_flags/flag_chinese"),
+	english = AdaptIconPathForXaml("images/civ_flags/flag_english"),
+	french = AdaptIconPathForXaml("images/civ_flags/flag_french"),
+	hre = AdaptIconPathForXaml("images/civ_flags/flag_hre"),
+	mongol = AdaptIconPathForXaml("images/civ_flags/flag_mongol"),
+	rus = AdaptIconPathForXaml("images/civ_flags/flag_rus"),
+	sultanate = AdaptIconPathForXaml("images/civ_flags/flag_sultanates"),
+	malian = AdaptIconPathForXaml("images/civ_flags/flag_malian"),
+	ottoman = AdaptIconPathForXaml("images/civ_flags/flag_ottoman")
+}
+
+Core_RegisterModule("ArenaObserverUi")
+
+function ArenaObserverUi_OnInit()
+	
+	
+end
+
+arena_observer_context = {
+	
+}
+
+function ArenaObserverUi_Start()
+	if UI_IsReplay() then 
+		UI_SetPropertyValue("ReplayControl", "Margin", "0,0,0,0")
+		UI_SetPropertyValue("LandmarkInConstruction", "Visibility", "Hidden")
+		UI_SetPropertyValue("LandmarkInConstruction", "Height", "60")
+		UI_SetPropertyValue("DynastyUI", "Visibility", "Collapsed")
+		UI_SetPropertyValue("ReplayStatViewer", "Visibility", "Collapsed")
+		UI_SetPropertyValue("selectionCommandCardsGrid", "Margin", "-205,0,0,0")
+		
+		UI_SetPropertyValue("LandmarkInConstruction", "Visibility", "Collapsed")
+		UI_SetPropertyValue("SymmetryButton", "Visibility", "Visible")
+		UI_SetPropertyValue("DynastyUI", "Visibility", "Collapsed")
+		UI_SetPropertyValue("ReplayStatViewer", "Visibility", "Collapsed")
+		UI_SetPropertyValue("selectionCommandCardsGrid", "Margin", "-205,0,0,0")
+	end
+	
+	UI_AddChild("ScarDefault", "XamlPresenter", "arena_observer_ui", { IsHitTestVisible = true, Xaml = XamlTeamVTeam, DataContext = UI_CreateDataContext(arena_observer_context)})
+	ArenaObserverUi_UpdateUI()
+	Rule_AddInterval(ArenaObserverUi_UpdateUI, 1)
+end
+
+
+
+function ArenaObserverUi_UpdateUI()
+	local leftTeamIdx = nil
+	local rightTeamIdx = nil 
+	for i, team in pairs(TEAMS) do 
+		if leftTeamIdx == nil then 
+			leftTeamIdx = team.index
+		elseif team.index ~= leftTeamIdx then 
+			rightTeamIdx = team.index
+			break 
+		end
+	end
+	arena_observer_context.AllPlayersSummary = {}
+	arena_observer_context.AllPlayersSummary = {
+		CombinedWorkerPop = 0,
+		CombinedMilitaryPop = 0,
+	}
+	
+	for i, team in pairs(TEAMS) do 
+		local teamData = {
+			
+		}
+		
+		local teamSummary = {
+			WorkerNonTradePopulation = 0,
+			WorkerPopulation = 0,
+			MilitaryPopulation = 0,
+			SiegePopulation = 0,
+			TradePopulation = 0,
+			MilitaryNoSiegePopulation = 0,
+		}
+		
+		local rightFlag = true
+		local players = team.players
+		
+		local currentCombatPlayer = nil 
+		if WHEEL_WARS and BATTLE_ORDER["team_"..team.index] ~= nil and (team.index == localPlayer.team.index or show_battle_order or UI_IsReplay())  then 
+			players = BATTLE_ORDER["team_"..team.index]
+			currentCombatPlayer = Mod_GetCurrentBattlePlayer(team.index)
+		end
+		
+		local wins = 0.01
+		local unitCount = 0.01
+		
+		for j, player in pairs(players) do 
+			local raceName = Player_GetRaceName(player.id)
+			local name = Player_GetDisplayName(player.id).LocString
+			if WHEEL_WARS and currentCombatPlayer ~= nil and currentCombatPlayer.id == player.id  then 
+				name = "> " .. name
+			end
+			
+			local roundReady = player.roundReady
+			if ROUND_READY then 
+				roundReady = false
+			end
+			
+			local age = player.age 
+			if Player_ObserveRelationship(player.id, localPlayer.id) == R_ENEMY and not UI_IsReplay() and player.visibilityAge ~= nil then 
+				age = player.visibilityAge
+			end
+			
+			local playerContext = {
+				IsRightSide = rightFlag,
+				name = name,
+				color = UI_GetColourAsString(Player_GetUIColour(player.id)),
+				civIcon = AdaptIconPathForXaml(World_GetRaceIcon(player.race)),
+				civImage = _RaceImage[raceName],
+				ageIcon = _AgeIcons[age][false],
+				isRoundOver = player.isRoundOver,
+				roundReady = roundReady
+			}
+			
+			if not WHEEL_WARS then 
+				playerContext.isRoundOver = false
+			end
+			
+			if UI_IsReplay() then 
+				-- 如果是重播时，就开启单位列表
+				local units = UnitUI_GetSquadAndResearch(player)
+				playerContext.units = units
+			end
+			
+			table.insert(teamData, playerContext)
+			
+			
+			if player.wins > 0 then 
+				wins = player.wins
+			end
+			
+			teamSummary.WorkerNonTradePopulation = player.wins
+			
+			local squadsCount = SGroup_CountSpawned(Player_GetSquads(player.id))
+			
+			teamSummary.MilitaryPopulation = teamSummary.MilitaryPopulation + squadsCount
+			teamSummary.SiegePopulation = teamSummary.SiegePopulation + SGroup_CountSpawned(Player_GetSquadsFromType(player.id, "siege"))
+			teamSummary.MilitaryNoSiegePopulation = teamSummary.MilitaryPopulation - teamSummary.SiegePopulation
+			
+			
+
+		end
+		
+		-- 进度条的人口数量-比分
+		teamSummary.WorkerPopulation = wins
+		-- 如果队伍单位数为0，则设为0.01		
+		if teamSummary.MilitaryPopulation == 0 then 
+			teamSummary.MilitaryPopulation = 0.01
+		end
+
+		-- 总共进行的轮次
+		arena_observer_context.AllPlayersSummary.CombinedWorkerPop = arena_observer_context.AllPlayersSummary.CombinedWorkerPop + teamSummary.WorkerPopulation
+		-- 总单位数
+		arena_observer_context.AllPlayersSummary.CombinedMilitaryPop = arena_observer_context.AllPlayersSummary.CombinedMilitaryPop + teamSummary.MilitaryPopulation
+		
+		if team.index == leftTeamIdx then 
+			rightFlag = false
+			arena_observer_context.TeamLeft = teamData
+			arena_observer_context.TeamSummaryLeft = teamSummary
+		else
+			arena_observer_context.TeamRight = teamData
+			arena_observer_context.TeamSummaryRight = teamSummary
+		end
+	end
+	
+	arena_observer_context.RoundInfo = "第".. ROUND .. "轮"
+	arena_observer_context.RoundTime = math.ceil(Timer_GetRemaining(ARENA_OBJ_TIMER)).."秒" 
+	
+	
+	arena_observer_context.MaxRound = WINNER_ROUND
+	UI_SetDataContext("arena_observer_ui", arena_observer_context)
+end
+
+function ArenaObserverUi_OnGameOver()
+		
+end

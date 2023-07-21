@@ -1,0 +1,582 @@
+<instance version="4" description="Mongol barracks" template="ebps">
+	<list name="extensions">
+		<template_reference name="exts" value="ebpextensions\entity_blueprint_ext" List.ItemID="1562189569" List.ParentItemID="1562189569">
+			<instance_reference name="animator_attachments" value="attachments\attachment_lists\races\mongol\buildings\building_unit_infantry_mongol" overrideParent="True" />
+			<bool name="browsable_in_editor" value="True" overrideParent="True" />
+			<enum name="subclass_type" value="MongolBuilding" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\site_ext" List.ItemID="135251227" List.ParentItemID="135251227">
+			<bool name="snap_to_construction_grid" value="True" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\type_ext" List.ItemID="806002589" List.ParentItemID="806002589">
+			<list name="unit_type_list" overrideParent="True">
+				<enum name="unit_type" value="building" List.ItemID="1932842656" />
+				<enum name="unit_type" value="barracks" List.ItemID="261669967" />
+				<enum name="unit_type" value="siegeable" List.ItemID="-1494128378" />
+				<enum name="unit_type" value="packable_building" List.ItemID="741029044" />
+				<enum name="unit_type" value="military_production_building" List.ItemID="-2094629556" />
+				<enum name="unit_type" value="production_building" List.ItemID="1458736357" />
+				<enum name="unit_type" value="scar_barracks" List.ItemID="1854488205" />
+				<enum name="unit_type" value="military_only_production" List.ItemID="140052201" />
+			</list>
+			<list name="race_type_list" overrideParent="True">
+				<instance_reference name="race_type" value="racebps\mongol" List.ItemID="-1700288999" />
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\construction_ext" List.ItemID="-1895077351" List.ParentItemID="-1895077351">
+			<state_tree_node name="can_be_cancelled_state_tree_conditions" value="entity_construction_queries_mon\Can_Cancel_Construction" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\ui_ext" List.ItemID="-717814548" List.ParentItemID="-717814548">
+			<list name="ui_extra_infos" overrideParent="True">
+				<template_reference name="ui_extra_info" value="info\ui_extra_info" List.ItemID="1549825425">
+					<file name="icon" value="influence_buff" />
+					<locstring name="description" value="11198258" />
+					<template_reference name="description_formatter" value="">
+					</template_reference>
+				</template_reference>
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\spawner_ext" List.ItemID="-1653881340" List.ParentItemID="-1653881340">
+			<list name="spawn_items" overrideParent="True">
+				<group name="spawn_item" comment="spearman - dark age" List.ItemID="874155177">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\mongol\unit_spearman_1_mon" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="1" />
+						<int name="ui_position_column" value="1" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" overrideParent="True" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" overrideParent="True" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="0" overrideParent="True" />
+						<float name="wood" value="0" overrideParent="True" />
+						<float name="stone" value="0" overrideParent="True" />
+						<float name="gold" value="0" overrideParent="True" />
+						<float name="militia_hre" value="0" overrideParent="True" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\building_barracks\train_spearman" overrideParent="True" />
+				</group>
+				<group name="spawn_item" comment="spearman - feudal age" List.ItemID="-2053857989">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\mongol\unit_spearman_2_mon" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="1" />
+						<int name="ui_position_column" value="1" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="0" />
+						<float name="wood" value="0" />
+						<float name="stone" value="0" />
+						<float name="gold" value="0" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\building_barracks\train_spearman" overrideParent="True" />
+				</group>
+				<group name="spawn_item" comment="spearman - castle age" List.ItemID="-1346901167">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\mongol\unit_spearman_3_mon" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="1" />
+						<int name="ui_position_column" value="1" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="0" />
+						<float name="wood" value="0" />
+						<float name="stone" value="0" />
+						<float name="gold" value="0" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\building_barracks\train_spearman" overrideParent="True" />
+				</group>
+				<group name="spawn_item" comment="spearman - imperial age" List.ItemID="-1837345975">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\mongol\unit_spearman_4_mon" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="1" />
+						<int name="ui_position_column" value="1" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="0" />
+						<float name="wood" value="0" />
+						<float name="stone" value="0" />
+						<float name="gold" value="0" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\building_barracks\train_spearman" overrideParent="True" />
+				</group>
+				<group name="spawn_item" comment="man-at-arms - castle age&#xD;&#xA;" List.ItemID="-1951807072">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\mongol\unit_manatarms_3_mon" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="1" />
+						<int name="ui_position_column" value="2" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="0" />
+						<float name="wood" value="0" />
+						<float name="stone" value="0" />
+						<float name="gold" value="0" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\building_barracks\train_manatarms" overrideParent="True" />
+				</group>
+				<group name="spawn_item" comment="man-at-arms - imperial age&#xD;&#xA;" List.ItemID="1179791625">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\mongol\unit_manatarms_4_mon" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="1" />
+						<int name="ui_position_column" value="2" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="0" />
+						<float name="wood" value="0" />
+						<float name="stone" value="0" />
+						<float name="gold" value="0" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\building_barracks\train_manatarms" overrideParent="True" />
+				</group>
+				<group name="spawn_item" comment="spearman - dark age (double)" List.ItemID="-1115582965">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\mongol\unit_spearman_1_double_mon" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="1" />
+						<int name="ui_position_column" value="1" />
+					</group>
+					<instance_reference name="ui_menu" value="menu\mon_improved_production_small" overrideParent="True" />
+					<int name="number_to_spawn" value="2" overrideParent="True" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="-30" overrideParent="True" />
+						<float name="wood" value="-10" overrideParent="True" />
+						<float name="stone" value="40" overrideParent="True" />
+						<float name="gold" value="0" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="11153276" />
+					<locstring name="ui_help_text" value="11157640" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\building_barracks\train_spearman" overrideParent="True" />
+				</group>
+				<group name="spawn_item" comment="spearman - feudal age (double)" List.ItemID="-528767814">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\mongol\unit_spearman_2_double_mon" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="1" />
+						<int name="ui_position_column" value="1" />
+					</group>
+					<instance_reference name="ui_menu" value="menu\mon_improved_production_small" overrideParent="True" />
+					<int name="number_to_spawn" value="2" overrideParent="True" />
+					<enum_table name="item_cost_adjustment" overrideParent="True">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="-30" overrideParent="True" />
+						<float name="wood" value="-10" overrideParent="True" />
+						<float name="stone" value="40" overrideParent="True" />
+						<float name="gold" value="0" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="11153277" />
+					<locstring name="ui_help_text" value="11157640" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\building_barracks\train_spearman" overrideParent="True" />
+				</group>
+				<group name="spawn_item" comment="spearman - castle age  (double)" List.ItemID="-594990817">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\mongol\unit_spearman_3_double_mon" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="1" />
+						<int name="ui_position_column" value="1" />
+					</group>
+					<instance_reference name="ui_menu" value="menu\mon_improved_production_small" overrideParent="True" />
+					<int name="number_to_spawn" value="2" overrideParent="True" />
+					<enum_table name="item_cost_adjustment" overrideParent="True">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="-30" overrideParent="True" />
+						<float name="wood" value="-10" overrideParent="True" />
+						<float name="stone" value="40" overrideParent="True" />
+						<float name="gold" value="0" overrideParent="True" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="11153278" />
+					<locstring name="ui_help_text" value="11157640" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\building_barracks\train_spearman" overrideParent="True" />
+				</group>
+				<group name="spawn_item" comment="spearman - imperial age  (double)" List.ItemID="-447419643">
+					<instance_reference name="entity" value="" overrideParent="True" />
+					<instance_reference name="squad" value="sbps\races\mongol\unit_spearman_4_double_mon" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="1" />
+						<int name="ui_position_column" value="1" />
+					</group>
+					<instance_reference name="ui_menu" value="menu\mon_improved_production_small" overrideParent="True" />
+					<int name="number_to_spawn" value="2" overrideParent="True" />
+					<enum_table name="item_cost_adjustment" overrideParent="True">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="-30" overrideParent="True" />
+						<float name="wood" value="-10" overrideParent="True" />
+						<float name="stone" value="40" overrideParent="True" />
+						<float name="gold" value="0" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="11153279" />
+					<locstring name="ui_help_text" value="11157640" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\building_barracks\train_spearman" overrideParent="True" />
+				</group>
+				<group name="spawn_item" comment="man-at-arms - castle age (double)&#xD;&#xA;" List.ItemID="536535299">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\mongol\unit_manatarms_3_double_mon" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="1" />
+						<int name="ui_position_column" value="2" />
+					</group>
+					<instance_reference name="ui_menu" value="menu\mon_improved_production_small" overrideParent="True" />
+					<int name="number_to_spawn" value="2" overrideParent="True" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="-50" overrideParent="True" />
+						<float name="wood" value="0" />
+						<float name="stone" value="60" overrideParent="True" />
+						<float name="gold" value="-10" overrideParent="True" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="11153270" />
+					<locstring name="ui_help_text" value="11157638" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\building_barracks\train_manatarms" overrideParent="True" />
+				</group>
+				<group name="spawn_item" comment="man-at-arms - imperial age (double)&#xD;&#xA;" List.ItemID="1986004449">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\mongol\unit_manatarms_4_double_mon" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="1" />
+						<int name="ui_position_column" value="2" />
+					</group>
+					<instance_reference name="ui_menu" value="menu\mon_improved_production_small" overrideParent="True" />
+					<int name="number_to_spawn" value="2" overrideParent="True" />
+					<enum_table name="item_cost_adjustment" overrideParent="True">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="-50" overrideParent="True" />
+						<float name="wood" value="0" />
+						<float name="stone" value="60" overrideParent="True" />
+						<float name="gold" value="-10" overrideParent="True" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="11153271" />
+					<locstring name="ui_help_text" value="11157638" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\building_barracks\train_manatarms" overrideParent="True" />
+				</group>
+			</list>
+			<int name="max_queue_size_override" value="1000" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\upgrade_ext" List.ItemID="-1932041427" List.ParentItemID="-1932041427">
+			<list name="standard_upgrades" overrideParent="True">
+				<instance_reference name="upgrade" value="upgrade\races\mongol\units\upgrade_unit_spearman_2_mon" overrideParent="True" List.ItemID="-1146011134" />
+				<instance_reference name="upgrade" value="upgrade\races\mongol\units\upgrade_unit_spearman_3_mon" overrideParent="True" List.ItemID="1992926243" />
+				<instance_reference name="upgrade" value="upgrade\races\mongol\units\upgrade_unit_spearman_4_mon" overrideParent="True" List.ItemID="899585737" />
+				<instance_reference name="upgrade" value="upgrade\races\mongol\units\upgrade_unit_manatarms_4_mon" overrideParent="True" List.ItemID="240591578" />
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\ability_ext" List.ItemID="-1132786092" List.ParentItemID="-1132786092">
+			<list name="abilities" overrideParent="True">
+				<instance_reference name="ability" value="abilities\timed_abilities\civ_core\core_building_scuttle" overrideParent="True" List.ItemID="434192949" />
+				<instance_reference name="ability" value="abilities\toggle_abilities\mongol\pack_building_mon" overrideParent="True" List.ItemID="918687639" />
+				<instance_reference name="ability" value="abilities\toggle_abilities\mongol\cancel_unpacking_building_mon" List.ItemID="-1620224991" />
+				<instance_reference name="ability" value="abilities\toggle_abilities\mongol\dummy_unpacking_building_mon" List.ItemID="1910984473" />
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\action_tree_ext" List.ItemID="-1993011914" List.ParentItemID="-1993011914">
+			<state_tree_node name="fallback_default_move_command_conditions" value="entity_construction_queries_mon\Can_Queue_Move_Commands" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\statemodel_ext" comment="Make sure the building and moving building are referencing the same schema, if they are using different schemas unpacking will break." List.ItemID="706256240" List.ParentItemID="706256240">
+			<instance_reference name="schema" value="statemodel_schema\buildings\civilizations\mongols\unit_infantry_mon" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\tier_ext" List.ItemID="587634893" List.ListAction="Append">
+			<list name="tier_group_list" overrideParent="True">
+				<list name="tier_group" overrideParent="True" List.ItemID="1971785540">
+					<group name="tier" List.ItemID="1033944415">
+						<list name="tier_requirements">
+						</list>
+						<instance_reference name="attachments" value="attachments\attachment_lists\civilizations\mongol\buildings\unit_infantry_mon\tier1_unit_infantry_mon" />
+						<template_reference name="statetree_tier_reached_actions" value="state_tree_reference_info">
+							<state_tree_node name="ActionTree_OpeningBranch" value="" />
+							<bool name="start_suspended" value="False" />
+						</template_reference>
+						<instance_reference name="statetree_tier_requirements_pbg" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_entity" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_squad" value="" />
+						<string name="tier_attachment_action" value="" />
+						<template_reference name="blueprint_conversion_parameters" value="blueprint_conversion_parameters">
+							<bool name="reissue_commands" value="False" />
+							<bool name="continue_state_trees" value="False" />
+							<bool name="remove_from_pending_deaths" value="False" />
+						</template_reference>
+						<string name="inventory_category_to_refresh_on_tier_up" value="" />
+					</group>
+					<group name="tier" List.ItemID="1599775671">
+						<list name="tier_requirements" overrideParent="True">
+							<template_reference name="requirement" value="requirements\required_player_upgrade" List.ItemID="315451610">
+								<enum name="reason" value="usage" />
+								<locstring name="ui_name" value="0" />
+								<bool name="is_present" value="True" />
+								<int name="max_completed" value="100" />
+								<int name="min_completed" value="1" />
+								<instance_reference name="upgrade_name" value="upgrade\dev\ages\feudal_age" />
+								<bool name="include_queued" value="False" />
+								<group name="include_pbg_parenting">
+									<bool name="include_child_pbgs" value="False" />
+									<bool name="include_parent_pbgs" value="False" />
+								</group>
+								<bool name="include_completed" value="True" />
+							</template_reference>
+						</list>
+						<instance_reference name="attachments" value="attachments\attachment_lists\civilizations\mongol\buildings\unit_infantry_mon\tier2_unit_infantry_mon" />
+						<template_reference name="statetree_tier_reached_actions" value="state_tree_reference_info">
+							<state_tree_node name="ActionTree_OpeningBranch" value="" />
+							<bool name="start_suspended" value="False" />
+						</template_reference>
+						<instance_reference name="statetree_tier_requirements_pbg" value="upgrade\dev\ages\feudal_age" overrideParent="True" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_entity" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_squad" value="" />
+						<string name="tier_attachment_action" value="act_set_current_age_feudal" overrideParent="True" />
+						<template_reference name="blueprint_conversion_parameters" value="blueprint_conversion_parameters">
+							<bool name="reissue_commands" value="False" />
+							<bool name="continue_state_trees" value="False" />
+							<bool name="remove_from_pending_deaths" value="False" />
+						</template_reference>
+						<string name="inventory_category_to_refresh_on_tier_up" value="" />
+					</group>
+					<group name="tier" List.ItemID="1069176905">
+						<list name="tier_requirements" overrideParent="True">
+							<template_reference name="requirement" value="requirements\required_player_upgrade" List.ItemID="-137901382">
+								<enum name="reason" value="usage" />
+								<locstring name="ui_name" value="0" />
+								<bool name="is_present" value="True" />
+								<int name="max_completed" value="100" />
+								<int name="min_completed" value="1" />
+								<instance_reference name="upgrade_name" value="upgrade\dev\ages\castle_age" mod="eca6173149134b76b78757235af2aa36" />
+								<bool name="include_queued" value="False" />
+								<group name="include_pbg_parenting">
+									<bool name="include_child_pbgs" value="False" />
+									<bool name="include_parent_pbgs" value="False" />
+								</group>
+								<bool name="include_completed" value="True" />
+							</template_reference>
+						</list>
+						<instance_reference name="attachments" value="attachments\attachment_lists\civilizations\mongol\buildings\unit_infantry_mon\tier3_unit_infantry_mon" />
+						<template_reference name="statetree_tier_reached_actions" value="state_tree_reference_info">
+							<state_tree_node name="ActionTree_OpeningBranch" value="" />
+							<bool name="start_suspended" value="False" />
+						</template_reference>
+						<instance_reference name="statetree_tier_requirements_pbg" value="upgrade\dev\ages\castle_age" mod="eca6173149134b76b78757235af2aa36" overrideParent="True" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_entity" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_squad" value="" />
+						<string name="tier_attachment_action" value="act_set_current_age_castle" overrideParent="True" />
+						<template_reference name="blueprint_conversion_parameters" value="blueprint_conversion_parameters">
+							<bool name="reissue_commands" value="False" />
+							<bool name="continue_state_trees" value="False" />
+							<bool name="remove_from_pending_deaths" value="False" />
+						</template_reference>
+						<string name="inventory_category_to_refresh_on_tier_up" value="" />
+					</group>
+				</list>
+				<list name="tier_group" overrideParent="True" List.ItemID="-583059176">
+					<group name="tier" List.ItemID="220529654">
+						<list name="tier_requirements">
+						</list>
+						<instance_reference name="attachments" value="attachments\attachment_lists\civilizations\mongol\outskirts\military\mon_military_01" overrideParent="True" />
+						<template_reference name="statetree_tier_reached_actions" value="state_tree_reference_info">
+							<state_tree_node name="ActionTree_OpeningBranch" value="" />
+							<bool name="start_suspended" value="False" />
+						</template_reference>
+						<instance_reference name="statetree_tier_requirements_pbg" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_entity" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_squad" value="" />
+						<string name="tier_attachment_action" value="" />
+						<template_reference name="blueprint_conversion_parameters" value="blueprint_conversion_parameters">
+							<bool name="reissue_commands" value="False" />
+							<bool name="continue_state_trees" value="False" />
+							<bool name="remove_from_pending_deaths" value="False" />
+						</template_reference>
+						<string name="inventory_category_to_refresh_on_tier_up" value="" />
+					</group>
+				</list>
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\district_generator_ext" overrideParent="True" List.ItemID="313450673" List.ListAction="Append">
+			<float name="range_metres" value="0" overrideParent="True" />
+			<int name="generator_value" value="0" overrideParent="True" />
+			<bool name="disable_generation_on_spawn" value="False" />
+			<bool name="is_root_generator" value="False" />
+			<int name="district_palette_id" value="0" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\district_bonuses_ext" overrideParent="True" List.ItemID="-1461644950" List.ListAction="Append">
+			<bool name="update_on_upgrade_changed" value="False" />
+			<bool name="update_on_construction_complete" value="True" />
+			<list name="district_bonuses" overrideParent="True">
+				<template_reference name="district_bonus" value="district_bonus" comment="Ovoo district bonus.&#xD;&#xA;&#xD;&#xA;Production buildings can produce double units at the cost of stone.&#xD;&#xA;&#xD;&#xA;Upgrade bonus at the cost of stone.&#xD;&#xA;" List.ItemID="716804016">
+					<template_reference name="requirement" value="options\ebpextensions\districtbonusesext\requirements\district_bonus_entity_requirement">
+						<list name="dynamic_requirements">
+						</list>
+						<list name="satisfying_entity_groups" overrideParent="True">
+							<group name="satisfying_entity_group" List.ItemID="807151678">
+								<list name="satisfying_entities" overrideParent="True">
+									<instance_reference name="entity" value="ebps\races\mongol\buildings\building_stone_deposit_ovoo_large_mon" overrideParent="True" List.ItemID="417792960" />
+									<instance_reference name="entity" value="ebps\races\mongol\buildings\building_wonder_age3_stupa_mon" List.ItemID="1807128526" />
+									<instance_reference name="entity" value="ebps\races\mongol\buildings\building_stone_deposit_ovoo_mon" List.ItemID="-198294082" />
+								</list>
+							</group>
+						</list>
+					</template_reference>
+					<uniqueid name="id" value="1073741851" />
+					<template_reference name="action_tree" value="state_tree_reference_info">
+						<state_tree_node name="ActionTree_OpeningBranch" value="district_ovoo\root" overrideParent="True" />
+						<bool name="start_suspended" value="False" />
+					</template_reference>
+				</template_reference>
+				<template_reference name="district_bonus" value="district_bonus" comment="Stupa specialization bonus (Monasteries grant the Ovoo bonus).&#xD;&#xA;&#xD;&#xA;Production buildings can produce double units at the cost of stone.&#xD;&#xA;&#xD;&#xA;Upgrade bonus at the cost of stone.&#xD;&#xA;" overrideParent="True" List.ItemID="542343883">
+					<template_reference name="requirement" value="options\ebpextensions\districtbonusesext\requirements\district_bonus_entity_requirement">
+						<list name="dynamic_requirements" overrideParent="True">
+							<template_reference name="requirement" value="requirements\required_player_upgrade" List.ItemID="793989791">
+								<enum name="reason" value="usage" />
+								<locstring name="ui_name" value="0" />
+								<bool name="is_present" value="True" />
+								<int name="max_completed" value="100" />
+								<int name="min_completed" value="1" />
+								<instance_reference name="upgrade_name" value="upgrade\races\mongol\research\upgrade_religious_monastery_ovoo_mon" overrideParent="True" />
+								<bool name="include_completed" value="True" />
+								<bool name="include_queued" value="False" />
+								<group name="include_pbg_parenting">
+									<bool name="include_child_pbgs" value="False" />
+									<bool name="include_parent_pbgs" value="False" />
+								</group>
+							</template_reference>
+						</list>
+						<list name="satisfying_entity_groups" overrideParent="True">
+							<group name="satisfying_entity_group" List.ItemID="-1983131401">
+								<list name="satisfying_entities" overrideParent="True">
+									<instance_reference name="entity" value="ebps\races\mongol\buildings\building_unit_religious_district_mon" overrideParent="True" List.ItemID="-244117070" />
+								</list>
+							</group>
+						</list>
+					</template_reference>
+					<uniqueid name="id" value="1073741852" />
+					<template_reference name="action_tree" value="state_tree_reference_info">
+						<state_tree_node name="ActionTree_OpeningBranch" value="district_ovoo\root" overrideParent="True" />
+						<bool name="start_suspended" value="False" />
+					</template_reference>
+				</template_reference>
+			</list>
+		</template_reference>
+	</list>
+	<uniqueid name="pbgid" value="130007" />
+	<instance_reference name="parent_pbg" value="ebps\races\core\buildings\building_unit_infantry" />
+</instance>

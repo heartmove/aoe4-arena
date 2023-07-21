@@ -1,0 +1,43 @@
+-- 科技卡牌
+tech_card = {
+	eventType = "realTime|roundSessionStart|squadKilled", -- 触发事件类型
+	cardId = "", -- 卡牌id
+	description = "", -- 卡牌描述
+	name = "",   -- 卡牌名称
+	level = "",  -- 卡牌级别
+	color = "",  -- 卡牌颜色
+	weight  = "", -- 出现权重
+	onRealTime = function(ownerSG)  end,  
+	onRoundSessionStart = function(ownerSG) end,
+	onSquadKilled = function(ownerSG) end,
+}
+
+
+-- 单位卡牌
+squad_card = {
+	cardId = "",
+	name = "", --可选
+	description = "", -- 卡牌描述
+	level = "", -- 卡牌级别
+	foods = "", -- 需消耗资源
+	squads = {
+		bpName = "数量",
+	},
+}
+
+-- 玩家拥有的单位卡牌
+player.squadCards = {
+	{
+		index = "", -- 所在位置
+		cardId = "",
+		addtionSquads = {  -- 附加单位
+			bpName = "数量",
+		},
+		foods = "", -- 价值
+		techCards = { -- 所包含的科技卡牌
+			"cardId"
+		},
+		sg = "", -- 对应的SGroup, 战斗未开始时为nil
+	}
+}
+

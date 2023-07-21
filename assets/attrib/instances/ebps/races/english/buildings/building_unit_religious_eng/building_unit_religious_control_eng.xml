@@ -1,0 +1,128 @@
+<instance version="4" description="" template="ebps">
+	<list name="extensions">
+		<template_reference name="exts" value="ebpextensions\entity_blueprint_ext" List.ItemID="393447683" List.ParentItemID="393447683">
+			<bool name="browsable_in_editor" value="True" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\site_ext" List.ItemID="1663451537" List.ParentItemID="1663451537">
+			<bool name="snap_to_construction_grid" value="True" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\type_ext" List.ItemID="-480952190" List.ParentItemID="-480952190">
+			<list name="race_type_list" overrideParent="True">
+				<instance_reference name="race_type" value="racebps\english" List.ItemID="-1389454565" />
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\ui_ext" List.ItemID="1872529639" List.ParentItemID="1872529639">
+			<string name="debug_text" value="" overrideParent="True" />
+			<file name="icon_name" value="races\common\buildings\monastery" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\spawner_ext" List.ItemID="-1541268486" List.ParentItemID="-1541268486">
+			<list name="spawn_items">
+				<group name="spawn_item" List.ItemID="1640183075" List.ParentItemID="1640183075">
+					<instance_reference name="squad" value="sbps\races\english\unit_monk_3_eng" overrideParent="True" />
+				</group>
+			</list>
+			<int name="max_queue_size_override" value="1000" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\upgrade_ext" List.ItemID="-1149097445" List.ParentItemID="-1149097445">
+			<list name="standard_upgrades">
+				<instance_reference name="upgrade" value="upgrade\dev\ages\castle_age_1" mod="eca6173149134b76b78757235af2aa36" overrideParent="True" List.ItemID="239277390" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\castle_age_2" mod="eca6173149134b76b78757235af2aa36" List.ItemID="-1524818053" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\castle_age_3" mod="eca6173149134b76b78757235af2aa36" List.ItemID="1638757387" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\castle_age_4" mod="eca6173149134b76b78757235af2aa36" List.ItemID="-196924717" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\castle_age_5" mod="eca6173149134b76b78757235af2aa36" List.ItemID="572769423" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_1" mod="eca6173149134b76b78757235af2aa36" List.ItemID="-1998410905" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_2" mod="eca6173149134b76b78757235af2aa36" List.ItemID="-2093385786" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_3" mod="eca6173149134b76b78757235af2aa36" List.ItemID="258744744" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_4" mod="eca6173149134b76b78757235af2aa36" List.ItemID="-1326542158" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_5" mod="eca6173149134b76b78757235af2aa36" List.ItemID="742457792" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_6" mod="eca6173149134b76b78757235af2aa36" List.ItemID="-1427690678" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_7" mod="eca6173149134b76b78757235af2aa36" List.ItemID="9535038" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_8" mod="eca6173149134b76b78757235af2aa36" List.ItemID="330412457" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_9" mod="eca6173149134b76b78757235af2aa36" List.ItemID="367879606" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_10" mod="eca6173149134b76b78757235af2aa36" List.ItemID="-776980828" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\castle_age_6" mod="eca6173149134b76b78757235af2aa36" List.ItemID="542906792" List.ListAction="Append" />
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\tier_ext" overrideParent="True" List.ItemID="727298714" List.ListAction="Append">
+			<list name="tier_group_list" overrideParent="True">
+				<list name="tier_group" overrideParent="True" List.ItemID="94157562">
+					<group name="tier" List.ItemID="-326755407">
+						<list name="tier_requirements" overrideParent="True">
+						</list>
+						<instance_reference name="attachments" value="attachments\attachment_lists\civilizations\english\buildings\unit_religious_eng\tier3_unit_religious_control_eng" />
+						<template_reference name="statetree_tier_reached_actions" value="state_tree_reference_info">
+							<state_tree_node name="ActionTree_OpeningBranch" value="" />
+							<bool name="start_suspended" value="False" />
+						</template_reference>
+						<instance_reference name="statetree_tier_requirements_pbg" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_entity" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_squad" value="" />
+						<string name="tier_attachment_action" value="" />
+						<template_reference name="blueprint_conversion_parameters" value="blueprint_conversion_parameters">
+							<bool name="reissue_commands" value="False" />
+							<bool name="continue_state_trees" value="False" />
+							<bool name="remove_from_pending_deaths" value="False" />
+						</template_reference>
+						<string name="inventory_category_to_refresh_on_tier_up" value="" />
+					</group>
+					<group name="tier" List.ItemID="984477014">
+						<list name="tier_requirements">
+							<template_reference name="requirement" value="requirements\required_player_upgrade" List.ItemID="813473443">
+								<enum name="reason" value="usage" />
+								<locstring name="ui_name" value="0" />
+								<bool name="is_present" value="True" />
+								<int name="max_completed" value="100" />
+								<int name="min_completed" value="1" />
+								<instance_reference name="upgrade_name" value="upgrade\dev\ages\imperial_age" mod="eca6173149134b76b78757235af2aa36" />
+								<bool name="include_queued" value="False" />
+								<group name="include_pbg_parenting">
+									<bool name="include_child_pbgs" value="False" />
+									<bool name="include_parent_pbgs" value="False" />
+								</group>
+								<bool name="include_completed" value="True" />
+							</template_reference>
+						</list>
+						<instance_reference name="attachments" value="attachments\attachment_lists\civilizations\english\buildings\unit_religious_eng\tier4_unit_religious_control_eng" />
+						<template_reference name="statetree_tier_reached_actions" value="state_tree_reference_info">
+							<state_tree_node name="ActionTree_OpeningBranch" value="" />
+							<bool name="start_suspended" value="False" />
+						</template_reference>
+						<instance_reference name="statetree_tier_requirements_pbg" value="upgrade\dev\ages\imperial_age" mod="eca6173149134b76b78757235af2aa36" overrideParent="True" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_entity" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_squad" value="" />
+						<string name="tier_attachment_action" value="act_set_current_age_imperial" overrideParent="True" />
+						<template_reference name="blueprint_conversion_parameters" value="blueprint_conversion_parameters">
+							<bool name="reissue_commands" value="False" />
+							<bool name="continue_state_trees" value="False" />
+							<bool name="remove_from_pending_deaths" value="False" />
+						</template_reference>
+						<string name="inventory_category_to_refresh_on_tier_up" value="" />
+					</group>
+				</list>
+				<list name="tier_group" overrideParent="True" List.ItemID="958756578">
+					<group name="tier" List.ItemID="-1451918584">
+						<list name="tier_requirements">
+						</list>
+						<instance_reference name="attachments" value="attachments\attachment_lists\civilizations\english\outskirts\general\monastery_03" overrideParent="True" />
+						<template_reference name="statetree_tier_reached_actions" value="state_tree_reference_info">
+							<state_tree_node name="ActionTree_OpeningBranch" value="" />
+							<bool name="start_suspended" value="False" />
+						</template_reference>
+						<instance_reference name="statetree_tier_requirements_pbg" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_entity" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_squad" value="" />
+						<string name="tier_attachment_action" value="" />
+						<template_reference name="blueprint_conversion_parameters" value="blueprint_conversion_parameters">
+							<bool name="reissue_commands" value="False" />
+							<bool name="continue_state_trees" value="False" />
+							<bool name="remove_from_pending_deaths" value="False" />
+						</template_reference>
+						<string name="inventory_category_to_refresh_on_tier_up" value="" />
+					</group>
+				</list>
+			</list>
+		</template_reference>
+	</list>
+	<uniqueid name="pbgid" value="166267" />
+	<instance_reference name="parent_pbg" value="ebps\races\core\buildings\building_unit_religious" />
+</instance>

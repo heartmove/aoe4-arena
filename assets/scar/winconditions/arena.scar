@@ -1,0 +1,1283 @@
+-----------------------------------------------------------------------
+-- Imported Scripts
+-----------------------------------------------------------------------
+
+-- Import Utility Scripts
+import("cardinal.scar")							-- Contains sfx references, UI templates, and Civ/Age helper functions
+import("ScarUtil.scar")							-- Contains game helper functions
+import("utils/delhi_data.scar")
+import("utils/arena_buildings.scar")
+import("utils/poison_circle.scar")
+import("utils/arena_age_upgrade.scar")
+import("gameplay/winner_award.scar")
+import("gameplay/areana_ai.scar")
+
+import("utils/researches.scar")
+
+-- Import Gameplay Systems
+import("gameplay/score.scar")					-- Tracks player score
+import("gameplay/diplomacy.scar")				-- Manages Tribute
+
+-- Import Win Conditions
+import("winconditions/areana_annihilation.scar")		-- Support for eliminating a player when they can no longer fight or produce units
+import("winconditions/elimination.scar")		-- Support for player quitting or dropping (through pause menu or disconnection)
+import("winconditions/surrender.scar")			-- Support for player surrender (through pause menu)
+
+-- Import UI Support
+import("gameplay/chi/current_dynasty_ui.scar")	-- Displays Chinese Dynasty UI
+import("gameplay/event_cues.scar")
+import("gameplay/currentageui.scar")
+-- import("gameplay/wheel_battle_ui.scar")
+import("gameplay/unit_ui.scar")
+import("gameplay/observer_ui.scar")
+import("gameplay/round_ready.scar")
+-----------------------------------------------------------------------
+-- Data
+-----------------------------------------------------------------------
+
+-- Global data table that can be referenced in script functions (e.g. _mod.module = "Mod")
+_mod = {
+	module = "Mod",
+	options = {},
+}
+
+--当前轮次
+ROUND = 0
+--获胜所需轮次数
+WINNER_ROUND = 5
+--每轮准备时长
+READY_TIME = 30
+-- 车轮战
+WHEEL_WARS = false
+-- 出战顺序
+BATTLE_ORDER = {}
+-- 敌队索引
+OPP_TEAM_INDEX = nil
+ENABLE_SIEGE = false
+
+DELAY_BUIDING = true
+
+auto_attack_v2 = false
+
+enable_poison_circle = false
+
+start_foods = 1500
+increase_foods = 500
+
+show_battle_order = true
+-- Register the win condition (Some functions can be prepended with "Mod_" to be called automatically as part of the scripting framework)
+Core_RegisterModule(_mod.module)
+
+-----------------------------------------------------------------------
+-- Scripting framework 
+-----------------------------------------------------------------------
+
+BUILDINGS = {
+	cavalry = {
+		abb = building_unit_cavalry_control_abb,
+		chi = building_unit_cavalry_control_chi,
+		
+	}
+}
+
+
+-- Called during load as part of the game setup sequence
+function Mod_OnGameSetup()
+	Setup_GetWinConditionOptions(_mod.options)
+	
+	for key, value in pairs(_mod.options.common_settings.win_rounds.enum_items) do
+		if value == _mod.options.common_settings.win_rounds.enum_value then
+			WINNER_ROUND = tonumber(string.sub(key, 7))
+			break
+		end
+	end
+	
+	for key, value in pairs(_mod.options.common_settings.ready_time.enum_items) do
+		if value == _mod.options.common_settings.ready_time.enum_value then
+			READY_TIME = tonumber( string.sub(key,  6))
+			break
+		end
+	end
+	
+	AUTO_COMBAT = _mod.options.common_settings.auto_combat
+	WHEEL_WARS = _mod.options.common_settings.wheel_wars
+	ENABLE_SIEGE = _mod.options.common_settings.enable_siege
+	DELAY_BUIDING = _mod.options.common_settings.delay_building
+	
+	DEV_MODE = _mod.options.common_settings.delay_building
+	
+	show_battle_order = _mod.options.common_settings.show_battle_order
+	
+	for key, value in pairs(_mod.options.resource_settings.increase_foods.enum_items) do
+		if value == _mod.options.resource_settings.increase_foods.enum_value then
+			increase_foods = tonumber( string.sub(key,  7))
+			break
+		end
+	end
+	
+	for key, value in pairs(_mod.options.resource_settings.start_foods.enum_items) do
+		if value == _mod.options.resource_settings.start_foods.enum_value then
+			start_foods = tonumber( string.sub(key,  7))
+			break
+		end
+	end
+	
+	auto_attack_v2 = _mod.options.resource_settings.auto_attack_v2
+	
+	enable_poison_circle = _mod.options.resource_settings.enable_poison_circle
+	if not enable_poison_circle then 
+		 Core_UnregisterModule("PoisonCircle")
+	end
+	
+	auto_attack_v2 = false
+end
+
+
+
+-- Called before initialization, preceding other module OnInit functions
+function Mod_PreInit()
+	
+	-- Enable Tribute UI
+	Core_CallDelegateFunctions("TributeEnabled", true)
+	--PoisonCircle_EnabledUpdate(enable_poison_circle)
+	-- Core_CallDelegateFunctions("DiplomacyEnabled", true)
+end
+
+function Mod_OnItemAvailabilityChanged(context) 
+	Util_PrintUnitTable(context)
+	print("xxxxx")
+end
+
+
+world_center = nil
+arena_radius = nil
+-- Called on match initialization before handing control to the player
+function Mod_OnInit()
+	Rule_AddGlobalEvent(Mod_OnItemAvailabilityChanged, GE_ItemAvailabilityChanged)
+	Rule_AddGlobalEvent(Mod_OnLocalPlayerChanged, GE_LocalPlayerChanged)
+	print("testestststs")
+	Network_RegisterEvent("Mod_UpgradeNtw")
+	Network_RegisterEvent("Mod_BuildSquadNtw")
+	if Misc_IsDevMode() then 
+		FOW_RevealAll()
+	end
+	AI_EnableAll(false)
+	local worldEg = EGroup_CreateUniqueWithPrefix("worldEg")
+	World_GetBlueprintEntities(BP_GetEntityBlueprint("resource_gold_deposit"), worldEg)
+	World_GetBlueprintEntities(BP_GetEntityBlueprint("resource_gold_deposit_small"), worldEg)
+	World_GetBlueprintEntities(BP_GetEntityBlueprint("resource_stone_deposit"), worldEg)
+	World_GetBlueprintEntities(BP_GetEntityBlueprint("resource_stone_deposit_small"), worldEg)
+	World_GetBlueprintEntities(BP_GetEntityBlueprint("building_trade_post_core"), worldEg)
+	World_GetBlueprintEntities(BP_GetEntityBlueprint("building_trade_post_east"), worldEg)
+	World_GetBlueprintEntities(BP_GetEntityBlueprint("building_trade_post_west"), worldEg)
+	World_GetBlueprintEntities(BP_GetEntityBlueprint("building_trade_post_mid_east"), worldEg)
+	World_GetBlueprintEntities(BP_GetEntityBlueprint("relic"), worldEg)
+	World_GetBlueprintEntities(BP_GetEntityBlueprint("holy_site"), worldEg)
+	
+	EGroup_DestroyAllEntities(worldEg)
+	   
+	local worldSg = SGroup_CreateUniqueWithPrefix("worldSg")
+	World_GetAllSquadsOfType(worldSg, "animal_huntable")
+	SGroup_DestroyAllSquads(worldSg)
+	
+	local w = World_GetWidth() / 2
+	local l = World_GetLength() / 2
+	
+	local x = w * 0.2
+	local y = l * 0.2
+	local h = World_GetHeightAt(0, 0)
+	world_center = World_Pos(0, 0, h)
+	arena_radius = World_DistancePointToPoint(world_center, World_Pos(x, y, World_GetHeightAt(x, y)))
+	localPlayer = Core_GetPlayersTableEntry(Game_GetLocalPlayer())
+	
+	--local size = math.max(Marker_GetProximityRadiusOrDefault(instance.marker, 0), 10)
+	--local captureReticuleID = UI_ModalVisual_CreateReticule(BP_GetReticuleBlueprint("campaign_capturelocation_enemy"), arena_radius)
+	--UI_ModalVisual_SetPosition(captureReticuleID, world_center)
+	
+	for i, player in pairs(PLAYERS) do 
+		if Player_GetRaceName(player.id) == "abbasid" then
+			Player_CompleteUpgrade(player.id, BP_GetUpgradeBlueprint("upgrade_add_military_wing"))
+			Player_SetStateModelBool(player.id, "military_wing_built_abb", true)
+		end
+		
+		Player_CompleteUpgrade(player.id, BP_GetUpgradeBlueprint("feudal_age"))
+	end
+	
+	for i, player in pairs(PLAYERS) do 
+		if localPlayer.team.index ~= player.team.index then 
+			OPP_TEAM_INDEX = player.team.index
+		end
+		player.wins = 0
+		
+		local sg = SGroup_CreateIfNotFound("clear_sg_uniq")
+		World_GetSquadsNearPoint(player.id, sg, player.startingPos, 10000, OT_Neutral)
+		SGroup_DestroyAllSquads(sg)
+		SGroup_Clear(sg)
+		
+		World_GetNeutralEntitiesNearPoint(worldEg, player.startingPos, 50)
+		EGroup_DestroyAllEntities(worldEg)
+		EGroup_Clear(worldEg)
+		
+		
+		if Player_GetRaceName(player.id) == "mongol" then 
+			Player_SetStateModelBool(player.id, "khan_spawning_enabled", false)
+		end
+		
+		player.sg = SGroup_Create("playerSg" .. Player_GetID(player.id))
+		-- 选择的单位
+		player.smap = {}
+		-- 选择的技能
+		player.ubps = {}
+		--[[
+		if Game_GetLocalPlayer() == player.id then 
+			local a = player.startingPos.y/player.startingPos.x
+			HintPoint_Add(player.startingPos, true, "point1:".. player.startingPos.x .."-"..  player.startingPos.y .. ":" .. a, 2) 
+
+			local tempX = player.startingPos.x/2
+			local tempY = a * tempX
+			local tempH = World_GetHeightAt(tempX, tempY)
+			
+			HintPoint_Add(World_Pos(tempX, tempY, tempH), true, "point2:"..tempX.."-"..tempY..":"..a, 2) 
+			HintPoint_Add(world_center, true, "point0", 2) 
+			
+			
+			
+		end
+		--]]
+		
+		local entities = Player_GetEntities(player.id)
+		EGroup_DestroyAllEntities(entities)
+		
+		
+		Player_SetPopCapOverride(player.id, 800)
+		
+		-- 胜利次数0
+		player.wins = 0
+		-- 结余资源 
+		player.leftResources = {
+			gold = 0,
+			food = 0, 
+			wood = 0,
+		}
+		-- 总共使用的资源量
+		player.usedResources = {
+			gold = 0,
+			food = 0, 
+			wood = 0,
+		}
+		-- 当前轮次使用的资源量
+		player.currentUsedResources = {
+			gold = 0,
+			food = 0, 
+			wood = 0,
+		}
+		
+		Mod_ModifyUnitBuildTime(player.id)
+		
+		
+		
+		local squads = Player_GetSquads(player.id)
+		SGroup_DestroyAllSquads(squads)
+		FOW_PlayerRevealArea(player.id, world_center, arena_radius, 36000)
+		
+		Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("upgrade_tech_military_academy"), ITEM_REMOVED)
+		Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("upgrade_siege_engineers"), ITEM_REMOVED)
+		
+	end
+	
+	if not DELAY_BUIDING then 
+		Mod_Building()
+	else 
+
+	end
+		
+end
+
+
+-- Called after initialization is done when game is fading up from black
+function Mod_Start()
+	
+	Mod_SetPlayerSpawnPos()
+	if WHEEL_WARS then 
+		-- WheelBattleUI_Create()
+	end
+	
+	UnitUI_Init()
+	
+	--Rule_AddGlobalEvent(Mod_OnUpgradeStart, GE_UpgradeStart)
+	Rule_AddGlobalEvent(Mod_OnBuildItemComplete, GE_BuildItemComplete)
+	
+	Mod_AddMainObj()
+	
+	
+	
+	--Rule_AddOneShot(Mod_AddSplat, 2)
+	
+	if DELAY_BUIDING then 
+		local GetZoom = Camera_GetZoomDist()
+		Camera_StartPanTo(world_center, 0.1, GetZoom)
+		Rule_AddOneShot(Mod_AddCounterTimerObj, 0.5)
+		Rule_AddOneShot(Mod_Building, 0.1)
+	else 
+		Mod_AddCounterTimerObj()
+	end
+	Rule_AddOneShot(Mod_ClearSquads, 3)
+	UI_CreateEventCue("$eca6173149134b76b78757235af2aa36:8", nil, "", "", "sfx_ui_event_queue_high_priority_play")
+	
+	Rule_AddInterval(UnitUI_Update, 1)
+end
+
+splat = nil
+function Mod_AddSplat()
+	splat = Splat_Create("tools\\cursor", world_center, arena_radius, arena_radius, 0, 0, 0, 255, 1000, false, false)
+end
+
+
+function Mod_OnUpgradeStart(context) 
+	if scartype(context.executer) == ST_ENTITY then
+		if not World_OwnsEntity(context.executer) then
+			
+			-- Get player who upgraded
+			local owner = Core_GetPlayersTableEntry(Entity_GetPlayerOwner(context.executer))
+			-- Track the cost of the upgrade at time of purchase
+			local cost = Score_TotalCost(Player_GetUpgradeBPCost(owner.id, context.upgrade))
+			Player_CompleteUpgrade(owner.id, context.upgrade)
+			
+			local cost = Player_GetUpgradeBPCostByResource(owner.id,  context.upgrade, RT_Food)
+			
+			Player_AddResource(owner.id, RT_Food, -cost, nil)
+			
+			local bpName =  BP_GetName(context.upgrade) 
+			
+			if bpName ~= nil and string.starts(bpName, "upgrade_add_culture_wing") or string.starts(bpName, "upgrade_add_economy_wing") or string.starts(bpName, "upgrade_add_military_wing") or string.starts(bpName, "upgrade_add_trade_wing") then
+				local currentAge = Player_GetCurrentAge(owner.id)
+				if currentAge == AGE_DARK then
+					Player_SetCurrentAge(owner.id, AGE_FEUDAL)
+				elseif currentAge == AGE_FEUDAL then
+					Player_SetCurrentAge(owner.id, AGE_CASTLE)
+				elseif currentAge == AGE_CASTLE then
+					Player_SetCurrentAge(owner.id, AGE_IMPERIAL)
+				end
+			end
+			
+			-- Create a table that contains the upgrade and its initial cost
+			local upgrade_data = {
+				upgrade_bp = context.upgrade,
+				upgrade_cost = cost
+			}
+			
+			-- Cache the cost paid by player at start of upgrade (in some cases it will change upon upgrade completion)
+			-- table.insert(owner._score.upgrades_in_progress, upgrade_data)
+		end
+	end
+end
+
+function Mod_ClearSquads()
+	for i, player in pairs(PLAYERS) do 
+		SGroup_DestroyAllSquads(Player_GetSquads(player.id))
+	end
+end
+
+ARENA_OBJ = nil
+ARENA_OBJ_TIMER = "ARENA_OBJ_TIMER"
+CURRENT_FOODS = 1000
+-- 添加倒计时目标
+function Mod_AddCounterTimerObj()
+	
+
+	ArenaReady_SetRoundUnReady()
+
+
+	
+	if AUTO_COMBAT then 
+		Game_SetInputEnabledFlag(Game_ConvertInputEnabledFlagEnumToInt(IEF_All))
+	end
+	
+	-- 初始化出战顺序
+	if WHEEL_WARS then
+		Mod_InitBattleOrder()
+	end
+
+	ROUND = ROUND + 1
+	
+	UpgradeAge_AdjustCost()
+	
+	UI_CreateEventCue(Loc_FormatText("$eca6173149134b76b78757235af2aa36:12", ROUND), nil, "", "", "sfx_ui_event_queue_high_priority_play")
+	
+	if ROUND%3==1 then 
+		UI_CreateEventCue("$eca6173149134b76b78757235af2aa36:62", nil, "", "", "sfx_ui_event_queue_high_priority_play")
+	end
+	
+	local delayBuildingRound = false
+	for i, player in pairs(PLAYERS) do 
+		Player_SetResource(player.id, RT_Food, start_foods + (ROUND - 1) * increase_foods)
+		Player_SetResource(player.id, RT_Gold, 0)
+		Player_SetResource(player.id, RT_Wood, 0)
+		SGroup_Clear(player.sg)
+		player.khanSpawned = false
+		if ROUND == 1 then 
+			
+			--Player_SetCurrentAge(player.id, AGE_FEUDAL)
+			if Player_GetRaceName(player.id) == "chinese" then 
+				Player_CompleteUpgrade(player.id, BP_GetUpgradeBlueprint("player_dynasty1_chi"))
+				Player_SetStateModelBool(player.id, "dynasty_1_was_completed_chi",true) 
+			end
+			player.age = AGE_FEUDAL
+			
+		elseif ROUND == (math.floor(WINNER_ROUND/2) + 1)  then 
+			-- EGroup_DestroyAllEntities(Player_GetEntities(player.id))
+			
+			--Player_SetCurrentAge(player.id, AGE_CASTLE)
+			-- Player_CompleteUpgrade(player.id, BP_GetUpgradeBlueprint("castle_age"))
+			--[[
+			if Player_GetRaceName(player.id) == "chinese" then 
+				Player_CompleteUpgrade(player.id, BP_GetUpgradeBlueprint("player_dynasty2_chi"))
+				Player_SetStateModelBool(player.id, "dynasty_2_was_completed_chi",true) 
+			end
+			
+			Mod_ConstructCastleBuilding(player.id)
+			--]]
+		elseif ROUND == (math.floor(WINNER_ROUND/5) + WINNER_ROUND)  then 
+			-- EGroup_DestroyAllEntities(Player_GetEntities(player.id))
+			--Player_SetCurrentAge(player.id, AGE_IMPERIAL)
+			--Player_CompleteUpgrade(player.id, BP_GetUpgradeBlueprint("imperial_age"))
+			
+			--[[
+			if Player_GetRaceName(player.id) == "chinese" then 
+				Player_CompleteUpgrade(player.id, BP_GetUpgradeBlueprint("player_dynasty3_chi"))
+				Player_SetStateModelBool(player.id, "dynasty_3_was_completed_chi",true) 
+			end
+			Mod_ConstructImpireBuilding(player.id)
+			--]]
+			
+		end
+		
+	end
+	
+	Core_CallDelegateFunctions("OnRoundStart")
+	
+	
+	
+	ARENA_OBJ = Obj_Create(localPlayer.id, Loc_FormatText("$eca6173149134b76b78757235af2aa36:4" , ROUND), Loc_Empty(), "icons\\races\\common\\victory_conditions\\victory_condition_conquest", "ConquestObjectiveTemplate", localPlayer.raceName, OT_Primary, 0, "conquestObj")	
+	Obj_SetCounterType(ARENA_OBJ, COUNTER_TimerDecreasing)
+	
+	Timer_Start(ARENA_OBJ_TIMER, READY_TIME)
+	Obj_SetCounterTimerSeconds(ARENA_OBJ, Timer_GetRemaining(ARENA_OBJ_TIMER))
+	Obj_SetVisible(ARENA_OBJ, true)
+	Obj_SetState(ARENA_OBJ, OS_Incomplete)
+	Obj_SetProgressVisible(ARENA_OBJ, true)
+	Rule_AddInterval(Mod_UpdateCouterTimeObj, 1)
+	
+	
+end
+
+
+function Mod_UpdateCouterTimeObj()
+	-- 更新倒计时
+	Obj_SetCounterTimerSeconds(ARENA_OBJ, Timer_GetRemaining(ARENA_OBJ_TIMER))
+	-- or ArenaReady_IsAllPlayerReady()
+	if Timer_GetRemaining(ARENA_OBJ_TIMER) <= 0 or ArenaReady_IsAllPlayerReady()  then 
+		ArenaReady_SetRoundReady()
+		-- 如果倒计时结束，则将所有单位放到竞技场
+		Timer_End(ARENA_OBJ_TIMER)
+		
+		Obj_Delete(ARENA_OBJ)
+		
+		Rule_Remove(Mod_UpdateCouterTimeObj)
+		
+		Core_CallDelegateFunctions("OnRoundCombatStart")
+		
+		
+		local GetZoom = Camera_GetZoomDist()
+		Camera_StartPanTo(world_center, 1, GetZoom)
+		
+		--print("test....................................")
+		-- 三秒后执行
+		if not WHEEL_WARS then 
+			Mod_AddConquestObj()
+		else 
+			Mod_AddWheelCombatObj()
+		end
+		--print("test....................................0")
+	end
+end
+
+ObserverUi_ResourceMapping = {
+	food = RT_Food,
+	wood = RT_Wood,
+	gold = RT_Gold,
+	stone = RT_Stone
+}
+
+function Mod_AddConquestObj()
+	--print("test....1")
+	if AUTO_COMBAT then
+		--print("test....2")
+		-- 只能移动摄像头和查看建筑或单位信息
+		Game_SetInputEnabledFlag(3)
+		print("test....3")
+	end
+	Core_CallDelegateFunctions("OnRoundSessionStart")
+	--print("test....4")
+	Mod_TpMiliraty()
+	--print("test....4--1")
+	
+	ARENA_OBJ = Obj_Create(localPlayer.id, Loc_FormatText("$eca6173149134b76b78757235af2aa36:5", ROUND), Loc_Empty(), "icons\\races\\common\\victory_conditions\\victory_condition_conquest", "ConquestObjectiveTemplate", localPlayer.raceName, OT_Primary, 0, "conquestObj")	
+	Obj_SetVisible(ARENA_OBJ, true)
+	Obj_SetState(ARENA_OBJ, OS_Incomplete)
+	
+	local count = Mod_GetMilitaryCount()  
+	Obj_SetCounterType(ARENA_OBJ, COUNTER_CountUpTo)
+	Obj_SetCounterMax(ARENA_OBJ, count.enemy)
+	Obj_SetCounterCount(ARENA_OBJ, 0)
+	Obj_SetProgress(ARENA_OBJ, 0/Obj_GetCounterMax(ARENA_OBJ))
+	Obj_SetProgressVisible(ARENA_OBJ, true)
+	
+	--print("test....5")
+	Mod_UpdateConquestRoundInterval()
+	--print("test....6")
+	--print("test....4--2")
+end
+
+function Mod_DelayAddConquestObj()
+	
+end
+
+function Mod_UpdateConquestRoundInterval()
+	-- UI_CreateEventCue("定时更新目标状态", nil, "", "", "sfx_ui_event_queue_high_priority_play")	
+	Rule_AddInterval(Mod_UpdateConquestRound, 1)
+end
+
+WheelCombatObj = nil
+ROUND_ENEMY_FAILED = 0
+ROUND_ALLY_FAILED = 0
+-- 车轮战战斗信息
+function Mod_AddWheelCombatObj()
+
+	WheelCombatObj = Obj_Create(localPlayer.id, Loc_FormatText("$eca6173149134b76b78757235af2aa36:30", ROUND), Loc_Empty(), "icons\\races\\common\\victory_conditions\\victory_condition_conquest", "ConquestObjectiveTemplate", localPlayer.raceName, OT_Primary, 0, "conquestObj")	
+	Obj_SetVisible(WheelCombatObj, true)
+	Obj_SetState(WheelCombatObj, OS_Incomplete)
+	
+	Obj_SetCounterType(WheelCombatObj, COUNTER_CountUpTo)
+	Obj_SetCounterMax(WheelCombatObj, #Core_GetTeamsEntryFromIndex(OPP_TEAM_INDEX).players)
+	Obj_SetCounterCount(WheelCombatObj, 0)
+	Obj_SetProgress(WheelCombatObj, 0/Obj_GetCounterMax(WheelCombatObj))
+	Obj_SetProgressVisible(WheelCombatObj, true)
+	
+	ROUND_ENEMY_FAILED = 0
+	ROUND_ALLY_FAILED = 0
+	-- 当前己方上场玩家
+	local combatPlayer = Mod_GetCurrentBattlePlayer(localPlayer.team.index)
+	if combatPlayer ~= nil then 
+		UI_CreateEventCue(Loc_FormatText("$eca6173149134b76b78757235af2aa36:31", Player_GetDisplayName(combatPlayer.id)), nil, "", "", "sfx_ui_event_queue_high_priority_play")	
+		Rule_AddOneShot(Mod_TpMiliraty, 2)
+	end
+	
+	Rule_AddOneShot(Mode_UpdateWheelCombatInteval, 5)
+	Core_CallDelegateFunctions("OnRoundSessionStart")
+end
+
+
+function Mod_UpdateWheelCombatRound(losedPlayer)
+	--WheelBattleUI_Update()
+	local max = Obj_GetCounterMax(WheelCombatObj)
+	
+	-- 如果失败玩家不存在，即为双方出战玩家都失败了
+	local roundEndFlag = false
+	if losedPlayer == nil then 
+		ROUND_ALLY_FAILED = ROUND_ALLY_FAILED + 1
+		ROUND_ENEMY_FAILED = ROUND_ENEMY_FAILED + 1
+		local current = Obj_GetCounterCount(WheelCombatObj) + 1
+		Obj_SetCounterCount(WheelCombatObj, current)
+		Obj_SetProgress(WheelCombatObj, current/max)
+		
+		roundEndFlag = ROUND_ENEMY_FAILED == #Core_GetTeamsEntryFromIndex(OPP_TEAM_INDEX).players
+		
+		if not roundEndFlag then 
+			roundEndFlag = ROUND_ALLY_FAILED == #Core_GetTeamsEntryFromIndex(localPlayer.team.index).players
+		end
+		
+	else 
+		local losedTeamPlayers = #Core_GetTeamsEntryFromIndex(losedPlayer.team.index).players
+		
+		if Player_ObserveRelationship(losedPlayer.id, localPlayer.id) == R_ENEMY then 
+			ROUND_ENEMY_FAILED = ROUND_ENEMY_FAILED + 1
+			roundEndFlag = ROUND_ENEMY_FAILED == losedTeamPlayers
+			
+			local current = Obj_GetCounterCount(WheelCombatObj) + 1
+			Obj_SetCounterCount(WheelCombatObj, current)
+			Obj_SetProgress(WheelCombatObj, current/max)
+		else 
+			ROUND_ALLY_FAILED = ROUND_ALLY_FAILED + 1
+			roundEndFlag = ROUND_ALLY_FAILED == losedTeamPlayers
+		end
+	end 
+	
+	Core_CallDelegateFunctions("OnRoundSessionEnd")
+	if not roundEndFlag then 
+		Core_CallDelegateFunctions("OnRoundSessionStart")
+		-- 开启下一场次比赛
+		Rule_Remove(Mod_UpdateWheelCombat)
+		Rule_AddOneShot(Mod_TpMiliraty, 1)
+		Rule_AddOneShot(Mode_UpdateWheelCombatInteval, 2)
+		return
+	end
+	
+	Rule_Remove(Mod_UpdateWheelCombat)
+	Obj_Delete(WheelCombatObj)
+	
+	
+	-- 当前轮次已经结束
+	if losedPlayer == nil then 
+		UI_CreateEventCue(Loc_FormatText("$eca6173149134b76b78757235af2aa36:10", ROUND), nil, "", "", "sfx_ui_event_queue_high_priority_play")
+	elseif losedPlayer.id == localPlayer.id then 
+		UI_CreateEventCue(Loc_FormatText("$eca6173149134b76b78757235af2aa36:11", ROUND), nil, "", "", "sfx_ui_event_queue_high_priority_play")
+	else
+		UI_CreateEventCue(Loc_FormatText("$eca6173149134b76b78757235af2aa36:9", ROUND), nil, "", "", "sfx_ui_event_queue_high_priority_play")
+	end
+	
+	Core_CallDelegateFunctions("OnRoundEnd")
+		
+	for i, player in pairs(PLAYERS) do
+		if losedPlayer ~= nil and Player_ObserveRelationship(player.id, losedPlayer.id) == R_ENEMY then
+			player.wins = player.wins + 1
+			if player.wins == WINNER_ROUND then
+				winner = player
+			end
+		end
+		SGroup_DestroyAllSquads(Player_GetSquads(player.id))
+		local eg = Player_GetEntities(player.id)
+		local egc = EGroup_Count(eg)
+		for j = 1, egc do
+			local entity = EGroup_GetEntityAt(eg, j)
+			if Entity_HasProductionQueue(entity) then 
+				local size = Entity_GetProductionQueueSize(entity)
+				
+				if size > 0 then 
+					for k = size-1, 0, -1 do  
+						local bp = Entity_GetProductionQueueItem(entity, k)
+						local bpType = Entity_GetProductionQueueItemType(entity, k)
+						if bp ~= nil and bpType ~= PITEM_Spawn then
+							if string.find(BP_GetName(bp), "castle_age") ~= nil or string.find(BP_GetName(bp), "imperial_age") ~= nil then 
+								UpgradeAge_CompleteAction(player.id, BP_GetName(bp))
+							else
+								Player_CompleteUpgrade(player.id, bp)
+							end
+						end
+						Entity_CancelProductionQueueItem(entity, k)
+					end
+				end
+			end
+		end
+		Game_SetInputEnabledFlag(Game_ConvertInputEnabledFlagEnumToInt(IEF_All))
+	end
+	
+	Mod_UpdateMainObj()
+	
+	if winner ~= nil then 
+		for i, player in pairs(PLAYERS) do 
+			if Player_ObserveRelationship(player.id, losedPlayer.id) == R_ALLY then
+				Core_SetPlayerDefeated(player.id, Annihilation_LoserPresentation, WR_ANNIHILATION)
+			else 
+				Core_SetPlayerVictorious(player.id, Annihilation_WinnerPresentation, WR_ANNIHILATION)
+			end
+		end
+		Core_OnGameOver()
+		return
+	end 
+	
+	-- 准备下一轮比赛
+	Rule_AddOneShot(Mod_AddCounterTimerObj, 3)
+end
+
+function Mode_UpdateWheelCombatInteval()
+	Rule_AddInterval(Mod_UpdateWheelCombat, 1)
+end
+
+
+
+function Mod_UpdateWheelCombat()
+	
+	local count = Mod_GetMilitaryCount()
+	
+	if count.enemy == 0 and count.ally == 0  then
+		-- 对手出战的玩家
+		local enemyPlayer = Mod_GetCurrentBattlePlayer(OPP_TEAM_INDEX)
+		if enemyPlayer ~= nil then 
+			enemyPlayer.isRoundOver = true
+		end
+		local allyPlayer = Mod_GetCurrentBattlePlayer(localPlayer.team.index)
+		if allyPlayer ~= nil then 
+			allyPlayer.isRoundOver = true
+		end
+		Mod_UpdateWheelCombatRound(nil)
+		return 
+	end
+	
+	if count.enemy == 0 then
+		-- 对手出战的玩家
+		local enemyPlayer = Mod_GetCurrentBattlePlayer(OPP_TEAM_INDEX)
+		if enemyPlayer ~= nil then 
+			enemyPlayer.isRoundOver = true
+			Mod_UpdateWheelCombatRound(enemyPlayer)
+		end
+	end
+	
+	if count.ally == 0 then 
+		-- 当前出战的玩家
+		local allyPlayer = Mod_GetCurrentBattlePlayer(localPlayer.team.index)
+		if allyPlayer ~= nil then 
+			allyPlayer.isRoundOver = true
+			Mod_UpdateWheelCombatRound(allyPlayer)
+		end
+	end
+
+end
+
+function Mod_UpdateConquestRound()
+	
+	--print("test....11")
+	local count = Mod_GetMilitaryCount()
+	Obj_SetCounterCount(ARENA_OBJ, count.enemy)
+	Obj_SetProgress(ARENA_OBJ, (Obj_GetCounterMax(ARENA_OBJ) - count.enemy)/Obj_GetCounterMax(ARENA_OBJ))
+	
+	local localPlayerWins = localPlayer.wins
+	
+	local winner = nil
+	--print("test....12")
+	if count.enemy == 0 and count.ally == 0 then 
+		--print("test....13")
+		Obj_Delete(ARENA_OBJ)
+		Rule_Remove(Mod_UpdateConquestRound)
+		
+		UI_CreateEventCue(Loc_FormatText("$eca6173149134b76b78757235af2aa36:10", ROUND), nil, "", "", "sfx_ui_event_queue_high_priority_play")
+		
+		Rule_AddOneShot(Mod_AddCounterTimerObj, 3)
+		--print("test....14")
+		return
+		
+	elseif count.enemy == 0 then 
+		--print("test....15")
+		Obj_Delete(ARENA_OBJ)
+		Rule_Remove(Mod_UpdateConquestRound)
+
+		if not Misc_IsDevMode() then
+			for i, player in pairs(PLAYERS) do 
+				if Player_ObserveRelationship(player.id, localPlayer.id) == R_ALLY then
+					player.wins = player.wins + 1
+					if player.wins == WINNER_ROUND then
+						winner = player
+					end
+				end
+				SGroup_DestroyAllSquads(Player_GetSquads(player.id))
+			end
+		end
+		if winner == nil then 
+			Rule_AddOneShot(Mod_AddCounterTimerObj, 3)
+		end
+		--print("test....16")
+	elseif count.ally == 0 then 
+		--print("test....17")
+		Obj_Delete(ARENA_OBJ)
+		Rule_Remove(Mod_UpdateConquestRound)
+		
+		for i, player in pairs(PLAYERS) do 
+			if Player_ObserveRelationship(player.id, localPlayer.id) == R_ENEMY then
+				player.wins = player.wins + 1
+				if player.wins == WINNER_ROUND then
+					winner = player
+				end
+			end
+			SGroup_DestroyAllSquads(Player_GetSquads(player.id))
+		end
+		if winner == nil then 
+			Rule_AddOneShot(Mod_AddCounterTimerObj, 3)
+		end
+		--print("test....18")
+	else 
+		-- 本轮没有结束，所以直接返回
+		--print("test....19")
+		return
+	end
+	--print("test....20")
+	if localPlayer.wins == localPlayerWins then 
+		UI_CreateEventCue(Loc_FormatText("$eca6173149134b76b78757235af2aa36:11", ROUND), nil, "", "", "sfx_ui_event_queue_high_priority_play")
+	else 
+		UI_CreateEventCue(Loc_FormatText("$eca6173149134b76b78757235af2aa36:9", ROUND), nil, "", "", "sfx_ui_event_queue_high_priority_play")
+	end
+	Core_CallDelegateFunctions("OnRoundSessionEnd")
+	Core_CallDelegateFunctions("OnRoundEnd")
+	
+	--print("test....21")
+	Mod_UpdateMainObj()
+	--print("test....22")
+	if winner ~= nil then
+		for i, player in pairs(PLAYERS) do 
+			if Player_ObserveRelationship(player.id, winner.id) ~= R_ALLY then
+				--print("test....23")
+				Core_SetPlayerDefeated(player.id, Annihilation_LoserPresentation, WR_ANNIHILATION)
+			else 
+				Core_SetPlayerVictorious(player.id, Annihilation_WinnerPresentation, WR_ANNIHILATION)
+			end
+		end
+		Core_OnGameOver()
+	end
+	--print("test....24")
+	
+end
+
+function Mod_UpgradeNtw(playerId, data)
+	print("test....upgrade")
+	local chunks = string.split(data ,"|")
+	for i, bpName in pairs(chunks) do 
+		Player_CompleteUpgrade(playerId, BP_GetUpgradeBlueprint(bpName))
+	end
+	print("test....upgradeend")
+end
+
+
+function Mod_BuildSquadNtw(playerId, data)
+	print("test....buildSquad")
+	local player = Core_GetPlayersTableEntry(playerId)
+	local pos = player.spawnPos
+	print("test....buildSquad1")
+	-- 现有兵力需要让它移动到初始位置
+	Cmd_Move(Player_GetSquads(player.id), pos)
+	print("test....buildSquad2")
+	local smap = {}
+	if WHEEL_WARS then 
+		player.smap = smap
+	end
+	print("test....buildSquad3")
+	local chunks = string.split(data ,"|")
+	SGroup_Clear(player.sg)
+	print("test....buildSquad4")
+	print("test....buildSquad5")
+	for i, sgData in pairs(chunks) do 
+		local sgDataChunks = string.split(sgData ,";")
+		local bpName = sgDataChunks[1]
+		local c = tonumber(sgDataChunks[2])
+		smap[bpName] = c
+		-- 非车轮战形式下才立即出兵
+		--if not WHEEL_WARS then 
+		print("test....buildSquad6")
+		UnitEntry_DeploySquads(playerId, player.sg, {{sbp = BP_GetSquadBlueprint(bpName), numSquads = c }}, pos)
+		print("test....buildSquad7")
+		--end
+		--SGroup_Clear(sgtemp)
+	end
+	print("test....buildSquad8")
+end
+
+
+function Mod_SpawnMiliratyBySmap(playerId)
+	local player = Core_GetPlayersTableEntry(playerId)
+	local pos = player.spawnPos
+	
+	-- 现有兵力需要让它移动到初始位置
+	Cmd_Move(Player_GetSquads(player.id), pos)
+	
+	for bpName, c in pairs(player.smap) do 
+		UnitEntry_DeploySquads(playerId, player.sg, {{sbp = BP_GetSquadBlueprint(bpName), numSquads = c }}, pos)
+	end
+	-- 最后要清空兵力
+	player.smap = {}
+end
+
+function Mod_TpMiliraty()
+	
+	--[[
+	for i, player in pairs(PLAYERS) do 
+		
+		
+		local sg = Player_GetSquadsFromType(player.id, "military")
+		if Player_GetRaceName(player.id) == "malian" then 
+			SGroup_Filter(sg, {"khan", "monk"}, FILTER_REMOVE)
+		else
+			SGroup_Filter(sg, {"khan", "monk"}, FILTER_REMOVE)
+		end
+		local count = SGroup_Count(sg)
+		
+		for j=count, 1, -1 do 
+			local s = SGroup_GetSquadAt(sg, j)
+			local sgtemp = SGroup_CreateIfNotFound("sgtemp"..Player_GetID(player.id))
+			UnitEntry_DeploySquads(player.id, sgtemp, {{sbp = Squad_GetBlueprint(s), numSquads = 1 }}, pos)
+			SGroup_Clear(sgtemp)
+			Squad_Kill(s)
+		end
+		
+		
+	end
+	]]
+	--print("test....TpMiliraty")
+	-- 如果是车轮战，并且当前出场选手是自己时
+	if WHEEL_WARS then 
+		-- 提示下下一位需出场的玩家
+		local combatPlayer = Mod_GetNextBattlePlayer(localPlayer.team.index)
+		if combatPlayer ~= nil then 
+			UI_CreateEventCue(Loc_FormatText("$eca6173149134b76b78757235af2aa36:29", Player_GetDisplayName(combatPlayer.id)), nil, "", "", "sfx_ui_event_queue_high_priority_play")	
+		end
+		
+		if Mod_GetCurrentBattlePlayer(localPlayer.team.index) ~= nil and Mod_GetCurrentBattlePlayer(localPlayer.team.index).id == localPlayer.id then 
+			Game_SetInputEnabledFlag(Game_ConvertInputEnabledFlagEnumToInt(IEF_All))
+		else 
+			-- 只能移动摄像头和查看建筑或单位信息
+			Game_SetInputEnabledFlag(3)
+		end
+	end
+	
+	if AUTO_COMBAT then 
+		Game_SetInputEnabledFlag(3)
+	end
+	
+	--print("test....TpMiliraty1")
+	for i, player in pairs(PLAYERS) do 
+		print("test....TpMiliraty2..".. Player_GetID(player.id))
+		local combatPlayer = nil 
+		if WHEEL_WARS then 
+			combatPlayer = Mod_GetCurrentBattlePlayer(player.team.index)
+		end
+		-- 不是车轮战，就都出战；是车轮战的话，就只有需要出战的玩家才出战 
+		if not WHEEL_WARS or (combatPlayer ~= nil and combatPlayer.id == player.id ) then 
+			if combatPlayer ~= nil and player.sg ~= nil then 
+				local preSgCount = SGroup_CountSpawned(player.sg)  
+				if preSgCount > 0 then 
+					local tempPlayerSG = Player_GetSquads(player.id)
+					local tempSg = SGroup_CreateIfNotFound("tempPlayerSg")
+					for j = preSgCount, 1, -1 do 
+						local squad = SGroup_GetSpawnedSquadAt(player.sg, j)
+						local maxHealth = Squad_GetHealthMax(squad)
+						local health = Squad_GetHealth(squad)
+						local bp = Squad_GetBlueprint(squad)
+						--Squad_Kill(squad)
+						
+						local tempSquadSg = SGroup_CreateIfNotFound("tempSquadPlayerSg")
+						UnitEntry_DeploySquads(player.id, tempSquadSg, {{sbp = bp, numSquads = 1 }}, player.spawnPos)
+						local newSquad = SGroup_GetSquadAt(tempSquadSg, 1)
+						local healthPercent = health/maxHealth
+						
+						if healthPercent <= 0 then 
+							healthPercent = 0.01
+						elseif healthPercent > 1 then 
+							healthPercent = 1
+						end
+						Squad_SetHealth(newSquad, healthPercent)
+						SGroup_AddGroup(tempSg, tempSquadSg)
+						SGroup_Clear(tempSquadSg)
+					end
+					SGroup_Clear(player.sg)
+					SGroup_AddGroup(player.sg, tempSg)
+					SGroup_Clear(tempSg)
+					SGroup_DestroyAllSquads(tempPlayerSG)
+				end
+			end
+			
+			-- 方法2 
+			local smap = {}
+			local ubps = {}
+			
+			local eg = Player_GetEntities(player.id)
+			local egCount = EGroup_Count(eg)
+			for j=1, egCount do 
+				local entity = EGroup_GetEntityAt(eg, j)
+				if Entity_HasProductionQueue(entity) then 
+					local queueSize = Entity_GetProductionQueueSize(entity)
+					if queueSize > 0 then
+						for k = queueSize-1, 0, -1 do 
+							local bp = Entity_GetProductionQueueItem(entity, k)
+							local bpType = Entity_GetProductionQueueItemType(entity, k)
+							Entity_CancelProductionQueueItem(entity, k)
+							if bpType == PITEM_Spawn then 
+								local bpName = BP_GetName(bp)
+								local scount = 0
+								if smap[bpName] ~= nil then 
+									scount = smap[bpName]
+								end
+								smap[bpName] = scount + 1
+								
+								-- local sgtemp = SGroup_CreateIfNotFound("sgtemp"..Player_GetID(player.id))
+								-- UnitEntry_DeploySquads(player.id, player.sg, {{sbp = BP_GetSquadBlueprint(bpName), numSquads = 1 }}, player.spawnPos)
+								--SGroup_Clear(sgtemp)
+							else  
+								--table.insert(ubps, bp) BP_GetName(bp) == "imperial_age"
+								
+								if string.find(BP_GetName(bp), "castle_age") ~= nil or string.find(BP_GetName(bp), "imperial_age") ~= nil then 
+									UpgradeAge_CompleteAction(player.id, BP_GetName(bp))
+								else
+									Player_CompleteUpgrade(player.id, bp)
+								end
+							end
+							
+							
+						end
+					end
+				end
+			end
+			
+			
+			local sArr = {}
+			for key, c in pairs(smap) do 
+				if not Util_TableContains(sArr, key) then 
+					table.insert(sArr, key)
+				end
+			end
+			
+			-- 排序，防止同步错误
+			table.sort(sArr)
+			for _, bpName in pairs(sArr) do 
+				local c = smap[bpName]
+				local dep = UnitEntry_DeploySquads(player.id, player.sg, {{sbp = BP_GetSquadBlueprint(bpName), numSquads = c }}, player.spawnPos, nil, 1.5)
+				UnitEntry_CompleteDeploymentImmediately(dep)
+			end
+			
+			if not player.isHuman then 
+				-- 如果不是人类，就根据ai机制来部署单位
+				ArenaAI_SpawnedNow(player)
+			end
+			
+			if Player_GetRaceName(player.id) == "mongol" then 
+				-- 如果khan没有部署过就部署一个
+				if not player.khanSpawned then 
+					UnitEntry_DeploySquads(player.id, player.sg, {{sbp = BP_GetSquadBlueprint("unit_khan_1_mon"), numSquads = 1 }}, player.spawnPos)
+				end
+				-- 城堡帝王时代也给khan加kurultai技能
+				if Player_GetCurrentAge(player.id) >= AGE_CASTLE then 
+					SGroup_AddAbility(Player_GetSquadsFromType(player.id, "khan"), BP_GetAbilityBlueprint("kurultai_healing_aura_mon"))
+				end
+				player.khanSpawned = true
+			elseif Player_GetRaceName(player.id) == "english" then 
+				local enSg = Player_GetSquadsFromType(player.id, "leader")
+				SGroup_AddAbility(enSg, BP_GetAbilityBlueprint("tower_outpost_alert_aura_eng"))
+			elseif Player_GetRaceName(player.id) == "ottoman" then 
+				if not player.khanSpawned then
+					UnitEntry_DeploySquads(player.id, player.sg, {{sbp = BP_GetSquadBlueprint("unit_mehter_2_ott"), numSquads = 1 }}, player.spawnPos)
+				end
+				player.khanSpawned = true
+			end
+			--]]
+			Cmd_FormationMove(player.sg, player.spawnPos, false, false, world_center)
+		end
+		--print("test....TpMiliraty3")
+	end
+	--print("test....TpMiliraty4")
+	
+	for i, player in pairs(PLAYERS) do 
+		Player_SetResource(player.id, RT_Food, 0)
+		Player_SetResource(player.id, RT_Gold, 0)
+		Player_SetResource(player.id, RT_Wood, 0)
+		Player_SetResource(player.id, RT_Stone, 0)
+	end
+  
+	
+	Mod_InitSquadGroup()
+	
+end
+
+
+
+-- 获取一名敌队玩家
+function Mod_GetEnemyPlayer(player)
+	for i, p in pairs(PLAYERS) do 
+		if Player_ObserveRelationship(p.id, player.id) == R_ENEMY then
+			return p
+		end
+	end
+end
+
+
+function Mod_GetMilitaryCount()
+	-- 对手单位存活数量
+	local enemyCount = 0
+	-- 己方单位存活数量
+	local allyCount = 0
+	local h = World_GetHeightAt(0,0)
+	local center = World_Pos(0, 0, h)
+	for i, player in pairs(PLAYERS) do 
+		if not player.isEliminated then 
+			local sg = Player_GetSquads(player.id)
+			local count = SGroup_Count(sg)
+			for j = count, 1, -1 do 
+				local s = SGroup_GetSquadAt(sg, j)
+				if Squad_IsOfType(s, "military") then 
+					if World_DistancePointToPoint(world_center, Squad_GetPosition(s)) > arena_radius then 
+						--Squad_Kill(s)
+					end
+				end
+			end
+			SGroup_Clear(sg)
+
+			sg = Player_GetSquads(player.id)
+			if Player_ObserveRelationship(player.id, localPlayer.id) == R_ENEMY then
+				enemyCount = enemyCount + SGroup_Count(sg)
+			else 
+				allyCount = allyCount + SGroup_Count(sg)
+			end
+		end
+	end
+		
+	return {
+		enemy = enemyCount,
+		ally = allyCount,
+	}
+end
+
+MAIN_OBJ = nil
+function Mod_AddMainObj()
+	MAIN_OBJ = Obj_Create(localPlayer.id, Loc_FormatText("$eca6173149134b76b78757235af2aa36:6", 0, 0), Loc_Empty(), "icons\\races\\common\\victory_conditions\\victory_condition_conquest", "ConquestObjectiveTemplate", localPlayer.raceName, OT_Primary, 0, "conquestObj")	
+	Obj_SetVisible(MAIN_OBJ, true)
+	Obj_SetCounterType(MAIN_OBJ, COUNTER_CountUpTo)
+	Obj_SetState(MAIN_OBJ, OS_Incomplete)
+	Obj_SetCounterMax(MAIN_OBJ, WINNER_ROUND)
+	Obj_SetCounterCount(MAIN_OBJ, 0)
+	Obj_SetProgress(MAIN_OBJ, localPlayer.wins/WINNER_ROUND)
+	Obj_SetProgressVisible(MAIN_OBJ, true)
+end
+
+function Mod_UpdateMainObj()
+	Obj_SetCounterCount(MAIN_OBJ, localPlayer.wins)
+	Obj_SetProgress(MAIN_OBJ, localPlayer.wins/WINNER_ROUND)
+	
+	local enemyWins = 0
+	for i, player in pairs(PLAYERS) do 
+		if Player_ObserveRelationship(player.id, localPlayer.id) == R_ENEMY then 
+			enemyWins = player.wins
+		end
+	end
+	Obj_SetTitle(MAIN_OBJ, Loc_FormatText("$eca6173149134b76b78757235af2aa36:6", localPlayer.wins, enemyWins))
+end
+
+function Mod_OnBuildItemComplete(context) 
+	local owner = Core_GetPlayersTableEntry(context.player)
+	if owner ~= nil and not owner.isEliminated and context.spawnedSquad ~= nil then 
+		
+	end
+end
+
+-- Called when Core_SetPlayerDefeated() is invoked. Signals that a player has been eliminated from play due to defeat.
+function Mod_OnPlayerDefeated(player, reason)
+	
+end
+
+-- When a victory condition is met, a module must call Core_OnGameOver() in order to invoke this delegate and notify all modules that the match is about to end. Generally used for clean up (removal of rules, objectives, and UI elements specific to the module).
+function Mod_OnGameOver()
+	
+end
+
+
+function Mod_SetPlayerSpawnPos()
+	local w = World_GetWidth() / 2
+	local l = World_GetLength() / 2
+
+	local x = w * 0.1
+	local y = l * 0.1
+	
+	local h1 = World_GetHeightAt(x, y) 
+	local pos1 = World_Pos(x,y,h1)
+	
+	local h2 = World_GetHeightAt(-x, -y)
+	local pos2 = World_Pos(-x, -y, h2)
+
+	
+	local teamDis = {}
+	for i, team in pairs(TEAMS) do 
+		local dis = 0
+		for j, player in pairs(team.players) do 
+			dis = dis + World_DistancePointToPoint(pos1, player.startingPos)
+		end
+		teamDis["team"..team.index] = dis
+	end
+	
+	local minDis = 100000000
+	local minDisTeam = 0
+	for i, dis in pairs(teamDis) do 
+		if minDis > dis then 
+			minDis = dis
+			minDisTeam = tonumber(string.sub(i, 5))
+		end
+	end
+	for i, player in pairs(PLAYERS) do 
+		local pos = pos2 
+		if player.team.index == minDisTeam then 
+			pos = pos1
+		end
+		
+		player.spawnPos = pos
+	end
+	
+	
+end
+
+-- 初始化出战顺序
+function Mod_InitBattleOrder()
+	BATTLE_ORDER = {}
+	for i, team in pairs(TEAMS) do
+		orders = {}
+		BATTLE_ORDER["team_"..team.index] = orders
+		local tempPlayers = {}
+		for j, player in pairs(team.players) do 
+			table.insert(tempPlayers, player)
+		end
+		for j, player in pairs(team.players) do 
+			local pickIndex = World_GetRand(1, #tempPlayers)
+			local pickPlayer = tempPlayers[pickIndex]
+			table.remove(tempPlayers, pickIndex)
+			pickPlayer.order = j
+			-- 未参与战斗
+			pickPlayer.isCombated = false
+			pickPlayer.isRoundOver = false
+			table.insert(orders, pickPlayer)
+		end
+	end
+	
+	local combatPlayer = Mod_GetCurrentBattlePlayer(localPlayer.team.index)
+	UI_CreateEventCue(Loc_FormatText("$eca6173149134b76b78757235af2aa36:31", Player_GetDisplayName(combatPlayer.id)), nil, "", "", "sfx_ui_event_queue_high_priority_play")	
+	--WheelBattleUI_Update()
+end
+
+
+-- 获取队伍当前出战玩家
+function Mod_GetCurrentBattlePlayer(teamIndex)
+	local orders = BATTLE_ORDER["team_"..teamIndex]
+	if orders == nil then 
+		return nil
+	end
+	for i, player in pairs(orders) do 
+		if not player.isRoundOver then 
+			player.isCombated = true
+			return player
+		end
+	end
+	return nil
+end
+
+-- 获取队伍的下一位出战玩家
+function Mod_GetNextBattlePlayer(teamIndex)
+	local orders = BATTLE_ORDER["team_"..teamIndex]
+	local flag = false
+	if orders == nil then 
+		return nil
+	end
+	for i, player in pairs(orders) do 
+		if flag then 
+			return player
+		end
+		if not player.isRoundOver then 
+			flag = true
+		end
+	end
+	
+	return nil
+end
+
+function Mod_OnLocalPlayerChanged(context)
+	localPlayer = Core_GetPlayersTableEntry(context.player)
+	if WHEEL_WARS then 
+		--WheelBattleUI_Update()
+	end
+end
+
+
+
+function string.starts(String,Start)
+   return string.sub(String,1,string.len(Start))==Start
+end

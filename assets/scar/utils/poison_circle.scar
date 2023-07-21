@@ -1,0 +1,142 @@
+-- 毒圈相关
+import("cardinal.scar")							-- Contains sfx references, UI templates, and Civ/Age helper functions
+import("ScarUtil.scar")							-- Contains game helper functions
+
+Core_RegisterModule("PoisonCircle")
+
+_poisonCircle = {
+	radius = 0,
+	id = nil,
+	updateCount = 0,
+	enableUpdate = true,
+	currentRadius = 0,
+}
+
+function PoisonCircle_OnInit()
+	
+end
+
+function PoisonCircle_Start()
+	_poisonCircle.radius = arena_radius
+end
+
+-- 毒圈是否可以更新
+function PoisonCircle_EnabledUpdate(flag)
+	_poisonCircle.enableUpdate = flag
+end
+
+-- 小场次开始
+function PoisonCircle_OnRoundSessionStart()
+	print("PoisonCircle_OnRoundSessionStart")
+	PoisonCircle_Update()
+	-- 10s 更新一次毒圈
+	Rule_AddInterval(PoisonCircle_Update, 10)
+	-- 每秒钟更新一次血量
+	Rule_AddInterval(PoisonCircle_AdjustHealth, 1)
+end
+
+-- 小场次结束
+function PoisonCircle_OnRoundSessionEnd()
+	print("PoisonCircle_OnRoundSessionEnd")
+	Rule_Remove(PoisonCircle_Update)
+	Rule_Remove(PoisonCircle_AdjustHealth)
+	PoisonCircle_Reset()
+end
+
+-- 轮次开始
+function PoisonCircle_OnRoundStart()
+	
+end
+
+-- 轮次结束
+function PoisonCircle_OnRoundEnd()
+	-- PoisonCircle_Reset()
+end
+
+-- 轮次战斗开始
+function PoisonCircle_OnRoundCombatStart()
+	-- PoisonCircle_Reset()
+end
+
+-- 轮次战斗结束
+function PoisonCircle_OnRoundCombatEnd()
+	-- PoisonCircle_Reset()
+end
+
+-- 调整单位的健康值
+function PoisonCircle_AdjustHealth()
+	for i,player in pairs(PLAYERS) do 
+		local sg = Player_GetSquads(player.id)
+		SGroup_ForEach(player.sg, PoisonCircle_AdjustSquadHealth)
+		--[[
+		local sgCount = SGroup_CountSpawned(sg)
+		for j = sgCount, 1, -1 do 
+			local squad = UnitUI_DismissErrors(nil, function() return SGroup_GetSpawnedSquadAt(sg, j) end)
+			-- 超出距离就扣减20血
+			if squad ~= nil and bp ~= nil and World_DistancePointToPoint(Squad_GetPosition(squad), world_center) > currentRadius then 
+				local healthMax = Squad_GetHealthMax(squad)
+				local health = Squad_GetHealth(squad) - 20
+				if health <= 0 then 
+					Squad_Kill(squad)
+				end
+				local healthPercent = health/healthMax
+				if healthPercent <= 0 then 
+					healthPercent = 0.01
+				elseif healthPercent > 1 then 
+					healthPercent = 1
+				end 
+				Squad_SetHealth(squad, healthPercent)
+			end
+		end
+		--]]
+	end
+end
+
+function PoisonCircle_AdjustSquadHealth(gid, idx, squad) 
+	-- 超出距离就扣减20血
+	if Squad_IsAlive(squad) and World_DistancePointToPoint(Squad_GetPosition(squad), world_center) >  _poisonCircle.currentRadius then 
+		local healthMax = Squad_GetHealthMax(squad)
+		local health = Squad_GetHealth(squad) - 10
+		if health <= 0.1 then 
+			Squad_Kill(squad)
+			return
+		end
+		local healthPercent = health/healthMax
+		if healthPercent <= 0 then 
+			healthPercent = 0.01
+		elseif healthPercent > 1 then 
+			healthPercent = 1
+		end 
+		Squad_SetHealth(squad, healthPercent)
+	end
+end 
+
+-- 部署毒圈
+function PoisonCircle_Update()
+	if _poisonCircle.updateCount > 7 then 
+		return 
+	end
+	if _poisonCircle.id ~= nil then 
+		-- 存在就摧毁
+		UI_ModalVisual_Destroy(_poisonCircle.id)
+		_poisonCircle.id = nil
+	end
+	
+	_poisonCircle.currentRadius = _poisonCircle.radius * (1 - _poisonCircle.updateCount * 0.1)
+	_poisonCircle.id = UI_ModalVisual_CreateReticule(BP_GetReticuleBlueprint("campaign_capturelocation_enemy"), _poisonCircle.currentRadius)
+	UI_ModalVisual_SetPosition(_poisonCircle.id, world_center)
+	_poisonCircle.updateCount = _poisonCircle.updateCount + 1
+end
+
+
+-- 重置毒圈
+function PoisonCircle_Reset()
+	_poisonCircle.updateCount = 0
+	if _poisonCircle.id ~= nil then 
+		-- 存在就摧毁
+		UI_ModalVisual_Destroy(_poisonCircle.id)
+		_poisonCircle.id = nil
+	end
+	_poisonCircle.id = UI_ModalVisual_CreateReticule(BP_GetReticuleBlueprint("campaign_capturelocation_enemy"), _poisonCircle.radius)
+	UI_ModalVisual_SetPosition(_poisonCircle.id, world_center)
+end

@@ -1,0 +1,402 @@
+<instance version="4" description="" template="ebps">
+	<list name="extensions">
+		<template_reference name="exts" value="ebpextensions\entity_blueprint_ext" List.ItemID="-1514652847" List.ParentItemID="-1514652847">
+			<bool name="browsable_in_editor" value="True" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\health_ext" List.ItemID="-2055174168" List.ParentItemID="-2055174168">
+			<bool name="can_repair" value="True" overrideParent="True" />
+			<enum_table name="armor_scaler_by_damage_type">
+				<float name="Fire" value="0" overrideParent="True" />
+			</enum_table>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\site_ext" List.ItemID="-1703617424" List.ParentItemID="-1703617424">
+			<bool name="snap_to_construction_grid" value="True" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\type_ext" List.ItemID="529366543" List.ParentItemID="529366543">
+			<list name="race_type_list" overrideParent="True">
+				<instance_reference name="race_type" value="racebps\chinese" List.ItemID="-114245311" />
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\ui_ext" List.ItemID="148379165" List.ParentItemID="148379165">
+			<list name="ui_extra_infos" overrideParent="True">
+				<template_reference name="ui_extra_info" value="info\ui_extra_info" List.ItemID="1435710389">
+					<file name="icon" value="influence_decorator" overrideParent="True" />
+					<locstring name="description" value="0" />
+					<template_reference name="description_formatter" value="ui_text_formatter" overrideParent="True">
+						<list name="formatter_arguments" overrideParent="True">
+							<int name="int_value" value="100" overrideParent="True" List.ItemID="757983906" />
+						</list>
+						<locstring name="formatter" value="11199432" />
+					</template_reference>
+				</template_reference>
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\spawner_ext" List.ItemID="-2010798804" List.ParentItemID="-2010798804">
+			<list name="spawn_items" overrideParent="True">
+				<group name="spawn_item" comment="springald - castle" List.ItemID="-1328191179">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\chinese\unit_springald_3_chi" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="1" />
+						<int name="ui_position_column" value="1" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="0" />
+						<float name="wood" value="0" />
+						<float name="stone" value="0" />
+						<float name="gold" value="0" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\building_siege_workshop\produce_springald" overrideParent="True" />
+				</group>
+				<group name="spawn_item" comment="trebuchet - imperial" List.ItemID="6204046">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\chinese\unit_trebuchet_4_cw_chi" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="1" />
+						<int name="ui_position_column" value="3" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="0" />
+						<float name="wood" value="0" />
+						<float name="stone" value="0" />
+						<float name="gold" value="0" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\building_siege_workshop\produce_trebuchet" overrideParent="True" />
+				</group>
+				<group name="spawn_item" comment="bombard - imperial + chemistry" List.ItemID="1662521205">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\chinese\unit_bombard_4_chi" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="2" overrideParent="True" />
+						<int name="ui_position_column" value="1" overrideParent="True" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="0" />
+						<float name="wood" value="0" />
+						<float name="stone" value="0" />
+						<float name="gold" value="0" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\building_siege_workshop\produce_bombard" overrideParent="True" />
+				</group>
+				<group name="spawn_item" comment="Nest of Bees" List.ItemID="-1796140815">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\chinese\unit_nest_of_bees_4_chi" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="1" overrideParent="True" />
+						<int name="ui_position_column" value="2" overrideParent="True" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="0" />
+						<float name="wood" value="0" />
+						<float name="stone" value="0" />
+						<float name="gold" value="0" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\building_siege_workshop\produce_mangonel" overrideParent="True" />
+				</group>
+				<group name="spawn_item" List.ItemID="1816442309">
+					<group name="ui_position">
+						<int name="ui_position_row" value="1" overrideParent="True" />
+						<int name="ui_position_column" value="4" overrideParent="True" />
+					</group>
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\chinese\unit_workshop_ram_3_chi" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="0" />
+						<float name="wood" value="0" />
+						<float name="stone" value="0" />
+						<float name="gold" value="0" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\building_siege_workshop\produce_ram" overrideParent="True" />
+				</group>
+			</list>
+			<state_tree_node name="production_item_completed_openingbranch" value="building_production_item_completed_chi" overrideParent="True" />
+			<instance_reference name="rally_pass_type" value="pass_types\vehicle" overrideParent="True" />
+			<int name="max_queue_size_override" value="1000" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\upgrade_ext" List.ItemID="2110079480" List.ParentItemID="2110079480">
+			<list name="standard_upgrades" overrideParent="True">
+				<instance_reference name="upgrade" value="upgrade\races\common\research\upgrade_siege_roller_trigger" List.ItemID="694268790" />
+				<instance_reference name="upgrade" value="upgrade\races\common\research\upgrade_siege_weapon_speed" List.ItemID="-1913282824" />
+				<instance_reference name="upgrade" value="upgrade\races\chinese\research\upgrade_reload_drills_chi" List.ItemID="-1320217826" />
+				<instance_reference name="upgrade" value="upgrade\races\chinese\research\upgrade_gunpowder_cost_chi" List.ItemID="1197845155" />
+				<instance_reference name="upgrade" value="upgrade\races\common\research\upgrade_siege_mathematics" List.ItemID="1712790179" />
+				<instance_reference name="upgrade" value="upgrade\races\common\research\upgrade_ram_scaling" List.ItemID="-1442999156" />
+			</list>
+			<state_tree_node name="production_item_completed_openingbranch" value="building_production_item_completed_chi" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\interactive_object_ext" List.ItemID="726488446" List.ParentItemID="726488446">
+			<list name="type_list" overrideParent="True">
+				<group name="type" List.ItemID="-1975638858">
+					<enum name="interaction_type" value="repair" />
+					<int name="prefer_number" value="-1" />
+					<int name="max_number" value="-1" />
+					<enum name="interaction_target_type" value="entity" />
+					<template_reference name="node_list_option" value="options\none">
+					</template_reference>
+					<bool name="block_pathing_when_interacted" value="False" />
+				</group>
+				<group name="type" List.ItemID="-1916699996">
+					<enum name="interaction_type" value="construct" />
+					<int name="prefer_number" value="-1" />
+					<int name="max_number" value="-1" />
+					<enum name="interaction_target_type" value="entity" />
+					<template_reference name="node_list_option" value="options\none">
+					</template_reference>
+					<bool name="block_pathing_when_interacted" value="False" />
+				</group>
+				<group name="type" List.ItemID="1659825202">
+					<enum name="interaction_type" value="official_building_reserved_chi" overrideParent="True" />
+					<int name="prefer_number" value="-1" overrideParent="True" />
+					<int name="max_number" value="-1" overrideParent="True" />
+					<enum name="interaction_target_type" value="entity" />
+					<template_reference name="node_list_option" value="options\none">
+					</template_reference>
+					<bool name="block_pathing_when_interacted" value="False" />
+				</group>
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\ability_ext" List.ItemID="-1532051761" List.ParentItemID="-1532051761">
+			<list name="abilities" overrideParent="True">
+				<instance_reference name="ability" value="abilities\timed_abilities\civ_core\core_building_scuttle" List.ItemID="-1534486696" />
+				<instance_reference name="ability" value="abilities\always_on_abilities\chinese\building_generate_tax_chi" List.ItemID="1726348306" />
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\statemodel_ext" List.ItemID="1340177556" List.ParentItemID="1340177556">
+			<instance_reference name="schema" value="statemodel_schema\buildings\civilizations\chinese\unit_siege_chi" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\tier_ext" overrideParent="True" List.ItemID="1544126950" List.ListAction="Append">
+			<list name="tier_group_list" overrideParent="True">
+				<list name="tier_group" overrideParent="True" List.ItemID="-1998072035">
+					<group name="tier" List.ItemID="1904704277">
+						<list name="tier_requirements" overrideParent="True">
+						</list>
+						<instance_reference name="attachments" value="attachments\attachment_lists\civilizations\chinese\buildings\unit_siege_chi\tier3_unit_siege_control_chi" />
+						<template_reference name="statetree_tier_reached_actions" value="state_tree_reference_info">
+							<state_tree_node name="ActionTree_OpeningBranch" value="" />
+							<bool name="start_suspended" value="False" />
+						</template_reference>
+						<instance_reference name="statetree_tier_requirements_pbg" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_entity" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_squad" value="" />
+						<string name="tier_attachment_action" value="" />
+						<template_reference name="blueprint_conversion_parameters" value="blueprint_conversion_parameters">
+							<bool name="reissue_commands" value="False" />
+							<bool name="continue_state_trees" value="False" />
+							<bool name="remove_from_pending_deaths" value="False" />
+						</template_reference>
+						<string name="inventory_category_to_refresh_on_tier_up" value="" />
+					</group>
+					<group name="tier" List.ItemID="-887347613">
+						<list name="tier_requirements">
+							<template_reference name="requirement" value="requirements\required_player_upgrade" List.ItemID="-156429602">
+								<enum name="reason" value="usage" />
+								<locstring name="ui_name" value="0" />
+								<bool name="is_present" value="True" />
+								<int name="max_completed" value="100" />
+								<int name="min_completed" value="1" />
+								<instance_reference name="upgrade_name" value="upgrade\dev\ages\imperial_age" mod="eca6173149134b76b78757235af2aa36" />
+								<bool name="include_queued" value="False" />
+								<group name="include_pbg_parenting">
+									<bool name="include_child_pbgs" value="False" />
+									<bool name="include_parent_pbgs" value="False" />
+								</group>
+								<bool name="include_completed" value="True" />
+							</template_reference>
+						</list>
+						<instance_reference name="attachments" value="attachments\attachment_lists\civilizations\chinese\buildings\unit_siege_chi\tier4_unit_siege_control_chi" />
+						<template_reference name="statetree_tier_reached_actions" value="state_tree_reference_info">
+							<state_tree_node name="ActionTree_OpeningBranch" value="" />
+							<bool name="start_suspended" value="False" />
+						</template_reference>
+						<instance_reference name="statetree_tier_requirements_pbg" value="upgrade\dev\ages\imperial_age" mod="eca6173149134b76b78757235af2aa36" overrideParent="True" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_entity" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_squad" value="" />
+						<string name="tier_attachment_action" value="act_set_current_age_imperial" overrideParent="True" />
+						<template_reference name="blueprint_conversion_parameters" value="blueprint_conversion_parameters">
+							<bool name="reissue_commands" value="False" />
+							<bool name="continue_state_trees" value="False" />
+							<bool name="remove_from_pending_deaths" value="False" />
+						</template_reference>
+						<string name="inventory_category_to_refresh_on_tier_up" value="" />
+					</group>
+				</list>
+				<list name="tier_group" overrideParent="True" List.ItemID="497650282">
+					<group name="tier" List.ItemID="-115483762">
+						<list name="tier_requirements">
+						</list>
+						<instance_reference name="attachments" value="attachments\attachment_lists\civilizations\english\outskirts\military\military_01" overrideParent="True" />
+						<template_reference name="statetree_tier_reached_actions" value="state_tree_reference_info">
+							<state_tree_node name="ActionTree_OpeningBranch" value="" />
+							<bool name="start_suspended" value="False" />
+						</template_reference>
+						<instance_reference name="statetree_tier_requirements_pbg" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_entity" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_squad" value="" />
+						<string name="tier_attachment_action" value="" />
+						<template_reference name="blueprint_conversion_parameters" value="blueprint_conversion_parameters">
+							<bool name="reissue_commands" value="False" />
+							<bool name="continue_state_trees" value="False" />
+							<bool name="remove_from_pending_deaths" value="False" />
+						</template_reference>
+						<string name="inventory_category_to_refresh_on_tier_up" value="" />
+					</group>
+					<group name="tier" overrideParent="True" List.ItemID="2019892538">
+						<list name="tier_requirements" overrideParent="True">
+						</list>
+						<instance_reference name="attachments" value="attachments\attachment_lists\civilizations\english\outskirts\military\military_02" overrideParent="True" />
+						<template_reference name="statetree_tier_reached_actions" value="state_tree_reference_info">
+							<state_tree_node name="ActionTree_OpeningBranch" value="" />
+							<bool name="start_suspended" value="False" />
+						</template_reference>
+						<instance_reference name="statetree_tier_requirements_pbg" value="upgrade\dev\ages\feudal_age" overrideParent="True" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_entity" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_squad" value="" />
+						<string name="tier_attachment_action" value="" />
+						<template_reference name="blueprint_conversion_parameters" value="blueprint_conversion_parameters">
+							<bool name="reissue_commands" value="False" />
+							<bool name="continue_state_trees" value="False" />
+							<bool name="remove_from_pending_deaths" value="False" />
+						</template_reference>
+						<string name="inventory_category_to_refresh_on_tier_up" value="" />
+					</group>
+					<group name="tier" List.ItemID="106551802">
+						<list name="tier_requirements" overrideParent="True">
+						</list>
+						<instance_reference name="attachments" value="attachments\attachment_lists\civilizations\english\outskirts\military\military_03" overrideParent="True" />
+						<template_reference name="statetree_tier_reached_actions" value="state_tree_reference_info">
+							<state_tree_node name="ActionTree_OpeningBranch" value="" />
+							<bool name="start_suspended" value="False" />
+						</template_reference>
+						<instance_reference name="statetree_tier_requirements_pbg" value="upgrade\dev\ages\castle_age" mod="eca6173149134b76b78757235af2aa36" overrideParent="True" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_entity" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_squad" value="" />
+						<string name="tier_attachment_action" value="" />
+						<template_reference name="blueprint_conversion_parameters" value="blueprint_conversion_parameters">
+							<bool name="reissue_commands" value="False" />
+							<bool name="continue_state_trees" value="False" />
+							<bool name="remove_from_pending_deaths" value="False" />
+						</template_reference>
+						<string name="inventory_category_to_refresh_on_tier_up" value="" />
+					</group>
+					<group name="tier" List.ItemID="908118640">
+						<list name="tier_requirements" overrideParent="True">
+						</list>
+						<instance_reference name="attachments" value="attachments\attachment_lists\civilizations\english\outskirts\military\military_04" overrideParent="True" />
+						<template_reference name="statetree_tier_reached_actions" value="state_tree_reference_info">
+							<state_tree_node name="ActionTree_OpeningBranch" value="" />
+							<bool name="start_suspended" value="False" />
+						</template_reference>
+						<instance_reference name="statetree_tier_requirements_pbg" value="upgrade\dev\ages\imperial_age" mod="eca6173149134b76b78757235af2aa36" overrideParent="True" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_entity" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_squad" value="" />
+						<string name="tier_attachment_action" value="" />
+						<template_reference name="blueprint_conversion_parameters" value="blueprint_conversion_parameters">
+							<bool name="reissue_commands" value="False" />
+							<bool name="continue_state_trees" value="False" />
+							<bool name="remove_from_pending_deaths" value="False" />
+						</template_reference>
+						<string name="inventory_category_to_refresh_on_tier_up" value="" />
+					</group>
+				</list>
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\district_bonuses_ext" List.ItemID="-1150647892" List.ListAction="Append">
+			<bool name="update_on_upgrade_changed" value="False" />
+			<bool name="update_on_construction_complete" value="True" />
+			<list name="district_bonuses" overrideParent="True">
+				<template_reference name="district_bonus" value="district_bonus" comment="population" List.ItemID="-1176420312">
+					<template_reference name="requirement" value="options\ebpextensions\districtbonusesext\requirements\district_bonus_entity_requirement">
+						<list name="dynamic_requirements" overrideParent="True">
+						</list>
+						<list name="satisfying_entity_groups" overrideParent="True">
+							<group name="satisfying_entity_group" comment="Landmark Academy" List.ItemID="750748809">
+								<list name="satisfying_entities">
+									<instance_reference name="entity" value="ebps\races\chinese\buildings\building_landmark_age1_academy_chi\building_landmark_age1_academy_control_chi" overrideParent="True" List.ItemID="-1661009793" />
+								</list>
+							</group>
+						</list>
+					</template_reference>
+					<uniqueid name="id" value="1073741832" />
+					<template_reference name="action_tree" value="state_tree_reference_info">
+						<state_tree_node name="ActionTree_OpeningBranch" value="chinese_influence" overrideParent="True" />
+						<bool name="start_suspended" value="False" />
+					</template_reference>
+				</template_reference>
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\district_generator_ext" List.ItemID="-1352955771" List.ListAction="Append">
+			<float name="range_metres" value="0" overrideParent="True" />
+			<int name="generator_value" value="0" overrideParent="True" />
+			<bool name="disable_generation_on_spawn" value="False" />
+			<bool name="is_root_generator" value="False" />
+			<int name="district_palette_id" value="0" />
+		</template_reference>
+	</list>
+	<uniqueid name="pbgid" value="145536" />
+	<instance_reference name="parent_pbg" value="ebps\races\core\buildings\building_unit_siege" />
+</instance>

@@ -1,0 +1,313 @@
+_researches_ui_xaml = [[<Grid VerticalAlignment="Bottom" Margin="0,20,300,0" HorizontalAlignment="Right"
+		
+				xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:controls="clr-namespace:WPFGUI.HUD.Controls"
+                    xmlns:engineControls="clr-namespace:WPFGUI.HUD.Controls;assembly=EngineUI" xmlns:engineSharedEffects="clr-namespace:WPFGUI.Shared.Effects;assembly=EngineUI.Shaders"
+                    xmlns:engineSharedModels="clr-namespace:WPFGUI.Shared.Models;assembly=EngineUI" xmlns:esControls="clr-namespace:WPFGUI.Shared.Controls;assembly=EngineUI"
+                    xmlns:model="clr-namespace:HUDModelTypes" xmlns:sharedConverters="clr-namespace:WPFGUI.Shared.Converters;assembly=EngineUI"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:sysConfigModels="clr-namespace:SystemConfigModelTypes"
+                    xmlns:system="clr-namespace:System;assembly=System" xmlns:utility="clr-namespace:WPFGUI.Shared.Utility;assembly=EngineUI">
+	
+	<Grid.Resources>
+		<Style x:Key="TributeToolTipStyle" TargetType="{x:Type ToolTip}">
+            <Setter Property="HasDropShadow" Value="True" />
+			<Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToolTip}">
+                        <ContentPresenter />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>	
+		<Style x:Key="ArenaResourceButtonStyle" TargetType="Button">
+	        <Setter Property="SnapsToDevicePixels" Value="true" />
+	        <Setter Property="OverridesDefaultStyle" Value="true" />
+	        <Setter Property="HorizontalAlignment" Value="Left" />
+	        <Setter Property="Width" Value="47" />
+	        <Setter Property="Height" Value="47" />
+			<Setter Property="esUtility:AudioAttachedProperty.PreviewMouseLeftButtonUpSound"
+	                Value="sfx_ui_hud_inGame_button_play" />
+	        <Setter Property="Template">
+	            <Setter.Value>
+	                <ControlTemplate TargetType="Button">
+	                    <Border Name="ResourceButton">
+	                        <Grid>
+								<Border Background="{DynamicResource TertiaryColorLightBrush}">
+									<Border>
+										<Border.Background>
+											<RadialGradientBrush Center="0.5,0" GradientOrigin="0.5,0" RadiusX="0.7" RadiusY="0.6">
+										        <GradientStop Offset="0" Color="{DynamicResource TertiaryColorExtraLight}" />
+										        <GradientStop Offset="1" Color="{DynamicResource TertiaryColorExtraLightTransparent}" />
+										    </RadialGradientBrush>
+										</Border.Background>
+									</Border>
+                                </Border>
+								
+	                            <Rectangle Name="Base" Fill="#33505050" />
+	                            
+								<Rectangle Name="Rollover" Fill="{StaticResource ButtonHighlightBrush}" Visibility="Collapsed" />
+	                            
+								<Rectangle Name="Highlight" Fill="#FF93BED7" Visibility="Collapsed" />
+								
+	                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+	                        </Grid>
+	                    </Border>
+	                    <ControlTemplate.Triggers>
+	                        <Trigger Property="IsMouseOver" Value="true">
+	                            <Setter TargetName="Rollover" Property="Visibility" Value="Visible" />
+	                        </Trigger>
+	                        <Trigger Property="IsPressed" Value="true">
+	                            <Setter TargetName="Highlight" Property="Visibility" Value="Visible" />
+	                        </Trigger>
+	                        <Trigger Property="IsEnabled" Value="false">
+								 <Setter TargetName="ResourceButton" Property="Opacity" Value="{StaticResource ButtonDisabledOpacity}" />
+	                        </Trigger>
+	                    </ControlTemplate.Triggers>
+	                </ControlTemplate>
+	            </Setter.Value>
+	        </Setter>
+	    </Style>	
+			
+	</Grid.Resources>
+	
+	<Grid.RowDefinitions>
+	    <RowDefinition Height="Auto" />
+	    <RowDefinition Height="*" />
+	</Grid.RowDefinitions>
+	
+	
+	<Button Grid.Row="0"
+            Margin="0,0,0,2" HorizontalAlignment="Right"
+            VerticalAlignment="Top" Panel.ZIndex="2"
+            esControls:TagAdorner.AlignmentMode="Relative"
+            esControls:TagAdorner.ArrowDataTemplate="{StaticResource hudPage:TagArrowDataTemplate}"
+            esControls:TagAdorner.DataTemplate="{StaticResource TagDataTemplate}"
+            esControls:TagAdorner.HorizontalAnchor="Right" esControls:TagAdorner.HorizontalPlacement="Left"
+            esControls:TagAdorner.TargetDataTemplate="{StaticResource hudPage:EmptyTagDataTemplate}"
+            esControls:TagAdorner.VerticalAnchor="Top" esControls:TagAdorner.VerticalPlacement="Bottom"
+			Style="{StaticResource DiplomacyButtonStyle}"
+            Command="{Binding [command][toggle_ui]}"
+			IsEnabled="{Binding [enableBtn]}"
+            ToolTipService.InitialShowDelay="0" ToolTipService.ShowDuration="86400000">  
+        <Button.ToolTip>
+            <ToolTip MaxWidth="300"
+                     Placement="Bottom"
+                     Style="{StaticResource TributeToolTipStyle}"
+                     VerticalOffset="6">
+                <ContentControl Style="{StaticResource HUDTooltipBorderStyle}">
+                    <TextBlock Style="{StaticResource HUDGray80BodyTextBlock14ptStyle}"
+                               Text="科技卡牌池：每两轮可以选一张科技卡牌，选中对应卡牌即可拥有对应科技的研究能力，相同卡牌可能会出现多次，重复选不能多次研究"
+                               TextWrapping="Wrap" />
+                </ContentControl>
+            </ToolTip>
+        </Button.ToolTip>
+        <esControls:TagAdorner.IsTagged>
+            <MultiBinding Converter="{StaticResource IsTaggedConverter}" ConverterParameter="DiplomacyButton">
+                <Binding Path="TagVersion" Source="{x:Static model:HUDModel.Instance}" />
+            </MultiBinding>
+        </esControls:TagAdorner.IsTagged>
+        <esControls:TagAdorner.Data>
+            <MultiBinding Converter="{StaticResource TagDataConverter}" ConverterParameter="DiplomacyButton">
+                <Binding Path="TagVersion" Source="{x:Static model:HUDModel.Instance}" />
+            </MultiBinding>
+        </esControls:TagAdorner.Data>
+    </Button>
+	
+	<Canvas Grid.Row="1" Visibility="{Binding [is_ui_expanded], Converter={StaticResource BoolToVis}}">
+        <ContentControl Canvas.Left="8" Canvas.Bottom="68"
+                        IsTabStop="False"
+                        Template="{StaticResource CanvasTertiaryVerticalGradientBackgroundBox}"
+                        >
+            <ContentControl IsTabStop="False" Template="{StaticResource TexturedTertiaryThickDoubleBorders}">
+                <Grid Width="240" Height="260">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <!--  Imperial Council  -->
+                    <TextBlock Margin="{StaticResource SmallMarginLeftRight}"
+                               VerticalAlignment="Center"
+                               Style="{StaticResource nHUDSubheaderSmallTextBlockStyle}"
+                               Text="科技卡牌大厅" />
+					<!-- 
+                    <StackPanel Margin="{StaticResource SmallMarginLeftRight}"
+                                HorizontalAlignment="Right"
+                                Orientation="Horizontal">
+                        <Image Width="{StaticResource OttomanVizierPointIconSize}"
+                               VerticalAlignment="Center"
+                               Source="/WPFGUI;component/icons/vizier_point.png" />
+                        <TextBlock Grid.Column="1"
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource nHUDBaseHeavyTextBlockStyle}"
+                                   Text="1" />
+                    </StackPanel>
+					-->
+                    <!--  Columns  -->
+                    <ItemsControl Grid.Row="1"
+                                  Margin="-12,12,-12,-12"
+                                  AlternationCount="9" IsTabStop="False"
+                                  ItemsSource="{Binding [researchStacks]}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate >
+                                <!--  Rows  -->
+                                <ItemsControl Margin="{StaticResource SmallMarginLeftRight}"
+                                              AlternationCount="9" IsTabStop="False"
+                                              ItemsSource="{Binding [researches]}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Vertical" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+											<!--  Issuable Button  -->
+                                            <Grid Margin="12,12,12,36">
+												
+                                                 <Button  Width="{StaticResource HUDBuildQueueIconSize}"
+														Height="{StaticResource HUDBuildQueueIconSize}"
+														Command="{Binding [pickCommand]}"
+														CommandParameter="{Binding [pickCommandParameter]}"
+														ToolTipService.InitialShowDelay="0"
+                                            			ToolTipService.ShowDuration="86400000"
+														ToolTipService.ShowOnDisabled="True"
+														IsEnabled="{Binding [notPicked]}"
+														Style="{StaticResource ArenaResourceButtonStyle}">
+														
+														<Button.Content>
+															<Grid>
+																<Rectangle 
+																Width="{StaticResource HUDBuildQueueIconSize}"
+																Height="{StaticResource HUDBuildQueueIconSize}"
+																Fill="{StaticResource ResearchButtonBgBrush}" />
+																<Rectangle
+																	Width="{StaticResource HUDBuildQueueIconSize}"
+																	Height="{StaticResource HUDBuildQueueIconSize}"
+																	Fill="{StaticResource ResearchLightButtonBgHighlightBrush}" />
+																<Image Source="{Binding [icon]}" 
+																		Width="{StaticResource HUDBuildQueueIconSize}"
+																		Height="{StaticResource HUDBuildQueueIconSize}">
+																	
+																</Image>
+															</Grid>
+														</Button.Content>
+														<Button.ToolTip>
+															<ToolTip Style="{StaticResource TributeToolTipStyle}" 
+																Placement="Left" 
+																Content="{Binding}" 
+																DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}" >
+															<ToolTip.ContentTemplate>
+																<DataTemplate>
+																	<ContentControl Style="{StaticResource HUDTooltipBorderStyle}" Width="{StaticResource HUDTooltipMaxWidthSmall}">
+																		<Grid>
+																			<Grid.ColumnDefinitions>
+																				<ColumnDefinition Width="{StaticResource HUDTooltipGutterWidthGridLength}" />
+																				<ColumnDefinition Width="*" />
+																			</Grid.ColumnDefinitions>											
+																			<StackPanel Orientation="Vertical" Grid.Column="1">
+																				<StackPanel Orientation="Horizontal">
+																					<!-- "Tribute" -->
+																					<TextBlock Text="{Binding [name]}"
+																							Style="{StaticResource HUDPrimaryColorLightTitleTextBlock18ptStyle}" />
+																					<TextBlock Visibility="{Binding [localPlayerHad], Converter={StaticResource BoolToVis}}" 
+																							Text="(已拥有)"
+																							Style="{StaticResource HUDPrimaryColorLightTitleTextBlock18ptStyle}" />
+																				</StackPanel>
+																				
+																				<Grid HorizontalAlignment="Left">
+																					<Border Background="{StaticResource ButtonBackgroundBrush}" Opacity="0.5" />
+																					<!-- "Left-click to increase. Right-click to decrease." -->
+																					<TextBlock Text="{Binding [help]}"
+																							   Style="{StaticResource HUDWhiteBaseTextBlock14ptStyle}"
+																							   TextWrapping="Wrap"
+																							   Margin="6,2,7,2" />
+																				</Grid>																			
+																				<TextBlock Text="{Binding [tooltip][help]}" 
+																						Style="{StaticResource HUDGray80ParagraphTextBlock14ptStyle}" 
+																						Margin="{StaticResource SmallMarginTop}" />
+																				<TextBlock Text="{Binding [tooltip][requirements]}" 
+																						Style="{StaticResource HUDErrorColorLightParagraphTextBlock14ptStyle}" 
+																						Margin="{StaticResource SmallMarginTop}" />
+																			</StackPanel>
+																		</Grid>
+																	</ContentControl>													
+																</DataTemplate>
+															</ToolTip.ContentTemplate>
+														</ToolTip>	
+														</Button.ToolTip>
+													</Button>
+												<TextBlock Text="{Binding name}" />
+												
+												<Grid HorizontalAlignment="Center"
+		                                              VerticalAlignment="Center"
+		                                              IsHitTestVisible="False"
+		                                              Visibility="{Binding [localPlayerPicked], Converter={StaticResource BoolToVis}}">
+		                                            <Ellipse Width="26" Height="26"
+		                                                     Fill="{DynamicResource BlackTransparent40Brush}"
+		                                                     Stroke="{DynamicResource PrimaryColorLightBrush}"
+		                                                     StrokeThickness="2" />
+		                                            <Viewbox Width="15">
+		                                                <Path HorizontalAlignment="Center" VerticalAlignment="Center"
+		                                                      Style="{StaticResource FrontEndCheckMark}" />
+		                                            </Viewbox>
+		                                        </Grid>
+												<Grid HorizontalAlignment="Left"
+		                                              VerticalAlignment="Top"
+		                                              IsHitTestVisible="False"
+		                                              Visibility="{Binding [localPlayerHad], Converter={StaticResource BoolToVis}}">
+		                                            <Image 
+								                       Width="{StaticResource HUDProductionWarningIconSize}"
+								                       Height="{StaticResource HUDProductionWarningIconSize}"
+								                       Source="pack://application:,,,/WPFGUI;component/icons/production_warning.png"
+								                       Visibility="{Binding [localPlayerHad], Converter={StaticResource BoolToVis}}" />
+		                                        </Grid>
+												
+                                            </Grid>
+										
+										
+										</DataTemplate>
+
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <!--  Row Separators  -->
+                    <ItemsControl Grid.Row="1"
+                                  Margin="0,12" HorizontalAlignment="Stretch"
+                                  AlternationCount="9" IsTabStop="False"
+                                  ItemsSource="{Binding researchStacks[0].researches}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Vertical" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemContainerStyle>
+                            <Style TargetType="{x:Type ContentPresenter}">
+                                <!--  we only want to show this if there is more than 1 row of items so that a sepparator doesn't show at the bottom of the stack  -->
+                                <Setter Property="Visibility" Value="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource Self}, Converter={StaticResource GreaterCompare}, ConverterParameter=0}" />
+                            </Style>
+                        </ItemsControl.ItemContainerStyle>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type model:IssuableModel}">
+                                <Control Margin="0,72,0,0"
+                                         IsTabStop="False" RenderTransformOrigin="0.5,0.5"
+                                         Template="{StaticResource ImperialCouncilSeparatorStyle}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </ContentControl>
+        </ContentControl>
+    </Canvas>
+	
+	
+</Grid>
+]]

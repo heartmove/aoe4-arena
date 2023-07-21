@@ -1,0 +1,415 @@
+import("cardinal.scar")							-- Contains sfx references, UI templates, and Civ/Age helper functions
+import("ScarUtil.scar")							-- Contains game helper functions
+import("gameplay/event_cues.scar")
+
+Core_RegisterModule("UpgradeAge")
+
+_upgrade_age = {
+	context = {
+		enabled = false,
+		command = UI_CreateCommand("UpgradeAge_DoingSpeedAgeUp"),
+		showBtn = true
+	},
+	ui = "speed_up_age_up",
+	isUsedSpeedUpAgeUp = false
+}
+
+
+
+function UpgradeAge_OnInit()
+	local success, result = pcall(function() return BP_GetUpgradeBlueprint("eca6173149134b76b78757235af2aa36:castle_age_copy") end)
+	if not success then 
+		UpgradeAge_Warning()
+		Rule_AddInterval(UpgradeAge_Warning, 2)
+		Core_UnregisterModule("UpgradeAge")
+		return
+	end
+	UpgradeAge_DisableUpgrade()
+	for i, player in pairs(PLAYERS) do 
+		-- 已经经过的轮数
+		player.ageUpPassedRound = 0
+		-- 总共需要多少轮才能升级时代
+		player.ageUpNeedRound = UpgradeAge_GetCastaleAgeRound()
+		-- 当前轮是否使用过加速上本
+		-- player.isUsedSpeedUpAgeUp = false
+		-- 可见的时代，对于非好友
+		player.visibilityAge = AGE_FEUDAL
+	end
+	
+	
+	
+	Network_RegisterEvent("UpgradeAge_SpeedAgeUpNtw")
+end
+
+
+function UpgradeAge_Start()
+	local xaml = [[<Grid VerticalAlignment="Top" Margin="0,70,4,0" HorizontalAlignment="Right" Visibility="{Binding [showRoundReadyUI], Converter={StaticResource BoolToVis}}"
+              VerticalAlignment="Top"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:WPFGUI.HUD.Controls" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:engineSharedEffects="clr-namespace:WPFGUI.Shared.Effects;assembly=EngineUI.Shaders" xmlns:engineUtility="clr-namespace:WPFGUI.Shared.Utility;assembly=EngineUI"
+                    xmlns:esControls="clr-namespace:WPFGUI.Shared.Controls;assembly=EngineUI" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:model="clr-namespace:HUDModelTypes" xmlns:sys="clr-namespace:System;assembly=mscorlib"
+ 					xmlns:esCommands="clr-namespace:WPFGUI.Shared.Commands;assembly=EngineUI" xmlns:esControls="clr-namespace:WPFGUI.Shared.Controls;assembly=EngineUI"
+     				xmlns:esUtility="clr-namespace:WPFGUI.Shared.Utility;assembly=EngineUI" xmlns:feLockout="clr-namespace:FrontEndLockoutModelTypes"
+					esUtility:Telemetry.Name="CreateCustomMatchSemiModal"
+                    mc:Ignorable="d">
+		 <!--  Ready button  -->
+        <!-- <ToggleButton Width="208" Height="50"
+                      esUtility:Telemetry.Name="Ready"
+                      AutomationProperties.ItemType="{esUtility:LocString $11192481}"
+                      AutomationProperties.Name="{esUtility:LocString $11183110}"
+                      Command="{Binding AreanaReady_ReadyUnReadyCommand}"
+                      IsChecked="{Binding [roundReady], Mode=OneWay}"
+					  IsThreeState="True"
+                      Style="{StaticResource PrimaryAnimatedContentButton}"
+                      Visibility="{Binding [showBtn], Converter={StaticResource InvBoolToVis}}"> -->
+
+
+			<Grid Visibility="{Binding [showBtn], Converter={StaticResource BoolToVis}}">
+				<Button Width="100" Height="52" Content="加速上本" 
+				Style="{StaticResource HUDPrimaryRaisedTextButton}"
+				Command="{Binding [command]}"
+				ToolTipService.InitialShowDelay="0" ToolTipService.Placement="Top"
+                                ToolTipService.ShowDuration="8640000"
+				IsEnabled="{Binding [enabled]}"
+				>
+				 <Button.ToolTip>
+                    <ToolTip MaxWidth="300" Style="{StaticResource FrontEndTooltip}">
+                        <TextBlock Style="{StaticResource BodyTextBlockStyle}"
+                                   Text="消耗当前轮一半的资源以提升上时代速度，每轮可点击一次，该操作不可取消"
+                                   TextWrapping="Wrap" />
+                    </ToolTip>
+                </Button.ToolTip>
+			</Button>
+			</Grid>
+			
+	</Grid>
+     ]]
+	
+	UI_AddChild("ScarDefault", "XamlPresenter", _upgrade_age.ui, { IsHitTestVisible = true, Xaml = xaml, DataContext = UI_CreateDataContext(_upgrade_age.context)})
+	UpgradeAge_AddObjective()
+	Rule_Add(UpgradeAge_CheckCanSpeedUp)
+	UI_SetPropertyValue("PlayerScores", "Visibility", "Hidden")
+end
+
+
+-- 检测是否可以加速
+function UpgradeAge_CheckCanSpeedUp()
+	if ROUND < 1 then 
+		return 
+	end
+	
+	local needFood = UpgradeAge_GetSpeedAgeUpFoods()
+	_upgrade_age.context.enabled = false
+	if not _upgrade_age.isUsedSpeedUpAgeUp then
+		_upgrade_age.context.enabled = needFood <= Player_GetResource(localPlayer.id, RT_Food)
+	end
+	
+	if Player_GetCurrentAge(localPlayer.id) == AGE_IMPERIAL then
+		_upgrade_age.context.showBtn = false
+		Rule_Remove(UpgradeAge_CheckCanSpeedUp)
+	end
+	
+	UI_SetDataContext( _upgrade_age.ui, _upgrade_age.context)
+end
+
+function UpgradeAge_GetSpeedAgeUpFoods()
+	local roundFood = start_foods + (ROUND - 1) * increase_foods
+	local needFood = math.floor(roundFood/2)
+	return needFood
+end
+
+
+function UpgradeAge_DoingSpeedAgeUp()
+	local needFood = UpgradeAge_GetSpeedAgeUpFoods()
+	if needFood <= Player_GetResource(localPlayer.id, RT_Food) then 
+		_upgrade_age.isUsedSpeedUpAgeUp = true
+		UpgradeAge_CheckCanSpeedUp()
+		Network_CallEvent("UpgradeAge_SpeedAgeUpNtw", "")
+	else 
+		UI_CreateEventCue(Loc_GetString("$eca6173149134b76b78757235af2aa36:69"), nil, "", "", "sfx_ui_event_queue_high_priority_play")
+	end
+end
+
+
+function UpgradeAge_SpeedAgeUpNtw(playerId, data) 
+	local player = Core_GetPlayersTableEntry(playerId)	
+	local needFood = UpgradeAge_GetSpeedAgeUpFoods()
+	if needFood <= Player_GetResource(playerId, RT_Food) then
+		Player_GiftResource(playerId, RT_Food, -needFood)
+		UpgradeAge_DoSpeedAgeUp(player)
+		if localPlayer.id ~= playerId and Player_ObserveRelationship(playerId, localPlayer.id) == R_ALLY then 
+			UI_CreateEventCue(Loc_FormatText("$eca6173149134b76b78757235af2aa36:73", Player_GetDisplayName(player.id)), nil, "", "", "sfx_ui_event_queue_high_priority_play")
+		end
+	else 
+		if localPlayer.id == playerId then 
+			_upgrade_age.isUsedSpeedUpAgeUp = false
+			UI_CreateEventCue(Loc_GetString("$eca6173149134b76b78757235af2aa36:69"), nil, "", "", "sfx_ui_event_queue_high_priority_play")
+		end
+	end
+	
+	-- player.isUsedSpeedUpAgeUp = true
+end
+
+
+function UpgradeAge_GetReligiousBuilding(playerId)
+	local entities = Player_GetEntitiesFromType(playerId, "scar_monastery")
+	EGroup_Filter(entities, "wonder", FILTER_REMOVE)
+	if EGroup_Count(entities) > 0 then 
+		return EGroup_GetEntityAt(entities, 1)
+	end
+	return nil
+end
+
+
+function UpgradeAge_AddObjective()
+	_upgrade_age.objective = Obj_Create(localPlayer.id, Loc_GetString("$eca6173149134b76b78757235af2aa36:68"), Loc_Empty(), "icons\\races\\common\\victory_conditions\\victory_condition_conquest", "ConquestObjectiveTemplate", localPlayer.raceName, OT_Primary, 0, "conquestObj")	
+	Obj_SetVisible(_upgrade_age.objective, true)
+	Obj_SetState(_upgrade_age.objective, OS_Incomplete)
+	Obj_SetCounterType(_upgrade_age.objective, COUNTER_CountUpTo)
+	Obj_SetCounterMax(_upgrade_age.objective, UpgradeAge_GetCastaleAgeRound())
+	Obj_SetCounterCount(_upgrade_age.objective, 1)
+	Obj_SetProgress(_upgrade_age.objective, 1/UpgradeAge_GetCastaleAgeRound())
+	Obj_SetProgressVisible(_upgrade_age.objective, true)
+end
+
+-- 当前轮开始时
+function UpgradeAge_OnRoundStart()
+	_upgrade_age.isUsedSpeedUpAgeUp = false
+	for i, player in pairs(PLAYERS) do
+		UpgradeAge_DoSpeedAgeUp(player)
+	end
+	
+end
+
+function UpgradeAge_OnRoundCombatStart()
+	for i, player in pairs(PLAYERS) do 
+		-- 如果当前实际的时代是大于当前可见时代的，那就需要更新当前可见时代，因为已经在上轮升级过时代了
+		if Player_GetCurrentAge(player.id) > player.visibilityAge then 
+			player.visibilityAge = Player_GetCurrentAge(player.id)
+			if Player_ObserveRelationship(player.id, localPlayer.id) == R_ENEMY then 
+				if Player_GetCurrentAge(player.id) == AGE_CASTLE then 
+					EventCues_NotifyAgeUp(player, Loc_GetString(_events.age.textSelf), Loc_FormatText(_events.age.textAge3, player.playerName))
+				elseif Player_GetCurrentAge(player.id) == AGE_IMPERIAL then 
+					EventCues_NotifyAgeUp(player, Loc_GetString(_events.age.textSelf), Loc_FormatText(_events.age.textAge4, player.playerName))
+				end
+			end
+		end
+	end
+end
+
+
+function UpgradeAge_DoSpeedAgeUp(player)
+	player.ageUpPassedRound = player.ageUpPassedRound + 1
+	if Player_GetCurrentAge(player.id) == AGE_FEUDAL then
+		if player.ageUpPassedRound >= player.ageUpNeedRound then 
+			UpgradeAge_CompleteAction(player.id, nil)
+			player.ageUpPassedRound = 0
+			player.ageUpNeedRound = UpgradeAge_GetImperialAgeRound() - ROUND
+		end
+	elseif Player_GetCurrentAge(player.id) == AGE_CASTLE then 
+		if player.ageUpPassedRound >= player.ageUpNeedRound then 
+			UpgradeAge_CompleteAction(player.id, nil)
+		end
+	end
+	
+	if player.id == localPlayer.id then 
+		UpgradeAge_UpdateObjective()
+	end
+end
+
+function UpgradeAge_UpdateObjective()
+	Obj_SetCounterMax(_upgrade_age.objective, localPlayer.ageUpNeedRound)
+	Obj_SetCounterCount(_upgrade_age.objective, localPlayer.ageUpPassedRound)
+	Obj_SetProgress(_upgrade_age.objective, localPlayer.ageUpPassedRound/localPlayer.ageUpNeedRound)
+	if Player_GetCurrentAge(localPlayer.id) == AGE_IMPERIAL then 
+		Obj_Delete(_upgrade_age.objective)
+	end
+end
+
+
+-- 当升级时代时需要做的操作
+function UpgradeAge_CompleteAction(playerId, age_name)
+	local player = Core_GetPlayersTableEntry(playerId)
+	local age = Player_GetCurrentAge(playerId)
+	if age == AGE_FEUDAL then 
+		Player_CompleteUpgrade(playerId, BP_GetUpgradeBlueprint("castle_age"))
+		if Player_GetRaceName(player.id) == "chinese" then 
+			Player_CompleteUpgrade(player.id, BP_GetUpgradeBlueprint("player_dynasty2_chi"))
+			Player_SetStateModelBool(player.id, "dynasty_2_was_completed_chi",true) 
+		end
+		Mod_ConstructCastleBuilding(player.id)
+		
+		--EventCues_NotifyAgeUp(player, Loc_GetString(_events.age.textSelf), Loc_FormatText(_events.age.textAge3, player.playerName))
+		if ROUND == UpgradeAge_GetCastaleAgeRound() or Player_ObserveRelationship(player.id, localPlayer.id) == R_ALLY then 
+			EventCues_NotifyAgeUp(player, Loc_GetString(_events.age.textSelf), Loc_FormatText(_events.age.textAge3, player.playerName))
+		end
+		player.age = AGE_CASTLE
+		if ROUND == UpgradeAge_GetCastaleAgeRound() then 
+			player.visibilityAge = AGE_CASTLE
+		end
+		-- Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("castle_age"), ITEM_REMOVED)
+	elseif age == AGE_CASTLE then 
+		Player_CompleteUpgrade(playerId, BP_GetUpgradeBlueprint("imperial_age"))
+		if Player_GetRaceName(player.id) == "chinese" then 
+			Player_CompleteUpgrade(player.id, BP_GetUpgradeBlueprint("player_dynasty3_chi"))
+			Player_SetStateModelBool(player.id, "dynasty_3_was_completed_chi",true) 
+		end
+		Mod_ConstructImpireBuilding(player.id)
+		if ROUND == UpgradeAge_GetImperialAgeRound() or Player_ObserveRelationship(player.id, localPlayer.id) == R_ALLY then 
+			EventCues_NotifyAgeUp(player, Loc_GetString(_events.age.textSelf), Loc_FormatText(_events.age.textAge4, player.playerName))
+		end
+		player.age = AGE_IMPERIAL
+		--Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint("imperial_age"), ITEM_REMOVED)
+		if ROUND == UpgradeAge_GetImperialAgeRound() then 
+			player.visibilityAge = AGE_IMPERIAL
+		end
+	end
+end
+
+function UpgradeAge_Warning()
+	UI_CreateEventCue(Loc_GetString("$eca6173149134b76b78757235af2aa36:63"), nil, "", "", "sfx_ui_event_queue_high_priority_play")
+end
+
+-- 调整升时代所需的资源量, 突然发现只能改一次资源量，所以就很麻烦了
+function UpgradeAge_AdjustCost()
+	--[[
+	local castleRound = math.floor(WINNER_ROUND/2) + 1
+	local imperialRound = math.floor(WINNER_ROUND/5) + WINNER_ROUND
+	local success, result = pcall(function() return BP_GetUpgradeBlueprint("eca6173149134b76b78757235af2aa36:castle_age_copy") end)
+	if not success then 
+		UpgradeAge_Warning()
+		Rule_AddInterval(UpgradeAge_Warning, 2)
+		return
+	end
+	local castleAge = BP_GetUpgradeBlueprint("eca6173149134b76b78757235af2aa36:castle_age_copy")
+	local imperialAge =  BP_GetUpgradeBlueprint("imperial_age")
+	local castleCost = 1800
+	local imperialCost = 3600
+	local currentCastleCost = math.floor(castleCost/(castleRound)) * (castleRound - ROUND + 1 )
+	local currentImperialCost = math.floor(imperialCost/(imperialRound-castleRound)) * (imperialRound - ROUND + 1)
+	if currentCastleCost < 0 then 
+		currentCastleCost = 0
+	end
+	
+	if currentImperialCost < 0 then 
+		currentImperialCost = 0 
+		
+	end
+	
+	
+	print("currentCastleCost:" .. currentCastleCost)
+	print("currentImperialCost:" .. currentImperialCost)
+	
+	for i, player in pairs(PLAYERS) do 
+		local bpName = UpgradeAge_GetShowUpgradeName(player.id)
+		if bpName == nil then 
+			return 
+		end
+		local cost = currentCastleCost
+		if Player_GetCurrentAge(player.id) == AGE_CASTLE then 
+			cost = currentImperialCost
+		end
+		
+		Modify_UpgradeCost(player.id, BP_GetUpgradeBlueprint(bpName), RT_Food, cost, MUT_Set, true)
+		Modify_UpgradeCost(player.id, BP_GetUpgradeBlueprint(bpName), RT_Gold, 0, MUT_Set, true)
+		Modify_UpgradeBuildTime(player.id,  BP_GetUpgradeBlueprint(bpName), 0.1)
+		
+		-- print("xxxxx:" .. Player_GetUpgradeBPCostByResource(player.id, castleAge, RT_Food))
+		--UpgradeAge_ModifyUpgradeCost(player.id, BP_GetName(bpName), RT_Food, cost, MUT_Set, false)
+		--Player_SetUpgradeAvailability(player.id, castleAge, ITEM_REMOVED)
+		--Player_SetUpgradeAvailability(player.id, castleAge, ITEM_DEFAULT)
+		
+		--Modify_UpgradeCost(player.id, castleAge, RT_Food, 0.1 * ROUND, MUT_Multiplication, true)
+		--Modify_UpgradeCost(player.id, imperialAge, RT_Food, 0.1 * ROUND, MUT_Multiplication, true)
+		local entities = Player_GetEntitiesFromType(player.id, "scar_monastery")
+		EGroup_Filter(entities, "wonder", FILTER_REMOVE)
+		if EGroup_Count(entities) > 0 then 
+			local entity = EGroup_GetEntityAt(entities, 1)
+			print("............................")
+			-- UpgradeAge_ModifyUpgradeCost(entity, castleAge, "upgrade_cost_food_modifier", currentCastleCost, MUT_Set, false)
+			--Player_SetUpgradeAvailability(player.id, castleAge, ITEM_REMOVED)
+			-- Modify_UpgradeCost(player.id, castleAge, RT_Food, currentCastleCost, MUT_Set, true)
+			--Player_SetUpgradeAvailability(player.id, castleAge, ITEM_DEFAULT)
+		end
+	end
+	--]]
+end
+
+-- 获得需要显示的时代科技
+function UpgradeAge_GetShowUpgradeName(playerId)
+	local showBp = nil 
+	local r = ROUND 
+	if Player_GetCurrentAge(playerId) == AGE_FEUDAL then 
+		if r > 6 then 
+			r = 6
+		end
+		showBp = "eca6173149134b76b78757235af2aa36:castle_age_"..r
+	elseif Player_GetCurrentAge(playerId) == AGE_CASTLE then 
+		if r > 10 then 
+			r = 10
+		end
+		showBp = "eca6173149134b76b78757235af2aa36:imperial_age_"..r
+	end
+	
+	for i = 1, 6 do 
+		local tempBp = "eca6173149134b76b78757235af2aa36:castle_age_"..i
+		if showBp == nil or tempBp ~= showBp then 
+			Player_SetUpgradeAvailability(playerId, BP_GetUpgradeBlueprint(tempBp), ITEM_REMOVED)
+		end
+	end
+	
+	for i = 1, 10 do 
+		local tempBp = "eca6173149134b76b78757235af2aa36:imperial_age_"..i
+		if showBp == nil or tempBp ~= showBp then 
+			Player_SetUpgradeAvailability(playerId, BP_GetUpgradeBlueprint(tempBp), ITEM_REMOVED)
+		end
+	end
+	
+	if showBp ~= nil then 
+		Player_SetUpgradeAvailability(playerId, BP_GetUpgradeBlueprint(showBp), ITEM_DEFAULT)
+	end
+	
+	return showBp
+end
+
+
+function UpgradeAge_DisableUpgrade()
+	for i, player in pairs(PLAYERS) do 
+		for j = 1, 6 do 
+			local tempBp = "eca6173149134b76b78757235af2aa36:castle_age_"..j
+			Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint(tempBp), ITEM_REMOVED)
+		end
+		
+		for j = 1, 10 do 
+			local tempBp = "eca6173149134b76b78757235af2aa36:imperial_age_"..j
+		
+			Player_SetUpgradeAvailability(player.id, BP_GetUpgradeBlueprint(tempBp), ITEM_REMOVED)
+		
+		end
+	end
+end
+
+
+function UpgradeAge_ModifyUpgradeCost(playerid, upgrade, modifierType, factor, mathtype, exclusive)
+	
+	modifierType = "upgrade_cost_gold_modifier"
+	
+	if exclusive == nil then
+		exclusive = false
+	end
+	
+	local modifier = Modifier_Create(MAT_Upgrade, modifierType, mathtype, exclusive, factor, upgrade)
+	
+	return {Modifier_ApplyToPlayer(modifier, playerid, 0)}
+	
+end
+
+function UpgradeAge_GetCastaleAgeRound()
+	return math.floor(WINNER_ROUND/2) + 1
+end
+
+function UpgradeAge_GetImperialAgeRound()
+	return math.floor(WINNER_ROUND/5) + WINNER_ROUND
+end

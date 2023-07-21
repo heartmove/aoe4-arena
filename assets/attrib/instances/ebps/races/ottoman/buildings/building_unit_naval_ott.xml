@@ -1,0 +1,424 @@
+<instance version="4" description="" template="ebps">
+	<list name="extensions">
+		<template_reference name="exts" value="ebpextensions\entity_blueprint_ext" List.ItemID="-1218543450" List.ParentItemID="-1218543450">
+			<bool name="browsable_in_editor" value="True" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\type_ext" List.ItemID="-844185006" List.ParentItemID="-844185006">
+			<list name="race_type_list" overrideParent="True">
+				<instance_reference name="race_type" value="racebps\ottoman" overrideParent="True" List.ItemID="269007170" />
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\construction_ext" List.ItemID="-620052025" List.ParentItemID="-620052025">
+			<bool name="query_weapon_for_range_ui" value="True" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\cost_ext" List.ItemID="27633050" List.ParentItemID="27633050">
+			<group name="time_cost">
+				<enum_table name="cost">
+					<float name="wood" value="100" overrideParent="True" />
+				</enum_table>
+			</group>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\ui_ext" List.ItemID="-312111757" List.ParentItemID="-312111757">
+			<list name="ui_extra_infos" overrideParent="True">
+				<template_reference name="ui_extra_info" value="info\ui_extra_info" List.ItemID="1448064027">
+					<file name="icon" value="influence_buff" overrideParent="True" />
+					<locstring name="description" value="0" />
+					<template_reference name="description_formatter" value="ui_text_formatter" overrideParent="True">
+						<list name="formatter_arguments" overrideParent="True">
+							<int name="int_value" value="20" overrideParent="True" List.ItemID="-125014598" />
+							<int name="int_value" value="30" overrideParent="True" List.ItemID="-307029599" />
+							<int name="int_value" value="40" overrideParent="True" List.ItemID="-1219479483" />
+							<int name="int_value" value="60" overrideParent="True" List.ItemID="1197870340" />
+						</list>
+						<locstring name="formatter" value="11217401" />
+					</template_reference>
+				</template_reference>
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\spawner_ext" List.ItemID="1985550230" List.ParentItemID="1985550230">
+			<list name="spawn_items" overrideParent="True">
+				<group name="spawn_item" comment="fireship" List.ItemID="1126649494">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\ottoman\unit_naval_fireship_3_ott" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="2" overrideParent="True" />
+						<int name="ui_position_column" value="3" overrideParent="True" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="0" />
+						<float name="wood" value="0" />
+						<float name="stone" value="0" />
+						<float name="gold" value="0" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\building_dock\produce_demo_ship" />
+				</group>
+				<group name="spawn_item" comment="fishing boat" List.ItemID="267172123">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\ottoman\unit_naval_fishing_boat_2_ott" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="1" overrideParent="True" />
+						<int name="ui_position_column" value="1" overrideParent="True" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="0" />
+						<float name="wood" value="0" />
+						<float name="stone" value="0" />
+						<float name="gold" value="0" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\building_dock\produce_fishing_boat" />
+				</group>
+				<group name="spawn_item" comment="transport ship" List.ItemID="-1912703840">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\ottoman\unit_naval_transport_ship_2_ott" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="1" overrideParent="True" />
+						<int name="ui_position_column" value="3" overrideParent="True" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="0" />
+						<float name="wood" value="0" />
+						<float name="stone" value="0" />
+						<float name="gold" value="0" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\building_dock\produce_transport_ship" />
+				</group>
+				<group name="spawn_item" comment="combat ship" List.ItemID="65200212">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\ottoman\unit_naval_combat_ship_2_ott" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="2" overrideParent="True" />
+						<int name="ui_position_column" value="2" overrideParent="True" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="0" />
+						<float name="wood" value="0" />
+						<float name="stone" value="0" />
+						<float name="gold" value="0" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\building_dock\produce_attack_ship" />
+				</group>
+				<group name="spawn_item" comment="warship&#xD;&#xA;" List.ItemID="-1905573254">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\ottoman\unit_naval_combat_warship_4_ott" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="3" overrideParent="True" />
+						<int name="ui_position_column" value="1" overrideParent="True" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="0" />
+						<float name="wood" value="0" />
+						<float name="stone" value="0" />
+						<float name="gold" value="0" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\building_dock\produce_war_ship" />
+				</group>
+				<group name="spawn_item" comment="trade ship" List.ItemID="-1666218977">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\ottoman\unit_naval_trade_ship_3_ott" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="1" overrideParent="True" />
+						<int name="ui_position_column" value="2" overrideParent="True" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="0" />
+						<float name="wood" value="0" />
+						<float name="stone" value="0" />
+						<float name="gold" value="0" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\building_dock\produce_trade_ship" />
+				</group>
+				<group name="spawn_item" comment="scout ship" List.ItemID="721018566">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\ottoman\unit_naval_scout_2_ott" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="1" overrideParent="True" />
+						<int name="ui_position_column" value="4" overrideParent="True" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="0" />
+						<float name="wood" value="0" />
+						<float name="stone" value="0" />
+						<float name="gold" value="0" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\building_dock\produce_archer_ship" />
+				</group>
+				<group name="spawn_item" comment="grand galley&#xD;&#xA;&#xD;&#xA;" List.ItemID="-464959886">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\ottoman\unit_naval_galleass_4_ott" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position" overrideParent="True">
+						<int name="ui_position_row" value="3" overrideParent="True" />
+						<int name="ui_position_column" value="2" overrideParent="True" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="0" />
+						<float name="wood" value="0" />
+						<float name="stone" value="0" />
+						<float name="gold" value="0" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\building_dock\produce_grand_galley_ott" />
+				</group>
+				<group name="spawn_item" comment="dhow" List.ItemID="-8294639">
+					<group name="ui_position">
+						<int name="ui_position_row" value="2" overrideParent="True" />
+						<int name="ui_position_column" value="1" overrideParent="True" />
+					</group>
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\ottoman\unit_naval_dhow_2_ott" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="0" />
+						<float name="wood" value="0" />
+						<float name="stone" value="0" />
+						<float name="gold" value="0" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\building_dock\produce_archer_ship" />
+				</group>
+			</list>
+			<float name="enforce_minimum_clearance_at_spawn_positions_search_range" value="200" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\upgrade_ext" List.ItemID="1749087632" List.ParentItemID="1749087632">
+			<list name="standard_upgrades" overrideParent="True">
+				<instance_reference name="upgrade" value="upgrade\races\common\research\naval\upgrade_naval_incendiaries" List.ItemID="1861522771" />
+				<instance_reference name="upgrade" value="upgrade\races\common\research\naval\upgrade_naval_springald_ship_upgrade_1" List.ItemID="1793673910" />
+				<instance_reference name="upgrade" value="upgrade\races\common\research\naval\upgrade_naval_extra_hammocks" List.ItemID="-1803078576" />
+				<instance_reference name="upgrade" value="upgrade\races\common\research\naval\upgrade_naval_armored_hull" List.ItemID="973597500" />
+				<instance_reference name="upgrade" value="upgrade\races\common\research\naval\upgrade_naval_shipwrights" List.ItemID="1773584447" />
+				<instance_reference name="upgrade" value="upgrade\races\common\research\naval\upgrade_naval_explosives" List.ItemID="242497747" />
+				<instance_reference name="upgrade" value="upgrade\races\common\research\economy\upgrade_econ_drift_nets" List.ItemID="-488298625" />
+				<instance_reference name="upgrade" value="upgrade\races\common\research\economy\upgrade_econ_extended_lines" List.ItemID="860811129" />
+				<instance_reference name="upgrade" value="upgrade\races\common\research\naval\upgrade_naval_swivel_cannon" List.ItemID="1126273607" />
+				<instance_reference name="upgrade" value="upgrade\races\common\research\upgrade_naval_arrowslits" List.ItemID="-1434533468" />
+				<instance_reference name="upgrade" value="upgrade\races\common\research\naval\upgrade_naval_heated_shot" List.ItemID="-1765450064" />
+				<instance_reference name="upgrade" value="upgrade\races\ottoman\research\naval\upgrade_naval_imperial_fleet_ott" List.ItemID="622564015" />
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\action_apply_ext" List.ItemID="1205989620" List.ParentItemID="1205989620">
+			<list name="action_state_trees" overrideParent="True">
+				<group name="container" List.ItemID="-1420050797">
+					<string name="state_tree" value="building_action_apply\buildings\dock_action_apply" />
+				</group>
+				<group name="container" List.ItemID="1145083044">
+					<string name="state_tree" value="influence_invalid_sul" overrideParent="True" />
+				</group>
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\modifier_apply_ext" List.ItemID="1280626368" List.ListAction="Append">
+			<list name="modifiers">
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\tier_ext" overrideParent="True" List.ItemID="1768926828" List.ListAction="Append">
+			<list name="tier_group_list" overrideParent="True">
+				<list name="tier_group" overrideParent="True" List.ItemID="1630314940">
+					<group name="tier" List.ItemID="866477276">
+						<list name="tier_requirements">
+						</list>
+						<instance_reference name="attachments" value="attachments\attachment_lists\civilizations\ottoman\buildings\unit_naval_ott\tier2_unit_naval_control_ott" overrideParent="True" />
+						<template_reference name="statetree_tier_reached_actions" value="state_tree_reference_info">
+							<state_tree_node name="ActionTree_OpeningBranch" value="" />
+							<bool name="start_suspended" value="False" />
+						</template_reference>
+						<instance_reference name="statetree_tier_requirements_pbg" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_entity" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_squad" value="" />
+						<string name="tier_attachment_action" value="" />
+						<template_reference name="blueprint_conversion_parameters" value="blueprint_conversion_parameters">
+							<bool name="reissue_commands" value="False" />
+							<bool name="continue_state_trees" value="False" />
+							<bool name="remove_from_pending_deaths" value="False" />
+						</template_reference>
+						<string name="inventory_category_to_refresh_on_tier_up" value="" />
+					</group>
+					<group name="tier" overrideParent="True" List.ItemID="2072304138">
+						<list name="tier_requirements">
+						</list>
+						<instance_reference name="attachments" value="attachments\attachment_lists\civilizations\ottoman\buildings\unit_naval_ott\tier3_unit_naval_control_ott" overrideParent="True" />
+						<template_reference name="statetree_tier_reached_actions" value="state_tree_reference_info">
+							<state_tree_node name="ActionTree_OpeningBranch" value="" />
+							<bool name="start_suspended" value="False" />
+						</template_reference>
+						<instance_reference name="statetree_tier_requirements_pbg" value="upgrade\dev\ages\castle_age" mod="eca6173149134b76b78757235af2aa36" overrideParent="True" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_entity" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_squad" value="" />
+						<string name="tier_attachment_action" value="act_set_current_age_castle" overrideParent="True" />
+						<template_reference name="blueprint_conversion_parameters" value="blueprint_conversion_parameters">
+							<bool name="reissue_commands" value="False" />
+							<bool name="continue_state_trees" value="False" />
+							<bool name="remove_from_pending_deaths" value="False" />
+						</template_reference>
+						<string name="inventory_category_to_refresh_on_tier_up" value="" />
+					</group>
+					<group name="tier" List.ItemID="570508797">
+						<list name="tier_requirements">
+						</list>
+						<instance_reference name="attachments" value="attachments\attachment_lists\civilizations\ottoman\buildings\unit_naval_ott\tier4_unit_naval_control_ott" overrideParent="True" />
+						<template_reference name="statetree_tier_reached_actions" value="state_tree_reference_info">
+							<state_tree_node name="ActionTree_OpeningBranch" value="" />
+							<bool name="start_suspended" value="False" />
+						</template_reference>
+						<instance_reference name="statetree_tier_requirements_pbg" value="upgrade\dev\ages\imperial_age" mod="eca6173149134b76b78757235af2aa36" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_entity" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_squad" value="" />
+						<string name="tier_attachment_action" value="act_set_current_age_imperial" overrideParent="True" />
+						<template_reference name="blueprint_conversion_parameters" value="blueprint_conversion_parameters">
+							<bool name="reissue_commands" value="False" />
+							<bool name="continue_state_trees" value="False" />
+							<bool name="remove_from_pending_deaths" value="False" />
+						</template_reference>
+						<string name="inventory_category_to_refresh_on_tier_up" value="" />
+					</group>
+				</list>
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\district_bonuses_ext" overrideParent="True" List.ItemID="2038817400" List.ListAction="Append">
+			<bool name="update_on_upgrade_changed" value="False" />
+			<bool name="update_on_construction_complete" value="True" />
+			<list name="district_bonuses" comment="Influence Control&#xD;&#xA;" overrideParent="True">
+				<template_reference name="district_bonus" value="district_bonus" List.ItemID="-72046536">
+					<template_reference name="requirement" value="options\ebpextensions\districtbonusesext\requirements\district_bonus_entity_requirement">
+						<list name="dynamic_requirements">
+						</list>
+						<list name="satisfying_entity_groups">
+							<group name="satisfying_entity_group" comment="Blacksmith/University Influence &#xD;&#xA;" List.ItemID="-1394359525">
+								<list name="satisfying_entities" overrideParent="True">
+									<instance_reference name="entity" value="ebps\races\ottoman\buildings\building_tech_university_ott" List.ItemID="-286167019" />
+									<instance_reference name="entity" value="ebps\races\ottoman\buildings\building_landmark_age3_istanbul_observatory_ott" List.ItemID="-1566379433" />
+									<instance_reference name="entity" value="ebps\races\ottoman\buildings\building_tech_unit_infantry_ott" overrideParent="True" List.ItemID="-1302036938" />
+								</list>
+							</group>
+						</list>
+					</template_reference>
+					<uniqueid name="id" value="1073741861" />
+					<template_reference name="action_tree" value="state_tree_reference_info">
+						<state_tree_node name="ActionTree_OpeningBranch" value="district_university_ott" />
+						<bool name="start_suspended" value="False" />
+					</template_reference>
+				</template_reference>
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\district_generator_ext" List.ItemID="-1867681206" List.ListAction="Append">
+			<float name="range_metres" value="0" overrideParent="True" />
+			<bool name="is_root_generator" value="False" />
+			<int name="generator_value" value="0" overrideParent="True" />
+			<bool name="disable_generation_on_spawn" value="False" />
+			<int name="district_palette_id" value="1" overrideParent="True" />
+		</template_reference>
+	</list>
+	<uniqueid name="pbgid" value="2034620" />
+	<instance_reference name="parent_pbg" value="ebps\races\core\buildings\building_unit_naval" />
+</instance>

@@ -1,0 +1,226 @@
+import("cardinal.scar")							-- Contains sfx references, UI templates, and Civ/Age helper functions
+import("ScarUtil.scar")							-- Contains game helper functions
+
+Core_RegisterModule("ArenaReady")
+
+PLAYER_ROUND_READY_OK = 1
+PLAYER_ROUND_READY_CANCEL = 0
+
+ROUND_READY = false
+
+
+function ArenaReady_OnInit()
+	Network_RegisterEvent("ArenaReady_EventNtw")
+	for i, player in pairs(PLAYERS) do 
+		-- 未准备好
+		player.roundReady = false
+	end
+end
+
+_area_ready_context = {
+	
+	
+}
+
+function ArenaReady_Start()
+	-- 按钮状态：
+	-- 禁用、未准备、已准备
+	
+	local xaml = [[<Grid VerticalAlignment="Top" Margin="0,10,4,0" HorizontalAlignment="Right" Visibility="{Binding [showRoundReadyUI], Converter={StaticResource BoolToVis}}"
+              VerticalAlignment="Top"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:WPFGUI.HUD.Controls" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:engineSharedEffects="clr-namespace:WPFGUI.Shared.Effects;assembly=EngineUI.Shaders" xmlns:engineUtility="clr-namespace:WPFGUI.Shared.Utility;assembly=EngineUI"
+                    xmlns:esControls="clr-namespace:WPFGUI.Shared.Controls;assembly=EngineUI" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:model="clr-namespace:HUDModelTypes" xmlns:sys="clr-namespace:System;assembly=mscorlib"
+ 					xmlns:esCommands="clr-namespace:WPFGUI.Shared.Commands;assembly=EngineUI" xmlns:esControls="clr-namespace:WPFGUI.Shared.Controls;assembly=EngineUI"
+     				xmlns:esUtility="clr-namespace:WPFGUI.Shared.Utility;assembly=EngineUI" xmlns:feLockout="clr-namespace:FrontEndLockoutModelTypes"
+					esUtility:Telemetry.Name="CreateCustomMatchSemiModal"
+                    mc:Ignorable="d">
+		 <!--  Ready button  -->
+        <!-- <ToggleButton Width="208" Height="50"
+                      esUtility:Telemetry.Name="Ready"
+                      AutomationProperties.ItemType="{esUtility:LocString $11192481}"
+                      AutomationProperties.Name="{esUtility:LocString $11183110}"
+                      Command="{Binding AreanaReady_ReadyUnReadyCommand}"
+                      IsChecked="{Binding [roundReady], Mode=OneWay}"
+					  IsThreeState="True"
+                      Style="{StaticResource PrimaryAnimatedContentButton}"
+                      Visibility="{Binding [showBtn], Converter={StaticResource InvBoolToVis}}"> -->
+
+
+			<Grid Visibility="{Binding [showPlayerUnReadyBtn], Converter={StaticResource BoolToVis}}"  >
+				<Button Width="100" Height="52" Content="就绪" 
+				Style="{StaticResource HUDPrimaryRaisedTextButton}"
+				Command="{Binding [command]}"
+				IsEnabled="{Binding [unReadyBtnEnabled]}"
+				/>
+			</Grid>
+			
+			<Grid Visibility="{Binding [showPlayerReadyBtn], Converter={StaticResource BoolToVis}}">
+				<Button Width="100" Height="52" Content="取消"   
+						Style="{StaticResource HUDPrimaryRaisedTextButton}"
+						Command="{Binding [command]}"
+						IsEnabled="{Binding [readyBtnEnabled]}"
+						/>
+			</Grid>
+			
+			<Grid Visibility="{Binding [showRoundReadyBtn], Converter={StaticResource BoolToVis}}"  >
+				<Button Width="100" Height="52" Content="已开始" 
+						Style="{StaticResource HUDPrimaryRaisedTextButton}"
+						IsEnabled="False"
+						/>
+			</Grid>
+			
+	</Grid>
+     ]]
+	
+	local margin = "4,0,0,245"
+	local player_civ = Player_GetRaceName(localPlayer.id)
+	if player_civ == "english" then
+		margin = "4,0,0,245"
+		
+	elseif player_civ == "chinese" then 
+		margin = "200,0,0,245"
+		
+	elseif player_civ == "malian" then
+		margin = "4,0,0,245"
+		
+	elseif player_civ == "ottoman" then
+		margin = "105,0,0,245"
+		
+	elseif player_civ == "french" then
+		margin = "4,0,0,245"
+		
+	elseif player_civ == "hre" then
+		margin = "105,0,0,245"
+		
+	elseif player_civ == "mongol" then
+		margin = "4,0,0,245"
+		
+	elseif player_civ == "rus" then
+		margin = "105,0,0,245"
+		
+	elseif player_civ == "sultanate" then
+		margin = "200,0,0,245"
+		
+	elseif player_civ == "abbasid" then		
+		margin = "4,0,0,245"
+	end
+	-- ottoman,hre、rus = 100
+	
+	_area_ready_context.margin = margin
+	if UI_IsReplay() then 
+		_area_ready_context.showRoundReadyUI = false 
+	else
+		_area_ready_context.showRoundReadyUI = true 
+	end
+	-- 如果玩家未准备，就显示 就绪 按钮
+	-- 如果玩家未准备，就显示 就绪 按钮
+	_area_ready_context.showPlayerUnReadyBtn  = not localPlayer.roundReady
+	_area_ready_context.unReadyBtnEnabled = true
+	-- 如果玩家已准备，就显示 已就绪 按钮
+	_area_ready_context.showPlayerReadyBtn  = localPlayer.roundReady
+	_area_ready_context.readyBtnEnabled = true
+	
+	_area_ready_context.showRoundReadyBtn  = ROUND_READY
+	_area_ready_context.command  = UI_CreateCommand("ArenaReady_ReadyUnReadyCommand")
+	UI_AddChild("ScarDefault", "XamlPresenter", "arena_ready_ui", { IsHitTestVisible = true, Xaml = xaml, DataContext = UI_CreateDataContext(_area_ready_context)})
+
+end
+
+
+function ArenaReady_UpdateUI()
+	if UI_IsReplay() then 
+		_area_ready_context.showRoundReadyUI = false 
+	else
+		_area_ready_context.showRoundReadyUI = true 
+	end
+	-- 如果玩家未准备，就显示 就绪 按钮
+	_area_ready_context.showPlayerUnReadyBtn  = not localPlayer.roundReady
+	_area_ready_context.unReadyBtnEnabled = true
+	-- 如果玩家已准备，就显示 已就绪 按钮
+	_area_ready_context.showPlayerReadyBtn  = localPlayer.roundReady
+	_area_ready_context.readyBtnEnabled = true
+	
+	_area_ready_context.showRoundReadyBtn  = ROUND_READY
+	if ROUND_READY then  
+		_area_ready_context.showPlayerReadyBtn  = false
+		_area_ready_context.showPlayerUnReadyBtn = false
+	end
+	UI_SetDataContext("arena_ready_ui", _area_ready_context)
+end
+
+
+function ArenaReady_ReadyUnReadyCommand()
+	print("ArenaReady_ReadyUnReadyCommand")
+	if not localPlayer.roundReady then 
+		_area_ready_context.unReadyBtnEnabled = false
+		Network_CallEvent("ArenaReady_EventNtw", PLAYER_ROUND_READY_OK)
+	else
+		_area_ready_context.readyBtnEnabled = false
+		Network_CallEvent("ArenaReady_EventNtw", PLAYER_ROUND_READY_CANCEL)
+	end
+end
+
+function ArenaReady_EventNtw(playerId, data)
+	print("ArenaReady_EventNtw")
+	local player = Core_GetPlayersTableEntry(playerId)
+	if tonumber(data) == PLAYER_ROUND_READY_OK then 
+		player.roundReady = true
+		for i, player in pairs(PLAYERS) do 
+			-- Ai玩家全部准备好
+			if not player.isHuman then 
+				player.roundReady = true 
+			end
+		end
+	elseif tonumber(data) == PLAYER_ROUND_READY_CANCEL then 
+		player.roundReady = false
+	end
+	
+	
+	-- TODO 当玩家都已经准好好后，需要停止准备倒计时
+	if player.id == localPlayer.id then 
+		ArenaReady_UpdateUI()
+		_area_ready_context.unReadyBtnEnabled = true
+		_area_ready_context.readyBtnEnabled = true
+	end
+end
+
+-- 设置本轮已经开始
+function ArenaReady_SetRoundReady()
+	ROUND_READY = true
+	ArenaReady_UpdateUI()
+end
+
+-- 设置本轮未开始
+function ArenaReady_SetRoundUnReady()
+	ROUND_READY = false
+	for i, player in pairs(PLAYERS) do 
+		player.roundReady = false
+	end
+	ArenaReady_UpdateUI()
+end
+
+-- 所有玩家是否都已经就绪
+function ArenaReady_IsAllPlayerReady()
+	for i, player in pairs(PLAYERS) do 
+		if not player.roundReady then 
+			return false
+		end
+	end
+	ArenaReady_SetRoundReady()
+	UI_CreateEventCue(Loc_GetString("$eca6173149134b76b78757235af2aa36:57"), nil, "", "", "sfx_ui_event_queue_high_priority_play")
+	return true 
+end
+
+-- 玩家是否在此轮已经准备好
+function Player_IsRoundReady(playerId)
+	local player = Core_GetPlayersTableEntry(playerId)
+	return player.roundReady
+end
+
+
+function ArenaReady_OnGameOver()
+		
+end

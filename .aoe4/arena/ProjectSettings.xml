@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ProjectSettings xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/Essence.Editor.Core">
+	<LastDocumentDirectory i:nil="true" />
+	<LastDocumentType>Script</LastDocumentType>
+	<PluginSettings xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+		<d2p1:anyType xmlns:d3p1="http://schemas.datacontract.org/2004/07/Essence.Editor.Controls" i:type="d3p1:FileExplorerProjectSettings">
+			<d3p1:ExpandedPaths>
+				<d2p1:KeyValueOfstringArrayOfstringty7Ep6D1>
+					<d2p1:Key>AssetExplorerGeneric</d2p1:Key>
+					<d2p1:Value>
+						<d2p1:string>assets\locdb\arena.locdb</d2p1:string>
+						<d2p1:string>assets\scar\gameplay</d2p1:string>
+						<d2p1:string>assets\scar\utils</d2p1:string>
+						<d2p1:string>assets\scar\winconditions</d2p1:string>
+					</d2p1:Value>
+				</d2p1:KeyValueOfstringArrayOfstringty7Ep6D1>
+			</d3p1:ExpandedPaths>
+			<d3p1:Version>0</d3p1:Version>
+		</d2p1:anyType>
+		<d2p1:anyType xmlns:d3p1="http://schemas.datacontract.org/2004/07/Essence.Editor.ScriptEditor" i:type="d3p1:ScriptProjectSettings">
+			<d3p1:BookmarkSettings />
+			<d3p1:BreakpointSettings>
+				<d3p1:BreakpointSettings>
+					<d3p1:Column>4</d3p1:Column>
+					<d3p1:FileName>FileName|Script|assets\scar\winconditions\arena.scar</d3p1:FileName>
+					<d3p1:IsEnabled>true</d3p1:IsEnabled>
+					<d3p1:Line>604</d3p1:Line>
+					<d3p1:Settings xmlns:d6p1="http://schemas.datacontract.org/2004/07/Essence.Editor.ScriptEditor.Controls">
+						<d6p1:ConditionalExpression></d6p1:ConditionalExpression>
+						<d6p1:ConditionalExpressionEnabled>false</d6p1:ConditionalExpressionEnabled>
+						<d6p1:ConditionalExpressionOperator>IsTrue</d6p1:ConditionalExpressionOperator>
+						<d6p1:HitCount>0</d6p1:HitCount>
+						<d6p1:HitCountEnabled>false</d6p1:HitCountEnabled>
+						<d6p1:HitCountOperator>Equal</d6p1:HitCountOperator>
+						<d6p1:PrintAction></d6p1:PrintAction>
+						<d6p1:PrintActionConsequence>ContinueExecution</d6p1:PrintActionConsequence>
+						<d6p1:PrintActionEnabled>false</d6p1:PrintActionEnabled>
+					</d3p1:Settings>
+				</d3p1:BreakpointSettings>
+				<d3p1:BreakpointSettings>
+					<d3p1:Column>4</d3p1:Column>
+					<d3p1:FileName>FileName|Script|assets\scar\winconditions\arena.scar</d3p1:FileName>
+					<d3p1:IsEnabled>true</d3p1:IsEnabled>
+					<d3p1:Line>611</d3p1:Line>
+					<d3p1:Settings xmlns:d6p1="http://schemas.datacontract.org/2004/07/Essence.Editor.ScriptEditor.Controls">
+						<d6p1:ConditionalExpression></d6p1:ConditionalExpression>
+						<d6p1:ConditionalExpressionEnabled>false</d6p1:ConditionalExpressionEnabled>
+						<d6p1:ConditionalExpressionOperator>IsTrue</d6p1:ConditionalExpressionOperator>
+						<d6p1:HitCount>0</d6p1:HitCount>
+						<d6p1:HitCountEnabled>false</d6p1:HitCountEnabled>
+						<d6p1:HitCountOperator>Equal</d6p1:HitCountOperator>
+						<d6p1:PrintAction></d6p1:PrintAction>
+						<d6p1:PrintActionConsequence>ContinueExecution</d6p1:PrintActionConsequence>
+						<d6p1:PrintActionEnabled>false</d6p1:PrintActionEnabled>
+					</d3p1:Settings>
+				</d3p1:BreakpointSettings>
+				<d3p1:BreakpointSettings>
+					<d3p1:Column>1</d3p1:Column>
+					<d3p1:FileName>FileName|Script|assets\scar\winconditions\arena.scar</d3p1:FileName>
+					<d3p1:IsEnabled>true</d3p1:IsEnabled>
+					<d3p1:Line>730</d3p1:Line>
+					<d3p1:Settings xmlns:d6p1="http://schemas.datacontract.org/2004/07/Essence.Editor.ScriptEditor.Controls">
+						<d6p1:ConditionalExpression></d6p1:ConditionalExpression>
+						<d6p1:ConditionalExpressionEnabled>false</d6p1:ConditionalExpressionEnabled>
+						<d6p1:ConditionalExpressionOperator>IsTrue</d6p1:ConditionalExpressionOperator>
+						<d6p1:HitCount>0</d6p1:HitCount>
+						<d6p1:HitCountEnabled>false</d6p1:HitCountEnabled>
+						<d6p1:HitCountOperator>Equal</d6p1:HitCountOperator>
+						<d6p1:PrintAction></d6p1:PrintAction>
+						<d6p1:PrintActionConsequence>ContinueExecution</d6p1:PrintActionConsequence>
+						<d6p1:PrintActionEnabled>false</d6p1:PrintActionEnabled>
+					</d3p1:Settings>
+				</d3p1:BreakpointSettings>
+				<d3p1:BreakpointSettings>
+					<d3p1:Column>1</d3p1:Column>
+					<d3p1:FileName>FileName|Script|assets\scar\winconditions\arena.scar</d3p1:FileName>
+					<d3p1:IsEnabled>true</d3p1:IsEnabled>
+					<d3p1:Line>720</d3p1:Line>
+					<d3p1:Settings xmlns:d6p1="http://schemas.datacontract.org/2004/07/Essence.Editor.ScriptEditor.Controls">
+						<d6p1:ConditionalExpression></d6p1:ConditionalExpression>
+						<d6p1:ConditionalExpressionEnabled>false</d6p1:ConditionalExpressionEnabled>
+						<d6p1:ConditionalExpressionOperator>IsTrue</d6p1:ConditionalExpressionOperator>
+						<d6p1:HitCount>0</d6p1:HitCount>
+						<d6p1:HitCountEnabled>false</d6p1:HitCountEnabled>
+						<d6p1:HitCountOperator>Equal</d6p1:HitCountOperator>
+						<d6p1:PrintAction></d6p1:PrintAction>
+						<d6p1:PrintActionConsequence>ContinueExecution</d6p1:PrintActionConsequence>
+						<d6p1:PrintActionEnabled>false</d6p1:PrintActionEnabled>
+					</d3p1:Settings>
+				</d3p1:BreakpointSettings>
+				<d3p1:BreakpointSettings>
+					<d3p1:Column>1</d3p1:Column>
+					<d3p1:FileName>FileName|Script|C:\Users\heartmove\AppData\Local\Temp\arena.scar</d3p1:FileName>
+					<d3p1:IsEnabled>true</d3p1:IsEnabled>
+					<d3p1:Line>1660</d3p1:Line>
+					<d3p1:Settings xmlns:d6p1="http://schemas.datacontract.org/2004/07/Essence.Editor.ScriptEditor.Controls">
+						<d6p1:ConditionalExpression></d6p1:ConditionalExpression>
+						<d6p1:ConditionalExpressionEnabled>false</d6p1:ConditionalExpressionEnabled>
+						<d6p1:ConditionalExpressionOperator>IsTrue</d6p1:ConditionalExpressionOperator>
+						<d6p1:HitCount>0</d6p1:HitCount>
+						<d6p1:HitCountEnabled>false</d6p1:HitCountEnabled>
+						<d6p1:HitCountOperator>Equal</d6p1:HitCountOperator>
+						<d6p1:PrintAction></d6p1:PrintAction>
+						<d6p1:PrintActionConsequence>ContinueExecution</d6p1:PrintActionConsequence>
+						<d6p1:PrintActionEnabled>false</d6p1:PrintActionEnabled>
+					</d3p1:Settings>
+				</d3p1:BreakpointSettings>
+				<d3p1:BreakpointSettings>
+					<d3p1:Column>1</d3p1:Column>
+					<d3p1:FileName>FileName|Script|C:\Users\heartmove\AppData\Local\Temp\arena.scar</d3p1:FileName>
+					<d3p1:IsEnabled>true</d3p1:IsEnabled>
+					<d3p1:Line>1617</d3p1:Line>
+					<d3p1:Settings xmlns:d6p1="http://schemas.datacontract.org/2004/07/Essence.Editor.ScriptEditor.Controls">
+						<d6p1:ConditionalExpression></d6p1:ConditionalExpression>
+						<d6p1:ConditionalExpressionEnabled>false</d6p1:ConditionalExpressionEnabled>
+						<d6p1:ConditionalExpressionOperator>IsTrue</d6p1:ConditionalExpressionOperator>
+						<d6p1:HitCount>0</d6p1:HitCount>
+						<d6p1:HitCountEnabled>false</d6p1:HitCountEnabled>
+						<d6p1:HitCountOperator>Equal</d6p1:HitCountOperator>
+						<d6p1:PrintAction></d6p1:PrintAction>
+						<d6p1:PrintActionConsequence>ContinueExecution</d6p1:PrintActionConsequence>
+						<d6p1:PrintActionEnabled>false</d6p1:PrintActionEnabled>
+					</d3p1:Settings>
+				</d3p1:BreakpointSettings>
+				<d3p1:BreakpointSettings>
+					<d3p1:Column>1</d3p1:Column>
+					<d3p1:FileName>FileName|Script|assets\scar\gameplay\observer_ui.scar</d3p1:FileName>
+					<d3p1:IsEnabled>true</d3p1:IsEnabled>
+					<d3p1:Line>706</d3p1:Line>
+					<d3p1:Settings xmlns:d6p1="http://schemas.datacontract.org/2004/07/Essence.Editor.ScriptEditor.Controls">
+						<d6p1:ConditionalExpression></d6p1:ConditionalExpression>
+						<d6p1:ConditionalExpressionEnabled>false</d6p1:ConditionalExpressionEnabled>
+						<d6p1:ConditionalExpressionOperator>IsTrue</d6p1:ConditionalExpressionOperator>
+						<d6p1:HitCount>0</d6p1:HitCount>
+						<d6p1:HitCountEnabled>false</d6p1:HitCountEnabled>
+						<d6p1:HitCountOperator>Equal</d6p1:HitCountOperator>
+						<d6p1:PrintAction></d6p1:PrintAction>
+						<d6p1:PrintActionConsequence>ContinueExecution</d6p1:PrintActionConsequence>
+						<d6p1:PrintActionEnabled>false</d6p1:PrintActionEnabled>
+					</d3p1:Settings>
+				</d3p1:BreakpointSettings>
+				<d3p1:BreakpointSettings>
+					<d3p1:Column>1</d3p1:Column>
+					<d3p1:FileName>FileName|Script|assets\scar\winconditions\arena.scar</d3p1:FileName>
+					<d3p1:IsEnabled>true</d3p1:IsEnabled>
+					<d3p1:Line>768</d3p1:Line>
+					<d3p1:Settings xmlns:d6p1="http://schemas.datacontract.org/2004/07/Essence.Editor.ScriptEditor.Controls">
+						<d6p1:ConditionalExpression></d6p1:ConditionalExpression>
+						<d6p1:ConditionalExpressionEnabled>false</d6p1:ConditionalExpressionEnabled>
+						<d6p1:ConditionalExpressionOperator>IsTrue</d6p1:ConditionalExpressionOperator>
+						<d6p1:HitCount>0</d6p1:HitCount>
+						<d6p1:HitCountEnabled>false</d6p1:HitCountEnabled>
+						<d6p1:HitCountOperator>Equal</d6p1:HitCountOperator>
+						<d6p1:PrintAction></d6p1:PrintAction>
+						<d6p1:PrintActionConsequence>ContinueExecution</d6p1:PrintActionConsequence>
+						<d6p1:PrintActionEnabled>false</d6p1:PrintActionEnabled>
+					</d3p1:Settings>
+				</d3p1:BreakpointSettings>
+			</d3p1:BreakpointSettings>
+		</d2p1:anyType>
+	</PluginSettings>
+	<RecentFiles>
+		<History xmlns:d3p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+			<d3p1:string>G:\aoe4_code\arena\assets\locdb\arena.locdb</d3p1:string>
+			<d3p1:string>G:\aoe4_code\arena\assets\scar\gameplay\cards.scar</d3p1:string>
+			<d3p1:string>G:\aoe4_code\arena\assets\scar\winconditions\arena.scar</d3p1:string>
+			<d3p1:string>G:\aoe4_code\arena\assets\attrib\instances\ebps\races\abbasid\buildings\building_unit_cavalry_control_abb.xml</d3p1:string>
+			<d3p1:string>G:\aoe4_code\arena\assets\scar\gameplay\areana_ai.scar</d3p1:string>
+			<d3p1:string>G:\aoe4_code\arena\assets\scar\utils\arena_data.scar</d3p1:string>
+			<d3p1:string>G:\aoe4_code\arena\assets\scar\utils\arena_age_upgrade.scar</d3p1:string>
+			<d3p1:string>G:\aoe4_code\arena\assets\scar\utils\poison_circle.scar</d3p1:string>
+			<d3p1:string>C:\Users\heartmove\AppData\Local\Temp\flavius_micro.scar</d3p1:string>
+			<d3p1:string>C:\Users\heartmove\Documents\My Games\Age of Empires IV\mods\extension\subscriptions\57415\e0f849aa1baaa55f8344530e97f2e16a4abd52708187171d9b69740f97c98b12.sga</d3p1:string>
+		</History>
+	</RecentFiles>
+</ProjectSettings>

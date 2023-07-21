@@ -1,0 +1,258 @@
+<instance version="4" description="" template="ebps">
+	<list name="extensions">
+		<template_reference name="exts" value="ebpextensions\entity_blueprint_ext" List.ItemID="393447683" List.ParentItemID="393447683">
+			<instance_reference name="animator_attachments" value="attachments\attachment_lists\races\mongol\buildings\building_unit_religious_mongol" overrideParent="True" />
+			<bool name="browsable_in_editor" value="True" overrideParent="True" />
+			<enum name="subclass_type" value="MongolBuilding" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\site_ext" List.ItemID="1663451537" List.ParentItemID="1663451537">
+			<bool name="snap_to_construction_grid" value="True" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\type_ext" List.ItemID="-480952190" List.ParentItemID="-480952190">
+			<list name="unit_type_list" overrideParent="True">
+				<enum name="unit_type" value="building" List.ItemID="-1913870422" />
+				<enum name="unit_type" value="relic_dropoff" List.ItemID="-673591127" />
+				<enum name="unit_type" value="monastery" List.ItemID="1102218431" />
+				<enum name="unit_type" value="siegeable" List.ItemID="685430888" />
+				<enum name="unit_type" value="packable_building" List.ItemID="-187554735" />
+				<enum name="unit_type" value="scar_monastery" List.ItemID="1445266045" />
+			</list>
+			<list name="race_type_list" overrideParent="True">
+				<instance_reference name="race_type" value="racebps\mongol" List.ItemID="1383823265" />
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\construction_ext" List.ItemID="-2006647271" List.ParentItemID="-2006647271">
+			<state_tree_node name="can_be_cancelled_state_tree_conditions" value="entity_construction_queries_mon\Can_Cancel_Construction" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\ui_ext" List.ItemID="1872529639" List.ParentItemID="1872529639">
+			<file name="icon_name" value="races\common\buildings\monastery" overrideParent="True" />
+			<locstring name="screen_name" value="11202533" overrideParent="True" />
+			<group name="ui_codex_info">
+				<bool name="exclusive" value="False" overrideParent="True" />
+			</group>
+			<list name="ui_extra_infos" overrideParent="True">
+				<template_reference name="ui_extra_info" value="info\ui_extra_info" List.ItemID="-388213556">
+					<file name="icon" value="influence_buff" />
+					<locstring name="description" value="11198259" />
+					<template_reference name="description_formatter" value="">
+					</template_reference>
+				</template_reference>
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\spawner_ext" List.ItemID="-1541268486" List.ParentItemID="-1541268486">
+			<list name="spawn_items" overrideParent="True">
+				<group name="spawn_item" List.ItemID="1585340744">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\mongol\unit_monk_3_mon" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="1" />
+						<int name="ui_position_column" value="1" />
+					</group>
+					<instance_reference name="ui_menu" value="" />
+					<int name="number_to_spawn" value="1" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="0" />
+						<float name="wood" value="0" />
+						<float name="stone" value="0" />
+						<float name="gold" value="0" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="0" />
+					<locstring name="ui_help_text" value="0" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\building_monastery\produce_monk" overrideParent="True" />
+				</group>
+				<group name="spawn_item" comment="Monk (Double unit)" List.ItemID="1076586169">
+					<instance_reference name="entity" value="" />
+					<instance_reference name="squad" value="sbps\races\mongol\unit_monk_3_double_mon" overrideParent="True" />
+					<bool name="spawn_at_map_entry_point" value="False" />
+					<group name="ui_position">
+						<int name="ui_position_row" value="1" />
+						<int name="ui_position_column" value="1" />
+					</group>
+					<instance_reference name="ui_menu" value="menu\mon_improved_production_small" overrideParent="True" />
+					<int name="number_to_spawn" value="2" overrideParent="True" />
+					<enum_table name="item_cost_adjustment">
+						<float name="action" value="0" />
+						<float name="command" value="0" />
+						<float name="popcap" value="0" />
+						<float name="food" value="0" />
+						<float name="wood" value="0" />
+						<float name="stone" value="75" overrideParent="True" />
+						<float name="gold" value="-75" overrideParent="True" />
+						<float name="militia_hre" value="0" />
+					</enum_table>
+					<locstring name="ui_screen_name" value="11153273" />
+					<locstring name="ui_help_text" value="11157617" />
+					<bool name="can_be_cancelled" value="True" />
+					<int name="number_to_queue_up_to_when_modified" value="5" />
+					<list name="additional_squads">
+					</list>
+					<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\building_monastery\produce_monk" overrideParent="True" />
+				</group>
+			</list>
+			<int name="max_queue_size_override" value="1000" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\upgrade_ext" List.ItemID="-1149097445" List.ParentItemID="-1149097445">
+			<list name="standard_upgrades" overrideParent="True">
+				<instance_reference name="upgrade" value="upgrade\races\common\research\unit\upgrade_unit_religious_herbal_medicine_4" List.ItemID="1950554949" />
+				<instance_reference name="upgrade" value="upgrade\races\mongol\research\unit\upgrade_unit_religious_piety_4_mon" overrideParent="True" List.ItemID="-1559082821" />
+				<instance_reference name="upgrade" value="upgrade\races\mongol\research\unit\upgrade_unit_religious_herbal_medicine_4_improved_mon" List.ItemID="814923502" />
+				<instance_reference name="upgrade" value="upgrade\races\mongol\research\unit\upgrade_unit_religious_piety_4_improved_mon" List.ItemID="-2032265631" />
+				<instance_reference name="upgrade" value="upgrade\races\mongol\research\upgrade_religious_monastery_ovoo_mon" overrideParent="True" List.ItemID="1507057030" />
+				<instance_reference name="upgrade" value="upgrade\races\mongol\research\unit\upgrade_unit_religious_tithe_barn_4_mon" List.ItemID="-796071473" />
+				<instance_reference name="upgrade" value="upgrade\races\mongol\research\unit\upgrade_unit_religious_tithe_barn_4_improved_mon" List.ItemID="-400329988" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\castle_age_1" mod="eca6173149134b76b78757235af2aa36" overrideParent="True" List.ItemID="-332331919" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\castle_age_2" mod="eca6173149134b76b78757235af2aa36" List.ItemID="-2103892956" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\castle_age_3" mod="eca6173149134b76b78757235af2aa36" List.ItemID="-1128476724" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\castle_age_4" mod="eca6173149134b76b78757235af2aa36" List.ItemID="-196924717" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\castle_age_5" mod="eca6173149134b76b78757235af2aa36" List.ItemID="572769423" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_1" mod="eca6173149134b76b78757235af2aa36" List.ItemID="-1998410905" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_2" mod="eca6173149134b76b78757235af2aa36" List.ItemID="-2093385786" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_3" mod="eca6173149134b76b78757235af2aa36" List.ItemID="258744744" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_4" mod="eca6173149134b76b78757235af2aa36" List.ItemID="-1326542158" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_5" mod="eca6173149134b76b78757235af2aa36" List.ItemID="940444413" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_6" mod="eca6173149134b76b78757235af2aa36" List.ItemID="-1427690678" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_7" mod="eca6173149134b76b78757235af2aa36" List.ItemID="9535038" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_8" mod="eca6173149134b76b78757235af2aa36" List.ItemID="330412457" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_9" mod="eca6173149134b76b78757235af2aa36" List.ItemID="367879606" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_10" mod="eca6173149134b76b78757235af2aa36" List.ItemID="-776980828" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\castle_age_6" mod="eca6173149134b76b78757235af2aa36" List.ItemID="1308172713" />
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\requirement_ext" List.ItemID="-259506872" List.ParentItemID="-259506872">
+			<list name="requirement_table" overrideParent="True">
+				<template_reference name="required" value="requirements\required_player_upgrade" List.ItemID="1724496747">
+					<enum name="reason" value="usage" />
+					<locstring name="ui_name" value="0" />
+					<bool name="is_present" value="True" />
+					<int name="max_completed" value="100" />
+					<int name="min_completed" value="1" />
+					<instance_reference name="upgrade_name" value="upgrade\dev\ages\castle_age" mod="eca6173149134b76b78757235af2aa36" />
+					<bool name="include_queued" value="False" />
+					<group name="include_pbg_parenting">
+						<bool name="include_child_pbgs" value="False" />
+						<bool name="include_parent_pbgs" value="False" />
+					</group>
+					<bool name="include_completed" value="True" />
+				</template_reference>
+				<template_reference name="required" value="requirements\required_player_upgrade" List.ItemID="1308800946">
+					<enum name="reason" value="usage_and_display" overrideParent="True" />
+					<locstring name="ui_name" value="0" />
+					<bool name="is_present" value="False" overrideParent="True" />
+					<int name="max_completed" value="100" />
+					<int name="min_completed" value="1" />
+					<instance_reference name="upgrade_name" value="upgrade\races\mongol\research\upgrade_religious_monastery_ovoo_mon" overrideParent="True" />
+					<bool name="include_completed" value="True" overrideParent="True" />
+					<bool name="include_queued" value="False" />
+					<group name="include_pbg_parenting">
+						<bool name="include_child_pbgs" value="False" />
+						<bool name="include_parent_pbgs" value="False" />
+					</group>
+				</template_reference>
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\ability_ext" List.ItemID="-370501690" List.ParentItemID="-370501690">
+			<list name="abilities" overrideParent="True">
+				<instance_reference name="ability" value="abilities\timed_abilities\civ_core\core_building_scuttle" List.ItemID="-1009208153" />
+				<instance_reference name="ability" value="abilities\toggle_abilities\mongol\pack_building_mon" List.ItemID="360010522" />
+				<instance_reference name="ability" value="abilities\toggle_abilities\mongol\cancel_unpacking_building_mon" List.ItemID="-2024673383" />
+				<instance_reference name="ability" value="abilities\toggle_abilities\mongol\dummy_unpacking_building_mon" List.ItemID="-1955078945" />
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\action_tree_ext" List.ItemID="-936168652" List.ParentItemID="-936168652">
+			<state_tree_node name="fallback_default_move_command_conditions" value="entity_construction_queries_mon\Can_Queue_Move_Commands" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\statemodel_ext" comment="Make sure the building and moving building are referencing the same schema, if they are using different schemas unpacking will break." List.ItemID="1785688339" List.ParentItemID="1785688339">
+			<instance_reference name="schema" value="statemodel_schema\buildings\civilizations\mongols\unit_religious_mon" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\audio_ext" List.ItemID="715176696" List.ParentItemID="715176696">
+			<string name="single_select_event" value="sfx_ui_unit_religious_building_mon_selection_play" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\tier_ext" List.ItemID="-968956089" List.ListAction="Append">
+			<list name="tier_group_list">
+				<list name="tier_group" overrideParent="True" List.ItemID="267994991">
+					<group name="tier" List.ItemID="-2115289157">
+						<list name="tier_requirements">
+						</list>
+						<instance_reference name="attachments" value="attachments\attachment_lists\civilizations\mongol\buildings\unit_religious_mon\tier3_unit_religious_mon" />
+						<template_reference name="statetree_tier_reached_actions" value="state_tree_reference_info">
+							<state_tree_node name="ActionTree_OpeningBranch" value="" />
+							<bool name="start_suspended" value="False" />
+						</template_reference>
+						<instance_reference name="statetree_tier_requirements_pbg" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_entity" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_squad" value="" />
+						<string name="tier_attachment_action" value="" />
+						<template_reference name="blueprint_conversion_parameters" value="blueprint_conversion_parameters">
+							<bool name="reissue_commands" value="False" />
+							<bool name="continue_state_trees" value="False" />
+							<bool name="remove_from_pending_deaths" value="False" />
+						</template_reference>
+						<string name="inventory_category_to_refresh_on_tier_up" value="" />
+					</group>
+				</list>
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\district_generator_ext" overrideParent="True" List.ItemID="-850395598" List.ListAction="Append">
+			<float name="range_metres" value="0" overrideParent="True" />
+			<int name="generator_value" value="0" overrideParent="True" />
+			<bool name="disable_generation_on_spawn" value="False" />
+			<bool name="is_root_generator" value="False" />
+			<int name="district_palette_id" value="0" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\district_bonuses_ext" overrideParent="True" List.ItemID="1719661090" List.ListAction="Append">
+			<bool name="update_on_upgrade_changed" value="True" overrideParent="True" />
+			<bool name="update_on_construction_complete" value="True" />
+			<list name="district_bonuses" overrideParent="True">
+				<template_reference name="district_bonus" value="district_bonus" comment="Ovoo district bonus.&#xD;&#xA;&#xD;&#xA;Production buildings can produce double units at the cost of stone.&#xD;&#xA;&#xD;&#xA;Upgrade bonus at the cost of stone.&#xD;&#xA;" List.ItemID="610841676">
+					<template_reference name="requirement" value="options\ebpextensions\districtbonusesext\requirements\district_bonus_entity_requirement">
+						<list name="dynamic_requirements">
+						</list>
+						<list name="satisfying_entity_groups" overrideParent="True">
+							<group name="satisfying_entity_group" List.ItemID="523252289">
+								<list name="satisfying_entities" overrideParent="True">
+									<instance_reference name="entity" value="ebps\races\mongol\buildings\building_stone_deposit_ovoo_large_mon" overrideParent="True" List.ItemID="-986369919" />
+									<instance_reference name="entity" value="ebps\races\mongol\buildings\building_wonder_age3_stupa_mon" List.ItemID="-54190235" />
+									<instance_reference name="entity" value="ebps\races\mongol\buildings\building_stone_deposit_ovoo_mon" List.ItemID="31437022" />
+								</list>
+							</group>
+						</list>
+					</template_reference>
+					<uniqueid name="id" value="1073741870" />
+					<template_reference name="action_tree" value="state_tree_reference_info">
+						<state_tree_node name="ActionTree_OpeningBranch" value="district_ovoo\root" overrideParent="True" />
+						<bool name="start_suspended" value="False" />
+					</template_reference>
+				</template_reference>
+				<template_reference name="district_bonus" value="district_bonus" comment="Stupa specialization bonus (Monasteries grant the Ovoo bonus).&#xD;&#xA;&#xD;&#xA;Production buildings can produce double units at the cost of stone.&#xD;&#xA;&#xD;&#xA;Upgrade bonus at the cost of stone.&#xD;&#xA;" overrideParent="True" List.ItemID="1777016290">
+					<template_reference name="requirement" value="options\ebpextensions\districtbonusesext\requirements\district_bonus_entity_requirement">
+						<list name="dynamic_requirements" overrideParent="True">
+						</list>
+						<list name="satisfying_entity_groups" overrideParent="True">
+							<group name="satisfying_entity_group" List.ItemID="619331320">
+								<list name="satisfying_entities" overrideParent="True">
+									<instance_reference name="entity" value="ebps\races\mongol\buildings\building_unit_religious_mon" mod="eca6173149134b76b78757235af2aa36" overrideParent="True" List.ItemID="-1937123477" />
+								</list>
+							</group>
+						</list>
+					</template_reference>
+					<uniqueid name="id" value="1073741871" />
+					<template_reference name="action_tree" value="state_tree_reference_info">
+						<state_tree_node name="ActionTree_OpeningBranch" value="district_spec_monastery_mon" overrideParent="True" />
+						<bool name="start_suspended" value="False" />
+					</template_reference>
+				</template_reference>
+			</list>
+		</template_reference>
+	</list>
+	<uniqueid name="pbgid" value="137157" />
+	<instance_reference name="parent_pbg" value="ebps\races\core\buildings\building_unit_religious" />
+</instance>

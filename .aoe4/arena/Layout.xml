@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LayoutRoot>
+  <RootPanel Orientation="Horizontal">
+    <LayoutAnchorablePaneGroup Orientation="Horizontal" DockWidth="348" FloatingWidth="300" FloatingHeight="800" FloatingLeft="200" FloatingTop="200">
+      <LayoutAnchorablePane DockHeight="200" FloatingWidth="300" FloatingHeight="800" FloatingLeft="200" FloatingTop="200">
+        <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Asset Explorer" IsSelected="True" ContentId="EssenceEditor.AssetExplorer" FloatingLeft="200" FloatingTop="200" FloatingWidth="300" FloatingHeight="800" LastActivationTimeStamp="07/21/2023 01:37:45" PreviousContainerId="1b84d0aa-3fd1-4781-909d-fa3e4b760d6d" PreviousContainerIndex="1" />
+      </LayoutAnchorablePane>
+    </LayoutAnchorablePaneGroup>
+    <LayoutPanel Orientation="Vertical">
+      <LayoutDocumentPane Id="e7e59ac9-40f8-4e1d-9715-bdfa7222a4e0">
+        <LayoutDocument Title="arena.locdb" IsSelected="True" IsLastFocusedDocument="True" ContentId="FileName|LocDB|assets\locdb\arena.locdb" ToolTip="G:\aoe4_code\arena\assets\locdb\arena.locdb" LastActivationTimeStamp="07/21/2023 01:37:46" />
+        <LayoutDocument Title="cards.scar" ContentId="FileName|Script|assets\scar\gameplay\cards.scar" ToolTip="G:\aoe4_code\arena\assets\scar\gameplay\cards.scar" LastActivationTimeStamp="07/21/2023 01:37:43" />
+        <LayoutDocument Title="Enums" ContentId="Attributes.Enums" LastActivationTimeStamp="07/20/2023 21:25:03" />
+        <LayoutDocument Title="arena_data.scar" ContentId="FileName|Script|assets\scar\utils\arena_data.scar" ToolTip="G:\aoe4_code\arena\assets\scar\utils\arena_data.scar" LastActivationTimeStamp="07/20/2023 21:18:09" />
+        <LayoutDocument Title="arena.scar" ContentId="FileName|Script|assets\scar\winconditions\arena.scar" ToolTip="G:\aoe4_code\arena\assets\scar\winconditions\arena.scar" LastActivationTimeStamp="07/20/2023 21:28:33" />
+        <LayoutDocument Title="arena_age_upgrade.scar" ContentId="FileName|Script|assets\scar\utils\arena_age_upgrade.scar" ToolTip="G:\aoe4_code\arena\assets\scar\utils\arena_age_upgrade.scar" LastActivationTimeStamp="07/20/2023 13:50:21" />
+        <LayoutDocument Title="areana_ai.scar" ContentId="FileName|Script|assets\scar\gameplay\areana_ai.scar" ToolTip="G:\aoe4_code\arena\assets\scar\gameplay\areana_ai.scar" LastActivationTimeStamp="07/20/2023 13:49:53" />
+        <LayoutDocument Title="poison_circle.scar" ContentId="FileName|Script|assets\scar\utils\poison_circle.scar" ToolTip="G:\aoe4_code\arena\assets\scar\utils\poison_circle.scar" LastActivationTimeStamp="07/19/2023 21:26:07" />
+        <LayoutDocument Title="flavius_micro.scar" ContentId="FileName|Script|C:\Users\heartmove\AppData\Local\Temp\flavius_micro.scar" ToolTip="C:\Users\heartmove\AppData\Local\Temp\flavius_micro.scar" LastActivationTimeStamp="07/18/2023 17:56:20" />
+        <LayoutDocument Title="e0f849aa1baaa55f8344530e97f2e16a4abd52708187171d9b69740f97c98b12.sga" ContentId="FileName|Archive|C:\Users\heartmove\Documents\My Games\Age of Empires IV\mods\extension\subscriptions\57415\e0f849aa1baaa55f8344530e97f2e16a4abd52708187171d9b69740f97c98b12.sga" ToolTip="C:\Users\heartmove\Documents\My Games\Age of Empires IV\mods\extension\subscriptions\57415\e0f849aa1baaa55f8344530e97f2e16a4abd52708187171d9b69740f97c98b12.sga" LastActivationTimeStamp="07/18/2023 17:54:06" />
+        <LayoutDocument Title="arena_buildings.scar" ContentId="FileName|Script|assets\scar\utils\arena_buildings.scar" ToolTip="G:\aoe4_code\arena\assets\scar\utils\arena_buildings.scar" LastActivationTimeStamp="07/19/2023 21:18:14" />
+        <LayoutDocument Title="researches.scar" ContentId="FileName|Script|assets\scar\utils\researches.scar" ToolTip="G:\aoe4_code\arena\assets\scar\utils\researches.scar" FloatingLeft="-170.4" FloatingTop="74.4" FloatingWidth="1388" FloatingHeight="705.6" LastActivationTimeStamp="07/18/2023 00:49:18" PreviousContainerId="e7e59ac9-40f8-4e1d-9715-bdfa7222a4e0" PreviousContainerIndex="1" />
+        <LayoutDocument Title="arena.rdo" ContentId="Reflect|Essence.Editor.ReflectEditor.Controls.DefaultReflectControlActivator|0x406D190B00DE7305" LastActivationTimeStamp="07/17/2023 23:56:29" />
+        <LayoutDocument Title="238cd424bfcc8e4f8a3329c232a101937002c020bc37829906991df5de3476dd.sga" ContentId="FileName|Archive|C:\Users\heartmove\Documents\My Games\Age of Empires IV\mods\extension\subscriptions\169511\238cd424bfcc8e4f8a3329c232a101937002c020bc37829906991df5de3476dd.sga" ToolTip="C:\Users\heartmove\Documents\My Games\Age of Empires IV\mods\extension\subscriptions\169511\238cd424bfcc8e4f8a3329c232a101937002c020bc37829906991df5de3476dd.sga" LastActivationTimeStamp="07/16/2023 13:04:53" />
+        <LayoutDocument Title="winner_award.scar" ContentId="FileName|Script|assets\scar\gameplay\winner_award.scar" ToolTip="G:\aoe4_code\arena\assets\scar\gameplay\winner_award.scar" LastActivationTimeStamp="07/16/2023 11:59:27" />
+        <LayoutDocument Title="unit_ui.scar" ContentId="FileName|Script|assets\scar\gameplay\unit_ui.scar" ToolTip="G:\aoe4_code\arena\assets\scar\gameplay\unit_ui.scar" LastActivationTimeStamp="07/16/2023 13:04:54" />
+        <LayoutDocument Title="match_ui.scar" ContentId="FileName|Script|assets\scar\gameplay\match_ui.scar" ToolTip="G:\aoe4_code\arena\assets\scar\gameplay\match_ui.scar" LastActivationTimeStamp="07/16/2023 00:58:55" />
+        <LayoutDocument Title="observer_ui.scar" ContentId="FileName|Script|assets\scar\gameplay\observer_ui.scar" ToolTip="G:\aoe4_code\arena\assets\scar\gameplay\observer_ui.scar" LastActivationTimeStamp="07/16/2023 01:13:36" />
+        <LayoutDocument Title="delhi_data.scar" ContentId="FileName|Script|assets\scar\utils\delhi_data.scar" ToolTip="G:\aoe4_code\arena\assets\scar\utils\delhi_data.scar" LastActivationTimeStamp="07/16/2023 00:50:58" />
+        <LayoutDocument Title="researches_ui.scar" ContentId="FileName|Script|assets\scar\gameplay\researches_ui.scar" ToolTip="G:\aoe4_code\arena\assets\scar\gameplay\researches_ui.scar" LastActivationTimeStamp="07/15/2023 02:05:06" />
+        <LayoutDocument Title="round_ready.scar" ContentId="FileName|Script|assets\scar\gameplay\round_ready.scar" ToolTip="G:\aoe4_code\arena\assets\scar\gameplay\round_ready.scar" LastActivationTimeStamp="07/14/2023 22:40:52" />
+        <LayoutDocument Title="wheel_battle_ui.scar" ContentId="FileName|Script|assets\scar\gameplay\wheel_battle_ui.scar" ToolTip="G:\aoe4_code\arena\assets\scar\gameplay\wheel_battle_ui.scar" LastActivationTimeStamp="07/12/2023 23:33:39" />
+      </LayoutDocumentPane>
+      <LayoutAnchorablePane Id="1b84d0aa-3fd1-4781-909d-fa3e4b760d6d" Name="anchorablesPane" DockHeight="304.8">
+        <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Output" ContentId="Output" LastActivationTimeStamp="07/20/2023 14:16:29" />
+        <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Error List" IsSelected="True" ContentId="ErrorList" LastActivationTimeStamp="07/21/2023 01:21:56" />
+        <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Object Browser" ContentId="ScenarioEditor.ObjectBrowser" LastActivationTimeStamp="07/18/2023 16:27:10" />
+        <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Blueprint List" ContentId="ScenarioEditor.AssetBlueprint" LastActivationTimeStamp="07/18/2023 16:27:10" />
+        <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Find Results 1" ContentId="FindResults" LastActivationTimeStamp="07/19/2023 21:31:04" />
+        <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Find References Results 1" ContentId="FindReferencesResults1" LastActivationTimeStamp="07/20/2023 21:26:41" />
+        <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Type Browser" ContentId="ScenarioEditor.ReflectTypeBrowser" LastActivationTimeStamp="07/18/2023 17:54:06" />
+      </LayoutAnchorablePane>
+    </LayoutPanel>
+    <LayoutAnchorablePaneGroup Orientation="Vertical" DockWidth="308.8" DockHeight="200">
+      <LayoutAnchorablePane Id="d0e5ba25-a5f4-48a5-9eb3-38c687118dba" DockWidth="308.8" FloatingWidth="300" FloatingHeight="800" FloatingLeft="200" FloatingTop="200">
+        <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Properties" IsSelected="True" ContentId="EssenceEditor.Properties" FloatingLeft="200" FloatingTop="200" FloatingWidth="300" FloatingHeight="800" LastActivationTimeStamp="01/24/2020 11:53:24" PreviousContainerId="1b84d0aa-3fd1-4781-909d-fa3e4b760d6d" PreviousContainerIndex="1" />
+      </LayoutAnchorablePane>
+      <LayoutAnchorablePane Id="78c06263-eb86-40c1-8abf-6d89a3781df0" FloatingWidth="300" FloatingHeight="250" FloatingLeft="200" FloatingTop="200" />
+      <LayoutAnchorablePaneGroup Orientation="Horizontal" DockHeight="0.25*" FloatingWidth="300" FloatingHeight="200" FloatingLeft="200" FloatingTop="200">
+        <LayoutAnchorablePane DockHeight="100" FloatingWidth="300" FloatingHeight="100" FloatingLeft="200" FloatingTop="200">
+          <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Playback" IsSelected="True" ContentId="EssenceEditor.Playback" FloatingLeft="200" FloatingTop="200" FloatingWidth="300" FloatingHeight="100" LastActivationTimeStamp="07/20/2023 14:00:43" PreviousContainerId="1b84d0aa-3fd1-4781-909d-fa3e4b760d6d" PreviousContainerIndex="1" />
+        </LayoutAnchorablePane>
+      </LayoutAnchorablePaneGroup>
+    </LayoutAnchorablePaneGroup>
+  </RootPanel>
+  <TopSide />
+  <RightSide />
+  <LeftSide />
+  <BottomSide />
+  <FloatingWindows />
+  <Hidden>
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Transformation" IsSelected="True" ContentId="ScenarioEditor.Transformation" FloatingLeft="200" FloatingTop="200" FloatingWidth="250" FloatingHeight="300" LastActivationTimeStamp="07/21/2023 01:37:43" PreviousContainerId="78c06263-eb86-40c1-8abf-6d89a3781df0" PreviousContainerIndex="0" />
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Painter" IsSelected="True" ContentId="ScenarioEditor.Painter" FloatingLeft="200" FloatingTop="200" FloatingWidth="300" FloatingHeight="800" LastActivationTimeStamp="07/21/2023 01:37:43" PreviousContainerId="d0e5ba25-a5f4-48a5-9eb3-38c687118dba" PreviousContainerIndex="1" />
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Watch 1" IsSelected="True" ContentId="Watch1" LastActivationTimeStamp="07/21/2023 01:37:43" PreviousContainerId="1b84d0aa-3fd1-4781-909d-fa3e4b760d6d" PreviousContainerIndex="7" />
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Globals" IsSelected="True" ContentId="Globals" LastActivationTimeStamp="07/21/2023 01:37:43" PreviousContainerId="1b84d0aa-3fd1-4781-909d-fa3e4b760d6d" PreviousContainerIndex="8" />
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Locals" IsSelected="True" ContentId="Locals" LastActivationTimeStamp="07/21/2023 01:37:43" PreviousContainerId="1b84d0aa-3fd1-4781-909d-fa3e4b760d6d" PreviousContainerIndex="7" />
+    <LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Call Stack" IsSelected="True" ContentId="CallStack" LastActivationTimeStamp="07/21/2023 01:37:43" PreviousContainerId="1b84d0aa-3fd1-4781-909d-fa3e4b760d6d" PreviousContainerIndex="3" />
+  </Hidden>
+</LayoutRoot>

@@ -1,0 +1,86 @@
+_wheel_battle_ui_context = {
+	title = Loc_GetString("$eca6173149134b76b78757235af2aa36:32"),
+	players = {},
+}
+
+function WheelBattleUI_Create()
+	if UI_IsReplay() then
+		return 
+	end
+	
+	
+	
+	local xaml = [[<StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Margin = "0,150"  
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:WPFGUI.HUD.Controls" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:engineSharedEffects="clr-namespace:WPFGUI.Shared.Effects;assembly=EngineUI.Shaders" xmlns:engineUtility="clr-namespace:WPFGUI.Shared.Utility;assembly=EngineUI"
+                    xmlns:esControls="clr-namespace:WPFGUI.Shared.Controls;assembly=EngineUI" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:model="clr-namespace:HUDModelTypes" xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:utility="clr-namespace:WPFGUI.Shared.Utility;assembly=EngineUI" xmlns:wm="clr-namespace:WPFGUI.Shared.MarkupExtensions;assembly=EngineUI"
+                    mc:Ignorable="d">
+	<!-- 出场顺序 -->
+	<TextBlock VerticalAlignment="Center"
+                       Style="{StaticResource nHUDBaseTextBlockStyle}"
+                       Text="{Binding [title]}">
+     </TextBlock>
+	
+	<ItemsControl ItemsSource="{Binding [players]}">
+		<ItemsControl.ItemTemplate>
+			<DataTemplate>  
+				<StackPanel Margin="10,0"  HorizontalAlignment="Right"
+                                    Orientation="Horizontal">
+					<Grid MaxWidth="260">
+							<TextBlock VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       esControls:TextBlockExtensions.AutoToolTip="True"
+                                       Style="{StaticResource nHUDBaseTextBlockStyle}"
+									   Foreground="{Binding [color]}"
+                                       Text="{Binding [name]}"
+										TextTrimming="CharacterEllipsis" ToolTipService.InitialShowDelay="0"
+                                           ToolTipService.ShowDuration="86400000" ToolTipService.ShowOnDisabled="True">
+									<TextBlock.ToolTip>
+                                        <ToolTip Style="{StaticResource HUDBaseAutoTooltipStyle}" />
+                                    </TextBlock.ToolTip>
+                            </TextBlock>
+							<Separator Effect="{StaticResource DropShadowTextStyle}" Visibility="{Binding [isRoundOver], Converter={StaticResource BoolToVis}}">
+                                <Separator.Background>
+                                    <SolidColorBrush Color="{Binding [color]}" />
+                                </Separator.Background>
+                            </Separator>
+					</Grid
+							
+				</StackPanel>
+			</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+		
+	<StackPanel.Resources>
+		
+
+		
+	</StackPanel.Resources>
+	
+
+	</StackPanel>
+	]]
+	-- [[
+	UI_AddChild("ScarDefault", "XamlPresenter", "wheel_battle_ui", { IsHitTestVisible = true, Xaml = xaml, DataContext = UI_CreateDataContext(_wheel_battle_ui_context) })
+	-- ]]
+end
+
+function WheelBattleUI_Update()
+	--[[
+	if not UI_IsReplay() then
+		_wheel_battle_ui_context.players = {}
+		for i, player in pairs(BATTLE_ORDER["team_"..localPlayer.team.index]) do 
+			table.insert(_wheel_battle_ui_context.players, {
+					name = Player_GetDisplayName(player.id).LocString,
+					color =  UI_GetColourAsString(Player_GetUIColour(player.id)),
+					isRoundOver = player.isRoundOver
+				})
+		end
+		-- player.isRoundOver
+		
+		UI_SetDataContext("wheel_battle_ui", _wheel_battle_ui_context)
+	end
+	-]]
+end

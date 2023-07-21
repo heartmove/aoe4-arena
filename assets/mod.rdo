@@ -1,0 +1,28 @@
+<DataWarehouse>
+	<!--arena/-->
+	<DataObject Name="arena" Type="Mod" Id="4379015887804651547" Version="1">
+		<DataProperty Name="m_description" Type="Object">
+			<DataValue Name="util::ReflectLocString">9458173125561033255</DataValue>
+			<!--arena/util::ReflectLocString/-->
+			<DataObject Name="" Type="util::ReflectLocString" Id="9458173125561033255" OwnerId="4379015887804651547">
+				<DataProperty Name="m_modPart2" Type="UInt32" Value="592938935"/>
+				<DataProperty Name="m_modPart3" Type="UInt32" Value="917172826"/>
+				<DataProperty Name="m_modPart0" Type="UInt32" Value="3970307889"/>
+				<DataProperty Name="m_modPart1" Type="UInt32" Value="1266043155"/>
+				<DataProperty Name="m_locStringKey" Type="Int32" Value="2"/>
+			</DataObject>
+		</DataProperty>
+		<DataProperty Name="m_name" Type="Object">
+			<DataValue Name="util::ReflectLocString">12401798205468666924</DataValue>
+			<!--arena/util::ReflectLocString/-->
+			<DataObject Name="" Type="util::ReflectLocString" Id="12401798205468666924" OwnerId="4379015887804651547">
+				<DataProperty Name="m_modPart2" Type="UInt32" Value="592938935"/>
+				<DataProperty Name="m_modPart3" Type="UInt32" Value="917172826"/>
+				<DataProperty Name="m_modPart0" Type="UInt32" Value="3970307889"/>
+				<DataProperty Name="m_modPart1" Type="UInt32" Value="1266043155"/>
+				<DataProperty Name="m_locStringKey" Type="Int32" Value="1"/>
+			</DataObject>
+		</DataProperty>
+	</DataObject>
+</DataWarehouse>
+

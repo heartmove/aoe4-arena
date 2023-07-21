@@ -1,0 +1,221 @@
+<instance version="4" description="" template="ebps">
+	<list name="extensions">
+		<template_reference name="exts" value="ebpextensions\entity_blueprint_ext" List.ItemID="393447683" List.ParentItemID="393447683">
+			<bool name="browsable_in_editor" value="True" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\health_ext" List.ItemID="1736483331" List.ParentItemID="1736483331">
+			<bool name="can_repair" value="True" overrideParent="True" />
+			<float name="death_seconds" value="-1" overrideParent="True" />
+			<bool name="delete_when_dead" value="False" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\site_ext" List.ItemID="1663451537" List.ParentItemID="1663451537">
+			<bool name="snap_to_construction_grid" value="True" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\type_ext" List.ItemID="-480952190" List.ParentItemID="-480952190">
+			<list name="race_type_list" overrideParent="True">
+				<instance_reference name="race_type" value="racebps\hre" List.ItemID="-1049700914" />
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\construction_ext" List.ItemID="-2006647271" List.ParentItemID="-2006647271">
+			<float name="orientation" value="0" overrideParent="True" />
+			<bool name="construction_site_erase_inactive" value="False" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\ui_ext" List.ItemID="1872529639" List.ParentItemID="1872529639">
+			<string name="selection_datatemplate" value="MonasterySelectionDataTemplate" overrideParent="True" />
+			<list name="ui_extra_infos" overrideParent="True">
+				<template_reference name="ui_extra_info" value="info\ui_extra_info" List.ItemID="1631432408">
+					<file name="icon" value="influence_decorator" overrideParent="True" />
+					<locstring name="description" value="0" />
+					<template_reference name="description_formatter" value="ui_text_formatter" overrideParent="True">
+						<list name="formatter_arguments">
+							<int name="int_value" value="200" List.ItemID="-555910012" />
+						</list>
+						<locstring name="formatter" value="11204532" />
+					</template_reference>
+				</template_reference>
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\spawner_ext" List.ItemID="-1541268486" List.ParentItemID="-1541268486">
+			<list name="spawn_items">
+				<group name="spawn_item" comment="Monk" List.ItemID="1640183075" List.ParentItemID="1640183075">
+					<instance_reference name="squad" value="sbps\races\hre\unit_monk_1_hre" overrideParent="True" />
+				</group>
+			</list>
+			<int name="max_queue_size_override" value="1000" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\upgrade_ext" List.ItemID="-1149097445" List.ParentItemID="-1149097445">
+			<list name="standard_upgrades" overrideParent="True">
+				<instance_reference name="upgrade" value="upgrade\races\hre\research\unit\upgrade_unit_religious_herbal_medicine_4_hre" overrideParent="True" List.ItemID="1282917482" />
+				<instance_reference name="upgrade" value="upgrade\races\hre\research\unit\upgrade_unit_religious_piety_4_hre" overrideParent="True" List.ItemID="1279519052" />
+				<instance_reference name="upgrade" value="upgrade\races\hre\research\unit\upgrade_unit_religious_tithe_barn_4_hre" overrideParent="True" List.ItemID="-1242012888" />
+				<instance_reference name="upgrade" value="upgrade\races\hre\research\upgrade_devoutness_hre" List.ItemID="-197354341" />
+				<instance_reference name="upgrade" value="upgrade\races\hre\research\upgrade_inspired_infantry_hre" List.ItemID="934906284" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\castle_age_1" mod="eca6173149134b76b78757235af2aa36" overrideParent="True" List.ItemID="557399947" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\castle_age_2" mod="eca6173149134b76b78757235af2aa36" List.ItemID="1128687630" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\castle_age_3" mod="eca6173149134b76b78757235af2aa36" List.ItemID="-262080068" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\castle_age_4" mod="eca6173149134b76b78757235af2aa36" List.ItemID="-196924717" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\castle_age_5" mod="eca6173149134b76b78757235af2aa36" List.ItemID="572769423" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_1" mod="eca6173149134b76b78757235af2aa36" List.ItemID="-1998410905" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_2" mod="eca6173149134b76b78757235af2aa36" List.ItemID="-2093385786" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_3" mod="eca6173149134b76b78757235af2aa36" List.ItemID="258744744" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_4" mod="eca6173149134b76b78757235af2aa36" List.ItemID="-1326542158" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_5" mod="eca6173149134b76b78757235af2aa36" List.ItemID="940444413" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_6" mod="eca6173149134b76b78757235af2aa36" List.ItemID="-1427690678" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_7" mod="eca6173149134b76b78757235af2aa36" List.ItemID="9535038" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_8" mod="eca6173149134b76b78757235af2aa36" List.ItemID="330412457" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_9" mod="eca6173149134b76b78757235af2aa36" List.ItemID="367879606" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\imperial_age_10" mod="eca6173149134b76b78757235af2aa36" List.ItemID="-776980828" List.ListAction="Append" />
+				<instance_reference name="upgrade" value="upgrade\dev\ages\castle_age_6" mod="eca6173149134b76b78757235af2aa36" List.ItemID="1538343393" />
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\ability_ext" List.ItemID="-370501690" List.ParentItemID="-370501690">
+			<list name="abilities" overrideParent="True">
+				<instance_reference name="ability" value="abilities\timed_abilities\civ_core\core_building_scuttle" List.ItemID="1726092756" />
+				<instance_reference name="ability" value="abilities\timed_abilities\hre\influence_auto_repair_hre" List.ItemID="1391124592" />
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\statemodel_ext" List.ItemID="1785688339" List.ParentItemID="1785688339">
+			<instance_reference name="schema" value="statemodel_schema\buildings\civilizations\hre\unit_religious_hre" overrideParent="True" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\tier_ext" overrideParent="True" List.ItemID="1612656792" List.ListAction="Append">
+			<list name="tier_group_list" overrideParent="True">
+				<list name="tier_group" overrideParent="True" List.ItemID="1239362114">
+					<group name="tier" List.ItemID="877274099">
+						<list name="tier_requirements" overrideParent="True">
+						</list>
+						<instance_reference name="attachments" value="attachments\attachment_lists\civilizations\hre\buildings\unit_religious_hre\tier3_unit_religious_control_hre" />
+						<template_reference name="statetree_tier_reached_actions" value="state_tree_reference_info">
+							<state_tree_node name="ActionTree_OpeningBranch" value="" />
+							<bool name="start_suspended" value="False" />
+						</template_reference>
+						<instance_reference name="statetree_tier_requirements_pbg" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_entity" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_squad" value="" />
+						<string name="tier_attachment_action" value="" />
+						<template_reference name="blueprint_conversion_parameters" value="blueprint_conversion_parameters">
+							<bool name="reissue_commands" value="False" />
+							<bool name="continue_state_trees" value="False" />
+							<bool name="remove_from_pending_deaths" value="False" />
+						</template_reference>
+						<string name="inventory_category_to_refresh_on_tier_up" value="" />
+					</group>
+					<group name="tier" List.ItemID="28046740">
+						<list name="tier_requirements">
+							<template_reference name="requirement" value="requirements\required_player_upgrade" List.ItemID="1504851805">
+								<enum name="reason" value="usage" />
+								<locstring name="ui_name" value="0" />
+								<bool name="is_present" value="True" />
+								<int name="max_completed" value="100" />
+								<int name="min_completed" value="1" />
+								<instance_reference name="upgrade_name" value="upgrade\dev\ages\imperial_age" mod="eca6173149134b76b78757235af2aa36" />
+								<bool name="include_queued" value="False" />
+								<group name="include_pbg_parenting">
+									<bool name="include_child_pbgs" value="False" />
+									<bool name="include_parent_pbgs" value="False" />
+								</group>
+								<bool name="include_completed" value="True" />
+							</template_reference>
+						</list>
+						<instance_reference name="attachments" value="attachments\attachment_lists\civilizations\hre\buildings\unit_religious_hre\tier4_unit_religious_control_hre" />
+						<template_reference name="statetree_tier_reached_actions" value="state_tree_reference_info">
+							<state_tree_node name="ActionTree_OpeningBranch" value="" />
+							<bool name="start_suspended" value="False" />
+						</template_reference>
+						<instance_reference name="statetree_tier_requirements_pbg" value="upgrade\dev\ages\imperial_age" mod="eca6173149134b76b78757235af2aa36" overrideParent="True" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_entity" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_squad" value="" />
+						<string name="tier_attachment_action" value="act_set_current_age_imperial" overrideParent="True" />
+						<template_reference name="blueprint_conversion_parameters" value="blueprint_conversion_parameters">
+							<bool name="reissue_commands" value="False" />
+							<bool name="continue_state_trees" value="False" />
+							<bool name="remove_from_pending_deaths" value="False" />
+						</template_reference>
+						<string name="inventory_category_to_refresh_on_tier_up" value="" />
+					</group>
+				</list>
+				<list name="tier_group" overrideParent="True" List.ItemID="-1582593420">
+					<group name="tier" List.ItemID="92113225">
+						<list name="tier_requirements">
+						</list>
+						<instance_reference name="attachments" value="attachments\attachment_lists\civilizations\english\outskirts\general\monastery_03" overrideParent="True" />
+						<template_reference name="statetree_tier_reached_actions" value="state_tree_reference_info">
+							<state_tree_node name="ActionTree_OpeningBranch" value="" />
+							<bool name="start_suspended" value="False" />
+						</template_reference>
+						<instance_reference name="statetree_tier_requirements_pbg" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_entity" value="" />
+						<instance_reference name="statetree_tier_pgb_upgrade_target_squad" value="" />
+						<string name="tier_attachment_action" value="" />
+						<template_reference name="blueprint_conversion_parameters" value="blueprint_conversion_parameters">
+							<bool name="reissue_commands" value="False" />
+							<bool name="continue_state_trees" value="False" />
+							<bool name="remove_from_pending_deaths" value="False" />
+						</template_reference>
+						<string name="inventory_category_to_refresh_on_tier_up" value="" />
+					</group>
+				</list>
+			</list>
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\district_generator_ext" List.ItemID="975137223" List.ListAction="Append">
+			<float name="range_metres" value="4" overrideParent="True" />
+			<int name="generator_value" value="0" overrideParent="True" />
+			<bool name="disable_generation_on_spawn" value="False" />
+			<bool name="is_root_generator" value="False" />
+			<int name="district_palette_id" value="0" />
+		</template_reference>
+		<template_reference name="exts" value="ebpextensions\district_bonuses_ext" List.ItemID="-1126171153" List.ListAction="Append">
+			<bool name="update_on_upgrade_changed" value="False" />
+			<bool name="update_on_construction_complete" value="True" />
+			<list name="district_bonuses" overrideParent="True">
+				<template_reference name="district_bonus" value="district_bonus" comment="population" List.ItemID="-232811036">
+					<template_reference name="requirement" value="options\ebpextensions\districtbonusesext\requirements\district_bonus_entity_requirement">
+						<list name="dynamic_requirements">
+						</list>
+						<list name="satisfying_entity_groups" overrideParent="True">
+							<group name="satisfying_entity_group" comment="Town Center Capital&#xD;&#xA;" List.ItemID="-859743015">
+								<list name="satisfying_entities">
+									<instance_reference name="entity" value="ebps\races\hre\buildings\building_town_center_hre\building_town_center_capital_hre" List.ItemID="815367984" />
+								</list>
+							</group>
+							<group name="satisfying_entity_group" comment="Town Center" List.ItemID="-654848728">
+								<list name="satisfying_entities">
+									<instance_reference name="entity" value="ebps\races\hre\buildings\building_town_center_hre\building_town_center_hre" List.ItemID="-2142655874" />
+								</list>
+							</group>
+							<group name="satisfying_entity_group" comment="Palace of Swabia" List.ItemID="-41798446">
+								<list name="satisfying_entities">
+									<instance_reference name="entity" value="ebps\races\hre\buildings\building_landmark_age3_hohenzollern_castle_hre\building_landmark_age3_hohenzollern_castle_hre" overrideParent="True" List.ItemID="486073018" />
+								</list>
+							</group>
+						</list>
+					</template_reference>
+					<uniqueid name="id" value="1073741845" />
+					<template_reference name="action_tree" value="state_tree_reference_info">
+						<state_tree_node name="ActionTree_OpeningBranch" value="influence_auto_repair_hre\root" overrideParent="True" />
+						<bool name="start_suspended" value="False" />
+					</template_reference>
+				</template_reference>
+				<template_reference name="district_bonus" value="district_bonus" comment="Elzbach Palace Influence" List.ItemID="1759978932">
+					<template_reference name="requirement" value="options\ebpextensions\districtbonusesext\requirements\district_bonus_entity_requirement">
+						<list name="dynamic_requirements">
+						</list>
+						<list name="satisfying_entity_groups" overrideParent="True">
+							<group name="satisfying_entity_group" comment="Elzbach Palace&#xD;&#xA;" List.ItemID="2131489848">
+								<list name="satisfying_entities">
+									<instance_reference name="entity" value="ebps\races\hre\buildings\building_landmark_age3_eltz_castle_hre\building_landmark_age3_eltz_castle_hre" overrideParent="True" List.ItemID="-1554787325" />
+								</list>
+							</group>
+						</list>
+					</template_reference>
+					<uniqueid name="id" value="1073741846" />
+					<template_reference name="action_tree" value="state_tree_reference_info">
+						<state_tree_node name="ActionTree_OpeningBranch" value="elzbach_palace_influence_bonus_hre\root" overrideParent="True" />
+						<bool name="start_suspended" value="False" />
+					</template_reference>
+				</template_reference>
+			</list>
+		</template_reference>
+	</list>
+	<uniqueid name="pbgid" value="134904" />
+	<instance_reference name="parent_pbg" value="ebps\races\core\buildings\building_unit_religious" />
+</instance>

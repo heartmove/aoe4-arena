@@ -1,0 +1,121 @@
+<instance version="4" description=" Increase Signal Arrow duration by 15 seconds and range by 2 tiles." template="upgrade">
+	<group name="upgrade_bag">
+		<group name="time_cost">
+			<enum_table name="cost">
+				<float name="stone" value="175" overrideParent="True" />
+			</enum_table>
+		</group>
+		<bool name="ui_event_cue" value="True" overrideParent="True" />
+		<group name="ui_position">
+			<int name="ui_position_row" value="1" overrideParent="True" />
+			<int name="ui_position_column" value="1" overrideParent="True" />
+		</group>
+		<group name="ui_info">
+			<string name="tooltip_data_template" value="BuildingImprovedUpgradeDataTemplate" overrideParent="True" />
+			<template_reference name="help_text_formatter" value="ui_text_formatter" overrideParent="True">
+				<list name="formatter_arguments" overrideParent="True">
+					<int name="int_value" value="7" overrideParent="True" List.ItemID="1840786811" />
+					<int name="int_value" value="3" overrideParent="True" List.ItemID="-1288329342" />
+					<int name="int_value" value="2" overrideParent="True" List.ItemID="1257142477" />
+					<int name="int_value" value="1" List.ItemID="-958936160" />
+				</list>
+				<locstring name="formatter" value="11190401" />
+			</template_reference>
+			<string name="sound" value="sfx_ui_produce_upgrade_building_click" overrideParent="True" />
+		</group>
+		<list name="requirements" overrideParent="True">
+			<template_reference name="required" value="requirements\required_player_upgrade" List.ItemID="108807510">
+				<enum name="reason" value="usage" />
+				<locstring name="ui_name" value="0" />
+				<bool name="is_present" value="True" />
+				<int name="max_completed" value="100" />
+				<int name="min_completed" value="1" />
+				<instance_reference name="upgrade_name" value="upgrade\dev\ages\feudal_age" />
+				<bool name="include_queued" value="False" />
+				<group name="include_pbg_parenting">
+					<bool name="include_child_pbgs" value="False" />
+					<bool name="include_parent_pbgs" value="False" />
+				</group>
+				<bool name="include_completed" value="True" />
+			</template_reference>
+			<template_reference name="required" value="requirements\required_player_upgrade" List.ItemID="1410994391">
+				<enum name="reason" value="usage" />
+				<locstring name="ui_name" value="0" />
+				<bool name="is_present" value="False" />
+				<int name="max_completed" value="100" />
+				<int name="min_completed" value="1" />
+				<instance_reference name="upgrade_name" value="upgrade\races\mongol\research\unique\upgrade_khan_signal_arrow_improved_mon" mod="eca6173149134b76b78757235af2aa36" overrideParent="True" />
+				<bool name="include_queued" value="True" />
+				<group name="include_pbg_parenting">
+					<bool name="include_child_pbgs" value="False" />
+					<bool name="include_parent_pbgs" value="False" />
+				</group>
+				<bool name="include_completed" value="False" />
+			</template_reference>
+			<template_reference name="required" value="requirements\required_player_upgrade" List.ItemID="-1973819158">
+				<enum name="reason" value="usage_and_display" />
+				<locstring name="ui_name" value="0" />
+				<bool name="is_present" value="False" />
+				<int name="max_completed" value="100" />
+				<int name="min_completed" value="1" />
+				<instance_reference name="upgrade_name" value="upgrade\races\mongol\research\unique\upgrade_khan_signal_arrow_improved_mon" mod="eca6173149134b76b78757235af2aa36" overrideParent="True" />
+				<bool name="include_queued" value="False" overrideParent="True" />
+				<group name="include_pbg_parenting">
+					<bool name="include_child_pbgs" value="False" />
+					<bool name="include_parent_pbgs" value="False" />
+				</group>
+				<bool name="include_completed" value="True" />
+			</template_reference>
+			<template_reference name="required" value="requirements\required_player_upgrade" List.ItemID="-499659697">
+				<enum name="reason" value="usage" />
+				<locstring name="ui_name" value="11192250" />
+				<bool name="is_present" value="False" />
+				<int name="max_completed" value="100" />
+				<int name="min_completed" value="1" />
+				<instance_reference name="upgrade_name" value="upgrade\races\mongol\research\unique\upgrade_khan_signal_arrow_mon" overrideParent="True" />
+				<bool name="include_queued" value="True" />
+				<group name="include_pbg_parenting">
+					<bool name="include_child_pbgs" value="False" />
+					<bool name="include_parent_pbgs" value="False" />
+				</group>
+				<bool name="include_completed" value="False" />
+			</template_reference>
+		</list>
+		<group name="state_tree_references">
+			<template_reference name="on_action_tree" value="state_tree_reference_info">
+				<state_tree_node name="ActionTree_OpeningBranch" value="upgrade_mongols\upgrade_khan_signal_arrow_mon\mongol_improved_version\upgrade_khan_signal_arrow_mon" overrideParent="True" />
+			</template_reference>
+		</group>
+		<instance_reference name="ui_menu" value="menu\mon_improved_production" overrideParent="True" />
+		<group name="ui_codex_info">
+			<bool name="exclusive" value="True" overrideParent="True" />
+		</group>
+		<list name="float_properties" overrideParent="True">
+			<template_reference name="float" value="upgradebag_float_property" List.ItemID="1275558082">
+				<float name="value" value="12" overrideParent="True" />
+				<enum name="id" value="mongols_improved_range_full" overrideParent="True" />
+			</template_reference>
+			<template_reference name="float" value="upgradebag_float_property" List.ItemID="567702874">
+				<float name="value" value="7" overrideParent="True" />
+				<enum name="id" value="mongols_improved_full" overrideParent="True" />
+			</template_reference>
+			<template_reference name="float" value="upgradebag_float_property" List.ItemID="273851810">
+				<float name="value" value="4" overrideParent="True" />
+				<enum name="id" value="mongols_improved_range_partial" overrideParent="True" />
+			</template_reference>
+			<template_reference name="float" value="upgradebag_float_property" List.ItemID="-1592555871">
+				<float name="value" value="2" overrideParent="True" />
+				<enum name="id" value="mongols_improved_partial" overrideParent="True" />
+			</template_reference>
+		</list>
+		<list name="upgrade_type" overrideParent="True">
+			<enum name="upgrade_type" value="mongol_upgrade" overrideParent="True" List.ItemID="-737229454" />
+			<enum name="upgrade_type" value="scar_military_upgrade" List.ItemID="977987579" />
+			<enum name="upgrade_type" value="scar_nontiered_upgrade" List.ItemID="-1484220324" />
+			<enum name="upgrade_type" value="scar_feudal_age_upgrade" overrideParent="True" List.ItemID="371554839" />
+			<enum name="upgrade_type" value="scar_mongol_improved" List.ItemID="411176070" />
+		</list>
+	</group>
+	<uniqueid name="pbgid" value="205802" />
+	<instance_reference name="parent_pbg" value="upgrade\races\mongol\research\unique\upgrade_khan_signal_arrow_mon" />
+</instance>
