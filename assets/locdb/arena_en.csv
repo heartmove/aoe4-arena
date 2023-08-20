@@ -1,42 +1,42 @@
 ﻿ID,Pipeline,PipelineStage,Notes,TranslationNotes,Tags,Text
-1,,,Mod name.,,,竞技场 V0.8.15
-2,,,Mod description.,,,请使用配套的竞技场地图以及调整包(将建筑产能上限调整至200，升级时代)，此为pvp模组，初步支持pve\r\n\r\n本模组玩法(请使用配套的竞技场地图，限两支队伍)：\r\n1、每一轮都将给予玩家一定资源，玩家将有30秒钟来配置需要升级的科技以及生产的单位。30时秒后，所有科技将会立即研究完，部队也会进入竞技场，当消灭对手所有部队即可取得此轮的胜利。最先获得五轮胜利的获得本场对局的胜利\r\n2、所有玩家都从封建时代起步，并可以在右上方点击加速上时代按钮提升上时代速度，需要花费一半资源，且每轮只能点一次\r\n3、所有单位和科技都只消耗食物，消耗的食物量为原有的：食物+黄金+木头+石头\r\n4、每一轮剩余的资源以及单位都会清除\t\r\n5、英格兰城堡网络附加在国王身上\r\n6、毒圈机制\r\n\r\n其它玩法：\r\n1、自动战斗（斗蛐蛐），玩家不能控兵\r\n2、车轮战：每轮玩家上场顺序不固定，当不上场时，玩家是不能操作的。\r\n3、科技卡牌\r\nAI资源：\r\n简单：90%资源量           中等：100%资源量\r\n困难：110%资源量         极难：120%资源量\r\n荒谬：160%资源量         令人发指：180%资源量\r\n荒唐：200%资源量\r\n\r\nqq群：436218837\r\n感谢南宅的赞助\r\n
-3,,,,,,竞技场 V0.8.15
-4,,,,,,第%1 round%轮战斗准备倒计时
-5,,,,,,第%1 round%轮战斗进行中
-6,,,,,,已获胜轮次(%1 score1%:%2 score2%)
-8,,,,,,所有科技和单位的研究时间都已经大大延长，但会在进入竞技场时瞬间完成研究和生产
-9,,,,,,第%1 round%轮己方获胜
-10,,,,,,第%1 round%轮双方平局
-11,,,,,,第%1 round%轮己方战败
-12,,,,,,第%1 round%轮开始准备，请选择出战单位以及升级科技
-13,,,,,,需获胜轮次数
+1,,,Mod name.,,,Arena Mode 竞技场 V0.9.11
+2,,,Mod description.,,,"Please use the arena map(竞技场) and the tuning package (adjust the building capacity limit to 200, upgrade era), this is a pvp module, preliminary support pve     discord: @heartmove\n\nThis mode features(please use the supporting arena map, limited to two teams):\n1, each round will give the player a certain amount of resources, the player will have 30 seconds to configure the technology that needs to be upgraded as well as the production of the unit. 30 seconds later, all the technology will be immediately after the research, the troops will also enter the arena, when the elimination of all the opponent's troops can be the round of victory. The first player to win five rounds will win the game.\n2、All players start from the Feudal Age, and can click the speed up Age button on the top right to increase the speed of the Age, which costs half of the resources, and can only be clicked once per round.\n3、All units and technologies only consume food, and the amount of food consumed is the original: food + gold + wood + stone.\n4. All remaining resources and units will be cleared in each round.\t\n5. England castle network is attached to the king\n6. Poison circle mechanism\n\nOther gameplay:\n1、Automatic battle (cricket), players can not control soldiers\n2、Wheel battle: the order of players on the field each round is not fixed, when not on the field, the player is not able to operate.\n3、Technology Cards\r\n4、 and more\nAI resources:\nEasy: 90% of resources Intermediate: 100% of resources\nHard: 110% of resources   Hardest: 120% of resources \r\nRidiculous: 160% of resources   Outrageous: 180% of resources\nAbsurd: 200% of resources\n\nemail：heartmove@outlook.com"
+3,,,,,,Arena Mode 竞技场 V0.9.11
+4,,,,,,Countdown to the  round %1 round% of combat readiness
+5,,,,,,round %1 round%  of combat in progress
+6,,,,,,Number of rounds won(%1 score1%:%2 score2%)
+8,,,,,,"The research time for all tech and units has been greatly extended, but will be instantly researched and produced when entering the arena"
+9,,,,,,Round %1 round%: We won
+10,,,,,,Round %1 round%:  a tie
+11,,,,,,Round %1 round%: We are defeated.
+12,,,,,,"Round %1 round% To begin preparations, please select your units and upgrade your technology."
+13,,,,,,Number of rounds to be won
 14,,,,,,5
 15,,,,,,8
 16,,,,,,10
 17,,,,,,12
 18,,,,,,15
 19,,,,,,20
-20,,,,,,每轮准备时间
-21,,,,,,30秒
-23,,,,,,60秒
-24,,,,,,90秒
-25,,,,,,自动战斗(斗蛐蛐)
-26,,,,,,启用自动战斗后，玩家将不能操控单位作战，此为测试功能
-27,,,,,,车轮战
-28,,,,,,每一轮玩家将轮流上场对阵，直到某一方兵力全部被消灭
-29,,,,,,己方下一位上场玩家是%1 PLAYER%
-30,,,,,,第%1 round%轮已战败敌方玩家
-31,,,,,,己方当前需上场玩家是%1 PLAYER%
-32,,,,,,本轮出场顺序:
-33,,,,,,本场次己方胜
-34,,,,,,启用攻城武器厂
-35,,,,,,测试模式
-36,,,,,,测试模式
-37,,,,,,初始资源(食物)
-42,,,,,,车轮战公开出战顺序
-43,,,,,,45秒
-44,,,,,,初始资源量
+20,,,,,,Preparation time per round
+21,,,,,,30s
+23,,,,,,60s
+24,,,,,,90s
+25,,,,,,Auto-battle
+26,,,,,,"When auto-battle is enabled, players will not be able to control units in combat"
+27,,,,,,wheel-to-wheel combat
+28,,,,,,Each round players will take turns going up against each other until all of one side's forces have been wiped out.
+29,,,,,,Our next player on the field will be %1 PLAYER%
+30,,,,,,Round %1 round% Defeated enemy players
+31,,,,,,Our current player to be played is %1 PLAYER%
+32,,,,,,Order of appearance in this round:
+33,,,,,,We'll win this one.
+34,,,,,,Commissioning of the Siege Weapons Factory
+35,,,,,,test mode
+36,,,,,,test mode
+37,,,,,,Starting resources (food)
+42,,,,,,Open Wheel Battle Order of Play
+43,,,,,,45s
+44,,,,,,starting resources
 45,,,,,,200
 46,,,,,,500
 47,,,,,,1000
@@ -44,25 +44,36 @@
 49,,,,,,2500
 50,,,,,,4000
 51,,,,,,5000
-52,,,,,,每轮增长资源量
+52,,,,,,Amount of resource growth per round
 53,,,,,,100
 54,,,,,,300
 55,,,,,,400
 56,,,,,,800
-57,,,,,,所有玩家都已就绪，本轮比赛开始！
-58,,,,,,5秒
-59,,,,,,启用自动攻击AI V2
-60,,,,,,毒圈机制
-61,,,,,,在每轮战斗开始后，每十秒会缩一次毒圈。单位在圈外时，每秒扣10点血。当内存过低时，可能会出现不良模组提示
-62,,,,,,您可以在右上方点击加速上时代按钮(需花费当前轮一半资源，且不可撤销)
-63,,,,,,因未使用配套的竞技场调整包，本局游戏将无法正常游玩
-64,,,,,,胜者的奖励
-65,,,,,,每轮的最终胜者将在下轮获得剩余兵力的两成等同资源奖励
-66,,,,,,升时代加速
-67,,,,,,花费当前轮一半资源，以提前一轮上时代，该操作不可取消
-68,,,,,,时代升级进度（轮次数）
-69,,,,,,所需加速上时代资源不够
-70,,,,,,%1 player% 选择了[%2 upgrade%] 卡牌
-71,,,,,,卡牌系统
-72,,,,,,每两轮可以选一张科技卡牌，选中对应卡牌即可拥有对应科技的研究能力，相同卡牌可能会出现多次，重复选不能多次研究
-73,,,,,,队友 %1 player% 选择了加速上本
+57,,,,,,All players are ready for the round to begin!
+58,,,,,,5s
+59,,,,,,invalidate
+60,,,,,,Poison circle
+61,,,,,,"At the start of each round of combat, the Fog of War expands every ten seconds (the safe zone shrinks). When units are in the Fog of War, 10 points of blood are deducted per second."
+62,,,,,,You can click on the Speed Up Age button in the upper right (costs half the resources of the current round and is irrevocable)
+63,,,,,,The game will not be played properly without the supporting Arena Tuning Pack.
+64,,,,,,Winner's Reward
+65,,,,,,The final winner of each round will be rewarded with 20% of the remaining troop strength in the next round.
+66,,,,,,speed up Age
+67,,,,,,"Spend half of the resources of the current round to advance one round on the era, this operation can not be canceled"
+68,,,,,,Progress in age up (number of rounds)
+69,,,,,,Insufficient resources required for accelerated upgrades
+70,,,,,,%1 player% choiced [%2 upgrade%] card
+71,,,,,,Card System
+72,,,,,,"Every two rounds you can choose a technology card, select the corresponding card can have the corresponding technology research ability, the same card may appear more than once, repeated selection can not be multiple research"
+73,,,,,,Teammate %1 player% has chosen to speed up the game.
+74,,,,,,"When a merchant is the last to survive this round, the next round will award the corresponding amount of merchant resources"
+75,,,,,,READY
+76,,,,,,CANCEL
+77,,,,,,STARTED
+78,,,,,,"Spend half of the resources of the current round to advance one round on the era, this operation can not be canceled"
+79,,,,,,↑↑AGE
+80,,,,,,(Owned)
+81,,,,,,"Technology card pool: every two rounds you can choose a technology card, select the corresponding card can have the corresponding technology research ability, the same card may appear more than once, repeat selection can not be multiple research"
+82,,,,,,Technology card pool
+83,,,,,,ROUND %1 round%
+84,,,,,,%1 number%s

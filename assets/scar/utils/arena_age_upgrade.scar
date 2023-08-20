@@ -8,10 +8,13 @@ _upgrade_age = {
 	context = {
 		enabled = false,
 		command = UI_CreateCommand("UpgradeAge_DoingSpeedAgeUp"),
-		showBtn = true
+		showBtn = true,
+		btnTxt = Loc_GetString("$eca6173149134b76b78757235af2aa36:79"),
+		tips = Loc_GetString("$eca6173149134b76b78757235af2aa36:78"),
 	},
 	ui = "speed_up_age_up",
-	isUsedSpeedUpAgeUp = false
+	isUsedSpeedUpAgeUp = false,
+	
 }
 
 
@@ -36,11 +39,8 @@ function UpgradeAge_OnInit()
 		player.visibilityAge = AGE_FEUDAL
 	end
 	
-	
-	
 	Network_RegisterEvent("UpgradeAge_SpeedAgeUpNtw")
 end
-
 
 function UpgradeAge_Start()
 	local xaml = [[<Grid VerticalAlignment="Top" Margin="0,70,4,0" HorizontalAlignment="Right" Visibility="{Binding [showRoundReadyUI], Converter={StaticResource BoolToVis}}"
@@ -67,20 +67,40 @@ function UpgradeAge_Start()
 
 
 			<Grid Visibility="{Binding [showBtn], Converter={StaticResource BoolToVis}}">
-				<Button Width="100" Height="52" Content="加速上本" 
+				<Button Width="100" Height="52"  Content="{Binding [btnTxt]}"
 				Style="{StaticResource HUDPrimaryRaisedTextButton}"
 				Command="{Binding [command]}"
-				ToolTipService.InitialShowDelay="0" ToolTipService.Placement="Top"
-                                ToolTipService.ShowDuration="8640000"
+				ToolTipService.InitialShowDelay="0" 
+                ToolTipService.ShowDuration="8640000"
 				IsEnabled="{Binding [enabled]}"
 				>
+				<!--
+				<Button.Content>
+					<Grid Width="50" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center">
+						<Ellipse Width="50" Height="50"   Fill="{DynamicResource BlackTransparent40Brush}"
+                                                     Stroke="{DynamicResource PrimaryColorLightBrush}"
+                                                     StrokeThickness="2" HorizontalAlignment="Left"/>
+						<TextBlock Text="↑A" Style="{StaticResource nHUDBaseTextBlockStyle}"  FontSize="24" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" /> 
+					</Grid>
+			   
+				</Button.Content>-->
 				 <Button.ToolTip>
-                    <ToolTip MaxWidth="300" Style="{StaticResource FrontEndTooltip}">
-                        <TextBlock Style="{StaticResource BodyTextBlockStyle}"
-                                   Text="消耗当前轮一半的资源以提升上时代速度，每轮可点击一次，该操作不可取消"
-                                   TextWrapping="Wrap" />
-                    </ToolTip>
-                </Button.ToolTip>
+		            <ToolTip MaxWidth="300"
+							 Content="{Binding}" 
+		                     Style="{StaticResource TributeToolTipStyle}"
+							DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}"
+		                     VerticalOffset="6">
+						<ToolTip.ContentTemplate>
+							<DataTemplate>
+				                <ContentControl Style="{StaticResource HUDTooltipBorderStyle}">
+				                    <TextBlock Style="{StaticResource HUDGray80BodyTextBlock14ptStyle}"
+				                               Text="{Binding [tips]}"
+				                               TextWrapping="Wrap" />
+				                </ContentControl>
+							</DataTemplate>
+						</ToolTip.ContentTemplate>
+		            </ToolTip>
+		        </Button.ToolTip>
 			</Button>
 			</Grid>
 			
@@ -91,6 +111,7 @@ function UpgradeAge_Start()
 	UpgradeAge_AddObjective()
 	Rule_Add(UpgradeAge_CheckCanSpeedUp)
 	UI_SetPropertyValue("PlayerScores", "Visibility", "Hidden")
+	
 end
 
 
@@ -122,19 +143,23 @@ end
 
 
 function UpgradeAge_DoingSpeedAgeUp()
-	local needFood = UpgradeAge_GetSpeedAgeUpFoods()
-	if needFood <= Player_GetResource(localPlayer.id, RT_Food) then 
-		_upgrade_age.isUsedSpeedUpAgeUp = true
-		UpgradeAge_CheckCanSpeedUp()
-		Network_CallEvent("UpgradeAge_SpeedAgeUpNtw", "")
-	else 
-		UI_CreateEventCue(Loc_GetString("$eca6173149134b76b78757235af2aa36:69"), nil, "", "", "sfx_ui_event_queue_high_priority_play")
+	if not localPlayer.isDoAgeUp then 
+		local needFood = UpgradeAge_GetSpeedAgeUpFoods()
+		localPlayer.isDoAgeUp = true
+		if needFood <= Player_GetResource(localPlayer.id, RT_Food) then 
+			_upgrade_age.isUsedSpeedUpAgeUp = true
+			UpgradeAge_CheckCanSpeedUp()
+			Network_CallEvent("UpgradeAge_SpeedAgeUpNtw", "")
+		else 
+			UI_CreateEventCue(Loc_GetString("$eca6173149134b76b78757235af2aa36:69"), nil, "", "", "sfx_ui_event_queue_high_priority_play")
+		end
 	end
 end
 
 
 function UpgradeAge_SpeedAgeUpNtw(playerId, data) 
 	local player = Core_GetPlayersTableEntry(playerId)	
+	player.isDoAgeUp = true 
 	local needFood = UpgradeAge_GetSpeedAgeUpFoods()
 	if needFood <= Player_GetResource(playerId, RT_Food) then
 		Player_GiftResource(playerId, RT_Food, -needFood)
@@ -179,6 +204,7 @@ function UpgradeAge_OnRoundStart()
 	_upgrade_age.isUsedSpeedUpAgeUp = false
 	for i, player in pairs(PLAYERS) do
 		UpgradeAge_DoSpeedAgeUp(player)
+		player.isDoAgeUp = false
 	end
 	
 end
@@ -201,6 +227,9 @@ end
 
 
 function UpgradeAge_DoSpeedAgeUp(player)
+	if player.ageUpPassedRound == nil then 
+		player.ageUpPassedRound = AGE_FEUDAL
+	end
 	player.ageUpPassedRound = player.ageUpPassedRound + 1
 	if Player_GetCurrentAge(player.id) == AGE_FEUDAL then
 		if player.ageUpPassedRound >= player.ageUpNeedRound then 

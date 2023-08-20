@@ -39,7 +39,7 @@
 				<DataProperty Name="m_locStringKey" Type="Int32" Value="3"/>
 			</DataObject>
 		</DataProperty>
-		<DataProperty Name="m_tuningModGUID" Type="String" Value=""/>
+		<DataProperty Name="m_tuningModGUID" Type="String" Value="eca6173149134b76b78757235af2aa36"/>
 		<DataProperty Name="m_optionsUIDescriptor" Type="Object">
 			<DataValue Name="WinCondition::OptionsUIDescriptor">5250501556594081551</DataValue>
 			<!--WinCondition/WinCondition::OptionsUIDescriptor/-->

@@ -205,7 +205,7 @@
 					</list>
 					<instance_reference name="hotkey_binding" value="hotkeys\hotkey_binding\building_archery_range\produce_handcannoneer" overrideParent="True" />
 				</group>
-				<group name="spawn_item" comment="Tower Elephant" List.ItemID="388637779">
+				<group name="spawn_item" comment="Tower Elephant" overrideParent="True" List.ItemID="388637779">
 					<instance_reference name="entity" value="" />
 					<instance_reference name="squad" value="sbps\races\sultanate\unit_war_elephant_tower_4_sul" />
 					<bool name="spawn_at_map_entry_point" value="False" />

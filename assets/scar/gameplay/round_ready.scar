@@ -27,13 +27,13 @@ function ArenaReady_Start()
 	-- 禁用、未准备、已准备
 	
 	local xaml = [[<Grid VerticalAlignment="Top" Margin="0,10,4,0" HorizontalAlignment="Right" Visibility="{Binding [showRoundReadyUI], Converter={StaticResource BoolToVis}}"
-              VerticalAlignment="Top"
+
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:WPFGUI.HUD.Controls" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:engineSharedEffects="clr-namespace:WPFGUI.Shared.Effects;assembly=EngineUI.Shaders" xmlns:engineUtility="clr-namespace:WPFGUI.Shared.Utility;assembly=EngineUI"
                     xmlns:esControls="clr-namespace:WPFGUI.Shared.Controls;assembly=EngineUI" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:model="clr-namespace:HUDModelTypes" xmlns:sys="clr-namespace:System;assembly=mscorlib"
- 					xmlns:esCommands="clr-namespace:WPFGUI.Shared.Commands;assembly=EngineUI" xmlns:esControls="clr-namespace:WPFGUI.Shared.Controls;assembly=EngineUI"
+ 					xmlns:esCommands="clr-namespace:WPFGUI.Shared.Commands;assembly=EngineUI" 
      				xmlns:esUtility="clr-namespace:WPFGUI.Shared.Utility;assembly=EngineUI" xmlns:feLockout="clr-namespace:FrontEndLockoutModelTypes"
 					esUtility:Telemetry.Name="CreateCustomMatchSemiModal"
                     mc:Ignorable="d">
@@ -47,10 +47,9 @@ function ArenaReady_Start()
 					  IsThreeState="True"
                       Style="{StaticResource PrimaryAnimatedContentButton}"
                       Visibility="{Binding [showBtn], Converter={StaticResource InvBoolToVis}}"> -->
-
-
+	
 			<Grid Visibility="{Binding [showPlayerUnReadyBtn], Converter={StaticResource BoolToVis}}"  >
-				<Button Width="100" Height="52" Content="就绪" 
+				<Button Width="100" Height="52" Content="{Binding [readyTxt]}" 
 				Style="{StaticResource HUDPrimaryRaisedTextButton}"
 				Command="{Binding [command]}"
 				IsEnabled="{Binding [unReadyBtnEnabled]}"
@@ -58,7 +57,7 @@ function ArenaReady_Start()
 			</Grid>
 			
 			<Grid Visibility="{Binding [showPlayerReadyBtn], Converter={StaticResource BoolToVis}}">
-				<Button Width="100" Height="52" Content="取消"   
+				<Button Width="100" Height="52" Content="{Binding [cancelTxt]}"   
 						Style="{StaticResource HUDPrimaryRaisedTextButton}"
 						Command="{Binding [command]}"
 						IsEnabled="{Binding [readyBtnEnabled]}"
@@ -66,12 +65,13 @@ function ArenaReady_Start()
 			</Grid>
 			
 			<Grid Visibility="{Binding [showRoundReadyBtn], Converter={StaticResource BoolToVis}}"  >
-				<Button Width="100" Height="52" Content="已开始" 
+				<Button Width="100" Height="52" Content="{Binding [startedTxt]}" 
 						Style="{StaticResource HUDPrimaryRaisedTextButton}"
 						IsEnabled="False"
 						/>
 			</Grid>
 			
+
 	</Grid>
      ]]
 	
@@ -108,7 +108,9 @@ function ArenaReady_Start()
 		margin = "4,0,0,245"
 	end
 	-- ottoman,hre、rus = 100
-	
+	_area_ready_context.readyTxt = Loc_GetString("$eca6173149134b76b78757235af2aa36:75")
+	_area_ready_context.cancelTxt = Loc_GetString("$eca6173149134b76b78757235af2aa36:76")
+	_area_ready_context.startedTxt = Loc_GetString("$eca6173149134b76b78757235af2aa36:77")
 	_area_ready_context.margin = margin
 	if UI_IsReplay() then 
 		_area_ready_context.showRoundReadyUI = false 
@@ -123,6 +125,15 @@ function ArenaReady_Start()
 	_area_ready_context.showPlayerReadyBtn  = localPlayer.roundReady
 	_area_ready_context.readyBtnEnabled = true
 	
+	-- 测试，但是发现无效
+	_area_ready_context.test = {
+		Properties = {
+			UIInfo = {
+				Icon = "pack://application:,,,/WPFGUI;component/icons/common/orders/rally.png",
+			}
+		}
+	}
+	
 	_area_ready_context.showRoundReadyBtn  = ROUND_READY
 	_area_ready_context.command  = UI_CreateCommand("ArenaReady_ReadyUnReadyCommand")
 	UI_AddChild("ScarDefault", "XamlPresenter", "arena_ready_ui", { IsHitTestVisible = true, Xaml = xaml, DataContext = UI_CreateDataContext(_area_ready_context)})
@@ -136,6 +147,9 @@ function ArenaReady_UpdateUI()
 	else
 		_area_ready_context.showRoundReadyUI = true 
 	end
+	_area_ready_context.readyTxt = Loc_GetString("$eca6173149134b76b78757235af2aa36:75")
+	_area_ready_context.cancelTxt = Loc_GetString("$eca6173149134b76b78757235af2aa36:76")
+	_area_ready_context.startedTxt = Loc_GetString("$eca6173149134b76b78757235af2aa36:77")
 	-- 如果玩家未准备，就显示 就绪 按钮
 	_area_ready_context.showPlayerUnReadyBtn  = not localPlayer.roundReady
 	_area_ready_context.unReadyBtnEnabled = true

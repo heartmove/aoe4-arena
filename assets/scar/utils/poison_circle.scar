@@ -96,7 +96,7 @@ function PoisonCircle_AdjustSquadHealth(gid, idx, squad)
 	-- 超出距离就扣减20血
 	if Squad_IsAlive(squad) and World_DistancePointToPoint(Squad_GetPosition(squad), world_center) >  _poisonCircle.currentRadius then 
 		local healthMax = Squad_GetHealthMax(squad)
-		local health = Squad_GetHealth(squad) - 10
+		local health = Squad_GetHealth(squad) - healthMax * 0.1
 		if health <= 0.1 then 
 			Squad_Kill(squad)
 			return
@@ -116,6 +116,7 @@ function PoisonCircle_Update()
 	if _poisonCircle.updateCount > 7 then 
 		return 
 	end
+	--[[
 	if _poisonCircle.id ~= nil then 
 		-- 存在就摧毁
 		UI_ModalVisual_Destroy(_poisonCircle.id)
@@ -125,6 +126,13 @@ function PoisonCircle_Update()
 	_poisonCircle.currentRadius = _poisonCircle.radius * (1 - _poisonCircle.updateCount * 0.1)
 	_poisonCircle.id = UI_ModalVisual_CreateReticule(BP_GetReticuleBlueprint("campaign_capturelocation_enemy"), _poisonCircle.currentRadius)
 	UI_ModalVisual_SetPosition(_poisonCircle.id, world_center)
+	--]]
+	_poisonCircle.currentRadius = _poisonCircle.radius * (1 - _poisonCircle.updateCount * 0.1)
+	FOW_UnExploreAll()
+	FOW_UnRevealAll()
+	for i,player in pairs(PLAYERS) do 
+		FOW_PlayerRevealArea(player.id, world_center, _poisonCircle.currentRadius, 36000)
+	end
 	_poisonCircle.updateCount = _poisonCircle.updateCount + 1
 end
 
@@ -132,6 +140,7 @@ end
 -- 重置毒圈
 function PoisonCircle_Reset()
 	_poisonCircle.updateCount = 0
+	--[[
 	if _poisonCircle.id ~= nil then 
 		-- 存在就摧毁
 		UI_ModalVisual_Destroy(_poisonCircle.id)
@@ -139,4 +148,11 @@ function PoisonCircle_Reset()
 	end
 	_poisonCircle.id = UI_ModalVisual_CreateReticule(BP_GetReticuleBlueprint("campaign_capturelocation_enemy"), _poisonCircle.radius)
 	UI_ModalVisual_SetPosition(_poisonCircle.id, world_center)
+	--]]
+	
+	FOW_UnExploreAll()
+	FOW_UnRevealAll()
+	for i,player in pairs(PLAYERS) do 
+		FOW_PlayerRevealArea(player.id, world_center, _poisonCircle.radius, 36000)
+	end
 end

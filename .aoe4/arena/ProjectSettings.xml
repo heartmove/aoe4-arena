@@ -8,9 +8,13 @@
 				<d2p1:KeyValueOfstringArrayOfstringty7Ep6D1>
 					<d2p1:Key>AssetExplorerGeneric</d2p1:Key>
 					<d2p1:Value>
-						<d2p1:string>assets\locdb\arena.locdb</d2p1:string>
-						<d2p1:string>assets\scar\gameplay</d2p1:string>
-						<d2p1:string>assets\scar\utils</d2p1:string>
+						<d2p1:string>assets\attrib\instances</d2p1:string>
+						<d2p1:string>assets\icons\roles</d2p1:string>
+						<d2p1:string>assets\locdb</d2p1:string>
+						<d2p1:string>assets\scar\gameplay\areana_ai.scar</d2p1:string>
+						<d2p1:string>assets\scar\ui</d2p1:string>
+						<d2p1:string>assets\scar\utils\arena_buildings.scar</d2p1:string>
+						<d2p1:string>assets\scar\utils\squads_util.scar</d2p1:string>
 						<d2p1:string>assets\scar\winconditions</d2p1:string>
 					</d2p1:Value>
 				</d2p1:KeyValueOfstringArrayOfstringty7Ep6D1>
@@ -24,7 +28,7 @@
 					<d3p1:Column>4</d3p1:Column>
 					<d3p1:FileName>FileName|Script|assets\scar\winconditions\arena.scar</d3p1:FileName>
 					<d3p1:IsEnabled>true</d3p1:IsEnabled>
-					<d3p1:Line>604</d3p1:Line>
+					<d3p1:Line>609</d3p1:Line>
 					<d3p1:Settings xmlns:d6p1="http://schemas.datacontract.org/2004/07/Essence.Editor.ScriptEditor.Controls">
 						<d6p1:ConditionalExpression></d6p1:ConditionalExpression>
 						<d6p1:ConditionalExpressionEnabled>false</d6p1:ConditionalExpressionEnabled>
@@ -41,7 +45,7 @@
 					<d3p1:Column>4</d3p1:Column>
 					<d3p1:FileName>FileName|Script|assets\scar\winconditions\arena.scar</d3p1:FileName>
 					<d3p1:IsEnabled>true</d3p1:IsEnabled>
-					<d3p1:Line>611</d3p1:Line>
+					<d3p1:Line>616</d3p1:Line>
 					<d3p1:Settings xmlns:d6p1="http://schemas.datacontract.org/2004/07/Essence.Editor.ScriptEditor.Controls">
 						<d6p1:ConditionalExpression></d6p1:ConditionalExpression>
 						<d6p1:ConditionalExpressionEnabled>false</d6p1:ConditionalExpressionEnabled>
@@ -58,7 +62,7 @@
 					<d3p1:Column>1</d3p1:Column>
 					<d3p1:FileName>FileName|Script|assets\scar\winconditions\arena.scar</d3p1:FileName>
 					<d3p1:IsEnabled>true</d3p1:IsEnabled>
-					<d3p1:Line>730</d3p1:Line>
+					<d3p1:Line>743</d3p1:Line>
 					<d3p1:Settings xmlns:d6p1="http://schemas.datacontract.org/2004/07/Essence.Editor.ScriptEditor.Controls">
 						<d6p1:ConditionalExpression></d6p1:ConditionalExpression>
 						<d6p1:ConditionalExpressionEnabled>false</d6p1:ConditionalExpressionEnabled>
@@ -75,7 +79,7 @@
 					<d3p1:Column>1</d3p1:Column>
 					<d3p1:FileName>FileName|Script|assets\scar\winconditions\arena.scar</d3p1:FileName>
 					<d3p1:IsEnabled>true</d3p1:IsEnabled>
-					<d3p1:Line>720</d3p1:Line>
+					<d3p1:Line>733</d3p1:Line>
 					<d3p1:Settings xmlns:d6p1="http://schemas.datacontract.org/2004/07/Essence.Editor.ScriptEditor.Controls">
 						<d6p1:ConditionalExpression></d6p1:ConditionalExpression>
 						<d6p1:ConditionalExpressionEnabled>false</d6p1:ConditionalExpressionEnabled>
@@ -126,7 +130,7 @@
 					<d3p1:Column>1</d3p1:Column>
 					<d3p1:FileName>FileName|Script|assets\scar\gameplay\observer_ui.scar</d3p1:FileName>
 					<d3p1:IsEnabled>true</d3p1:IsEnabled>
-					<d3p1:Line>706</d3p1:Line>
+					<d3p1:Line>791</d3p1:Line>
 					<d3p1:Settings xmlns:d6p1="http://schemas.datacontract.org/2004/07/Essence.Editor.ScriptEditor.Controls">
 						<d6p1:ConditionalExpression></d6p1:ConditionalExpression>
 						<d6p1:ConditionalExpressionEnabled>false</d6p1:ConditionalExpressionEnabled>
@@ -143,7 +147,7 @@
 					<d3p1:Column>1</d3p1:Column>
 					<d3p1:FileName>FileName|Script|assets\scar\winconditions\arena.scar</d3p1:FileName>
 					<d3p1:IsEnabled>true</d3p1:IsEnabled>
-					<d3p1:Line>768</d3p1:Line>
+					<d3p1:Line>791</d3p1:Line>
 					<d3p1:Settings xmlns:d6p1="http://schemas.datacontract.org/2004/07/Essence.Editor.ScriptEditor.Controls">
 						<d6p1:ConditionalExpression></d6p1:ConditionalExpression>
 						<d6p1:ConditionalExpressionEnabled>false</d6p1:ConditionalExpressionEnabled>
@@ -162,15 +166,15 @@
 	<RecentFiles>
 		<History xmlns:d3p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
 			<d3p1:string>G:\aoe4_code\arena\assets\locdb\arena.locdb</d3p1:string>
-			<d3p1:string>G:\aoe4_code\arena\assets\scar\gameplay\cards.scar</d3p1:string>
+			<d3p1:string>G:\aoe4_code\arena\assets\attrib\arena.xml</d3p1:string>
+			<d3p1:string>G:\aoe4_code\arena\assets\scar\utils\squads_util.scar</d3p1:string>
+			<d3p1:string>G:\aoe4_code\arena\assets\attrib\instances\ebps\races\mongol\buildings\building_wonder_age3_khanbaliq_mon_bak.xml</d3p1:string>
 			<d3p1:string>G:\aoe4_code\arena\assets\scar\winconditions\arena.scar</d3p1:string>
-			<d3p1:string>G:\aoe4_code\arena\assets\attrib\instances\ebps\races\abbasid\buildings\building_unit_cavalry_control_abb.xml</d3p1:string>
-			<d3p1:string>G:\aoe4_code\arena\assets\scar\gameplay\areana_ai.scar</d3p1:string>
-			<d3p1:string>G:\aoe4_code\arena\assets\scar\utils\arena_data.scar</d3p1:string>
-			<d3p1:string>G:\aoe4_code\arena\assets\scar\utils\arena_age_upgrade.scar</d3p1:string>
-			<d3p1:string>G:\aoe4_code\arena\assets\scar\utils\poison_circle.scar</d3p1:string>
-			<d3p1:string>C:\Users\heartmove\AppData\Local\Temp\flavius_micro.scar</d3p1:string>
-			<d3p1:string>C:\Users\heartmove\Documents\My Games\Age of Empires IV\mods\extension\subscriptions\57415\e0f849aa1baaa55f8344530e97f2e16a4abd52708187171d9b69740f97c98b12.sga</d3p1:string>
+			<d3p1:string>G:\aoe4_code\arena\assets\attrib\instances\ebps\races\mongol\buildings\building_wonder_age3_khanbaliq_mon.xml</d3p1:string>
+			<d3p1:string>G:\aoe4_code\arena\assets\attrib\instances\ebps\races\sultanate\buildings\building_landmark_age3_bijay_mandal_palace_control_sul.xml</d3p1:string>
+			<d3p1:string>G:\aoe4_code\arena\assets\attrib\instances\ebps\races\sultanate\buildings\building_unit_ranged_sul\building_unit_ranged_control_sul.xml</d3p1:string>
+			<d3p1:string>G:\aoe4_code\arena\assets\attrib\instances\ebps\races\sultanate\buildings\building_town_center_sul\building_town_center_capital_sul.xml</d3p1:string>
+			<d3p1:string>G:\aoe4_code\arena\assets\scar\utils\arena_buildings.scar</d3p1:string>
 		</History>
 	</RecentFiles>
 </ProjectSettings>

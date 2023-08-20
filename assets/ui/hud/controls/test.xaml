@@ -1,0 +1,11 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		                    xmlns:engineControls="clr-namespace:WPFGUI.HUD.Controls;assembly=EngineUI" xmlns:engineSharedEffects="clr-namespace:WPFGUI.Shared.Effects;assembly=EngineUI.Shaders"
+		                    xmlns:engineSharedModels="clr-namespace:WPFGUI.Shared.Models;assembly=EngineUI" xmlns:esControls="clr-namespace:WPFGUI.Shared.Controls;assembly=EngineUI"
+		                    xmlns:model="clr-namespace:HUDModelTypes" xmlns:sharedConverters="clr-namespace:WPFGUI.Shared.Converters;assembly=EngineUI"
+		                    xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:sysConfigModels="clr-namespace:SystemConfigModelTypes"
+		                    xmlns:system="clr-namespace:System;assembly=System" xmlns:utility="clr-namespace:WPFGUI.Shared.Utility;assembly=EngineUI">
+		                    <DataTemplate x:Key="CohTest">
+		                    	 <TextBlock Text="Hellllo"
+		                         </TextBlock>
+		                    </DataTemplate>
+				</ResourceDictionary>

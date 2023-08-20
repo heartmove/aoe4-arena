@@ -95,12 +95,18 @@ _researches_ui_xaml = [[<Grid VerticalAlignment="Bottom" Margin="0,20,300,0" Hor
             <ToolTip MaxWidth="300"
                      Placement="Bottom"
                      Style="{StaticResource TributeToolTipStyle}"
+					DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}"
+					 Content="{Binding}" 
                      VerticalOffset="6">
-                <ContentControl Style="{StaticResource HUDTooltipBorderStyle}">
-                    <TextBlock Style="{StaticResource HUDGray80BodyTextBlock14ptStyle}"
-                               Text="科技卡牌池：每两轮可以选一张科技卡牌，选中对应卡牌即可拥有对应科技的研究能力，相同卡牌可能会出现多次，重复选不能多次研究"
-                               TextWrapping="Wrap" />
-                </ContentControl>
+				<ToolTip.ContentTemplate>
+					<DataTemplate>
+			                <ContentControl Style="{StaticResource HUDTooltipBorderStyle}">
+			                    <TextBlock Style="{StaticResource HUDGray80BodyTextBlock14ptStyle}"
+			                               Text="{Binding [tips]}"
+			                               TextWrapping="Wrap" />
+			                </ContentControl>
+						</DataTemplate>
+					</ToolTip.ContentTemplate>
             </ToolTip>
         </Button.ToolTip>
         <esControls:TagAdorner.IsTagged>
@@ -130,7 +136,7 @@ _researches_ui_xaml = [[<Grid VerticalAlignment="Bottom" Margin="0,20,300,0" Hor
                     <TextBlock Margin="{StaticResource SmallMarginLeftRight}"
                                VerticalAlignment="Center"
                                Style="{StaticResource nHUDSubheaderSmallTextBlockStyle}"
-                               Text="科技卡牌大厅" />
+                               Text="{Binding [name]}" />
 					<!-- 
                     <StackPanel Margin="{StaticResource SmallMarginLeftRight}"
                                 HorizontalAlignment="Right"
@@ -216,7 +222,7 @@ _researches_ui_xaml = [[<Grid VerticalAlignment="Bottom" Margin="0,20,300,0" Hor
 																					<TextBlock Text="{Binding [name]}"
 																							Style="{StaticResource HUDPrimaryColorLightTitleTextBlock18ptStyle}" />
 																					<TextBlock Visibility="{Binding [localPlayerHad], Converter={StaticResource BoolToVis}}" 
-																							Text="(已拥有)"
+																							Text="{Binding [hadTxt]}"
 																							Style="{StaticResource HUDPrimaryColorLightTitleTextBlock18ptStyle}" />
 																				</StackPanel>
 																				

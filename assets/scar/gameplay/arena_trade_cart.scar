@@ -1,0 +1,62 @@
+import("cardinal.scar")							-- Contains sfx references, UI templates, and Civ/Age helper functions
+import("ScarUtil.scar")							-- Contains game helper functions
+
+
+Core_RegisterModule("ArenaTradeCart")
+
+
+function ArenaTradeCart_OnInit()
+	for i, player in pairs(PLAYERS) do 
+		player.tradeCartAward = 0
+	end
+end
+
+
+function ArenaTradeCart_OnRoundStart()
+	for i, player in pairs(PLAYERS) do 
+		 Player_GiftResource(player.id, RT_Food, player.tradeCartAward)
+	end
+end
+
+function ArenaTradeCart_OnRoundEnd()
+	for i, player in pairs(PLAYERS) do 
+		local count = SGroup_CountSpawned(player.sg)
+		local values = 0
+		if count > 0 then 
+			for j = 1, count do 
+				local s = SGroup_GetSquadAt(player.sg, j)
+				local bp  = Squad_GetBlueprint(s)
+				if Squad_IsOfType(s, "trade_cart") then 
+					local cost = Player_GetSquadBPCost(player.id, bp)
+					values = values + cost.food
+				end
+			end
+			
+		end
+		
+		local eg = Player_GetEntities(player.id)
+		local egc = EGroup_Count(eg)
+		for j = 1, egc do
+			local entity = EGroup_GetEntityAt(eg, j)
+			if Entity_HasProductionQueue(entity) then 
+				local size = Entity_GetProductionQueueSize(entity)
+				
+				if size > 0 then 
+					for k = size-1, 0, -1 do  
+						local bp = Entity_GetProductionQueueItem(entity, k)
+						local bpType = Entity_GetProductionQueueItemType(entity, k)
+						if bp ~= nil and bpType == PITEM_Spawn  then
+							local bpName = BP_GetName(bp)
+							if string.find(bpName, "trade_cart") ~= nil then 
+								local cost = Player_GetSquadBPCost(player.id, BP_GetSquadBlueprint(bpName))
+								values = values + cost.food
+							end
+						end
+					end
+				end
+			end
+		end
+		player.tradeCartAward = values
+	end
+
+end 

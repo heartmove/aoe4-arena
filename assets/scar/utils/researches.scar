@@ -238,7 +238,12 @@ function Researches_InitUI()
 	_research_ui.context.enableBtn = false
 	_research_ui.context.command = {
 		toggle_ui = UI_CreateCommand("Researches_ToggleUI"),
-	},
+	}
+	
+	_research_ui.context.tips = Loc_GetString("$eca6173149134b76b78757235af2aa36:81")
+	_research_ui.context.name = Loc_GetString("$eca6173149134b76b78757235af2aa36:82")
+	_research_ui.context.hadTxt = Loc_GetString("$eca6173149134b76b78757235af2aa36:80")
+	
 	UI_AddChild("ScarDefault", "XamlPresenter", _research_ui.ui, { IsHitTestVisible = true, Xaml = _researches_ui_xaml, DataContext = UI_CreateDataContext(_research_ui.context)})
 	--UI_AddCommandBinding("hud_game", "toggle_researches_panel", "Researches_ToggleUI")
 	Rule_Add(Researches_UpdateUI)

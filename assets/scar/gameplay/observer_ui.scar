@@ -10,6 +10,18 @@ XamlTeamVTeam =
                     mc:Ignorable="d">
 	
 	<Grid.Resources>
+		<Style x:Key="XTributeToolTipStyle" TargetType="{x:Type ToolTip}">
+            <Setter Property="HasDropShadow" Value="True" />
+			<Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToolTip}">
+                        <ContentPresenter />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>	
 	    <DropShadowEffect x:Key="ObserverUiHeaderDropShadow" BlurRadius="0.5" ShadowDepth="1.5"  />
 	    <Style x:Key="ObserverUiHeaderPrimaryText" TargetType="TextBlock">
 	        <Setter Property="FontSize" Value="18"/>
@@ -118,15 +130,40 @@ XamlTeamVTeam =
 										<Grid Margin="5,0,0,0" MaxWidth="185">
 			                                <TextBlock Name="ObserverUiPlayerName"  
 													VerticalAlignment="Center" TextAlignment="Center"
-													esControls:TextBlockExtensions.AutoToolTip="True"
 													TextTrimming="CharacterEllipsis" ToolTipService.InitialShowDelay="0"
-	                                           		ToolTipService.ShowDuration="86400000" ToolTipService.ShowOnDisabled="True"
+	                                           		ToolTipService.ShowDuration="86400000" 
 													Style="{StaticResource nHUDBaseTextBlockStyle}"
-													Foreground="{Binding [color]}" 
+													Foreground="{Binding [color]}"
 		                        					Text="{Binding [name]}">
 													<TextBlock.ToolTip>
-				                                        <ToolTip Style="{StaticResource HUDBaseAutoTooltipStyle}" />
-				                                    </TextBlock.ToolTip>
+				                                        <ToolTip MaxWidth="300"
+															Placement="Bottom"
+															 Content="{Binding}" 
+										                     Style="{StaticResource XTributeToolTipStyle}"
+															  DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}"
+										                     VerticalOffset="6">
+														<ToolTip.ContentTemplate>
+															<DataTemplate>
+												                <ContentControl Style="{StaticResource HUDTooltipBorderStyle}">
+												                    <StackPanel Orientation="Vertical" >
+																		<TextBlock  Style="{StaticResource nHUDBaseTextBlockStyle}"
+																			Foreground="{Binding [color]}" 
+								                        					Text="{Binding [name]}" />
+																		<StackPanel Orientation="Horizontal" Visibility="{Binding [isReplay],Converter={StaticResource BoolToVis}}">
+																			 <!--  enemy icon  -->
+																	            <Image Effect="{StaticResource DropShadowTextStyle}"  Width="25" Height="25"
+																	                   Source="pack://application:,,,/WPFGUI;component/icons/resources/resource_food_icon.png" />
+																				<TextBlock 
+																	                       Style="{StaticResource nHUDBaseTextBlockStyle}"
+																	                       Text="{Binding [foods]}">
+																	            </TextBlock>
+																		</StackPanel>
+																	</StackPanel>
+												                </ContentControl>
+															</DataTemplate>
+														</ToolTip.ContentTemplate>
+										            </ToolTip>
+												 </TextBlock.ToolTip>
 				                            </TextBlock>
 											<Separator Effect="{StaticResource DropShadowTextStyle}" Visibility="{Binding [isRoundOver], Converter={StaticResource BoolToVis}}">
 				                                <Separator.Background>
@@ -224,14 +261,14 @@ XamlTeamVTeam =
 									<TextBlock Margin="0,0,0,2" Text="{Binding [TeamSummaryLeft][TradePopulation], Converter={StaticResource CastToIntOperator}}" FontStyle="Italic" FontSize="18"  TextAlignment="Left" Foreground="#FFD6D6D6" VerticalAlignment="Bottom" />
 								</StackPanel>
 								-->
-								<StackPanel Width="75" Name="LeftIdleCount" Orientation="Horizontal" >
+								<StackPanel Width="80" Name="LeftIdleCount" Orientation="Horizontal" >
 									<TextBlock Margin="0,0,0,2" Text="{Binding [RoundInfo]}" FontStyle="Italic" FontSize="16"  TextAlignment="Left" Foreground="#FFD6D6D6" VerticalAlignment="Bottom" />
 								</StackPanel>
 								
 								<TextBlock Margin="-2,0,0,0" Width="46" Text="{Binding [TeamSummaryLeft][WorkerNonTradePopulation], Converter={StaticResource CastToIntOperator}}" Foreground="PaleGoldenrod" TextAlignment="Right" VerticalAlignment="Bottom" Style="{StaticResource PrimaryText}"/>
 								
-								<Grid Width="24" Height="24" Margin="10,0,10,0">
-									<Ellipse Width="24" Height="24"   Fill="{DynamicResource BlackTransparent40Brush}"
+								<Grid Width="24" Height="24" Margin="4,0,4,0">
+									<Ellipse Width="24" Height="24" Fill="{DynamicResource BlackTransparent40Brush}"
                                                      Stroke="{DynamicResource PrimaryColorLightBrush}"
                                                      StrokeThickness="2" HorizontalAlignment="Left"/>
 									<TextBlock Text="{Binding [MaxRound], Converter={StaticResource CastToIntOperator} }" Style="{StaticResource nHUDBaseTextBlockStyle}" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" /> 
@@ -257,7 +294,7 @@ XamlTeamVTeam =
 									<TextBlock Margin="0,0,0,2" Text="{Binding [TeamSummaryRight][TradePopulation], Converter={StaticResource CastToIntOperator}}" FontStyle="Italic" FontSize="18"  TextAlignment="Left" Foreground="#FFD6D6D6" VerticalAlignment="Bottom" />
 								</StackPanel>
 								-->
-								<StackPanel Name="RightIdleCount" Width="75" Orientation="Horizontal" FlowDirection="RightToLeft">
+								<StackPanel Name="RightIdleCount" Width="80" Orientation="Horizontal" FlowDirection="RightToLeft">
 									<TextBlock Margin="0,0,0,2" Text="{Binding [RoundTime]}" FontStyle="Italic" FontSize="16"  TextAlignment="Left" Foreground="#FFD6D6D6" VerticalAlignment="Bottom" />
 								</StackPanel>
 							</StackPanel>
@@ -387,9 +424,42 @@ XamlTeamVTeam =
 	        </DataTemplate.Triggers>
 	    </DataTemplate>
 		
+		<DataTemplate x:Key="FoodsUi">
+			<Border Margin="2,4,2,0" BorderThickness="2" BorderBrush="{Binding [color]}" HorizontalAlignment="Left" Name="FoodsB" Visibility="{Binding [isReplay],Converter={StaticResource BoolToVis}}">
+				<Grid>
+					<Rectangle 
+							Width="50"
+							Height="{StaticResource HUDBuildQueueIconSize}"
+							Fill="{StaticResource ResearchButtonBgBrush}" />
+					<Rectangle 
+							Width="{StaticResource HUDBuildQueueIconSize}"
+							Height="{StaticResource HUDBuildQueueIconSize}"
+							Fill="{StaticResource ResearchLightButtonBgHighlightBrush}" />
+					<Image 
+							VerticalAlignment="Top"
+							HorizontalAlignment="Center"
+							Width="25"
+								Height="25"
+							Source="pack://application:,,,/WPFGUI;component/icons/resources/resource_food_icon.png"/>
+	                <TextBlock 
+							VerticalAlignment="Bottom"
+							HorizontalAlignment="Center"
+							Style="{StaticResource HUDCommandCardButtonTextBlockStyle}"
+	                    	Text="{Binding [foods], Converter={StaticResource CastToIntOperator}}" 
+							TextWrapping="Wrap"/>  
+				</Grid>
+			</Border>
+
+			<DataTrigger Binding="{Binding [IsRightSide]}" Value="true">
+				<Setter TargetName="FoodsB" Property="HorizontalAlignment" Value="Right"/>
+			</DataTrigger>
+		</DataTemplate>
+		
 		
 		<DataTemplate x:Key="ObserverUiUnits">
-	        <ItemsControl Name="ObserverUiUnitsListOfPlayer" 
+	        <StackPanel Orientation="Horizontal" Name="lqbc">
+				<ContentControl Content="{Binding}" ContentTemplate="{StaticResource FoodsUi}" />
+				<ItemsControl Name="ObserverUiUnitsListOfPlayer" 
 					ItemsSource="{Binding [units]}"
 					ItemContainerStyle="{StaticResource StyleDockPanelDockRight}" 
 					HorizontalAlignment="Left">
@@ -451,11 +521,13 @@ XamlTeamVTeam =
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
-			
+				
+			</StackPanel>
 			<DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding [IsRightSide]}" Value="true">
 		            <Setter TargetName="ObserverUiUnitsListOfPlayer" Property="HorizontalAlignment" Value="Right"/>
 		            <Setter TargetName="ObserverUiUnitsListOfPlayer" Property="ItemContainerStyle" Value="{StaticResource StyleDockPanelDockLeft}" />
+					<Setter TargetName="lqbc" Property="FlowDirection" Value="RightToLeft"/>
 		        </DataTrigger>
             </DataTemplate.Triggers>
 		</DataTemplate>
@@ -472,8 +544,12 @@ XamlTeamVTeam =
 		</LinearGradientBrush>
 		
 		
+		
+		
+		
+		
 		<DataTemplate x:Key="ObserverUiTeamUnits">
-			<StackPanel Name="ObserverUiTeamDetails">
+			<StackPanel Name="ObserverUiTeamDetails" FlowDirection="LeftToRight">
 				<ItemsControl ItemsSource="{Binding}">
 		            <ItemsControl.ItemTemplate>
 		                <DataTemplate>
@@ -507,7 +583,7 @@ XamlTeamVTeam =
 				<ColumnDefinition Width="*" />
 			</Grid.ColumnDefinitions>
 	        
-			<ContentControl HorizontalAlignment="Left" Margin="0,126,0,0"
+			<ContentControl HorizontalAlignment="Left" Margin="0,240,0,0"
 				ContentTemplate="{StaticResource ObserverUiTeamUnits}"
 				Content="{Binding [TeamLeft]}" />
 			
@@ -517,7 +593,7 @@ XamlTeamVTeam =
 						Content="{Binding [TeamLeft]}" />
 		    </Grid>
 			
-			<ContentControl Grid.Column="2" HorizontalAlignment="Right" Margin="0,126,0,0"
+			<ContentControl Grid.Column="2" HorizontalAlignment="Right" Margin="0,240,0,0"
 				ContentTemplate="{StaticResource ObserverUiTeamUnits}"
 				Content="{Binding [TeamRight]}" />
 			
@@ -647,7 +723,7 @@ function ArenaObserverUi_UpdateUI()
 			
 		}
 		
-		local teamSummary = {
+		local teamSummary = {   
 			WorkerNonTradePopulation = 0,
 			WorkerPopulation = 0,
 			MilitaryPopulation = 0,
@@ -668,6 +744,10 @@ function ArenaObserverUi_UpdateUI()
 		local wins = 0.01
 		local unitCount = 0.01
 		
+		if team.index == leftTeamIdx then 
+			rightFlag = false
+		end
+		
 		for j, player in pairs(players) do 
 			local raceName = Player_GetRaceName(player.id)
 			local name = Player_GetDisplayName(player.id).LocString
@@ -681,9 +761,12 @@ function ArenaObserverUi_UpdateUI()
 			end
 			
 			local age = player.age 
+			
 			if Player_ObserveRelationship(player.id, localPlayer.id) == R_ENEMY and not UI_IsReplay() and player.visibilityAge ~= nil then 
 				age = player.visibilityAge
 			end
+			
+			
 			
 			local playerContext = {
 				IsRightSide = rightFlag,
@@ -693,7 +776,9 @@ function ArenaObserverUi_UpdateUI()
 				civImage = _RaceImage[raceName],
 				ageIcon = _AgeIcons[age][false],
 				isRoundOver = player.isRoundOver,
-				roundReady = roundReady
+				roundReady = roundReady,
+				isReplay = UI_IsReplay(),
+				foods = tostring(math.ceil(Player_GetResource(player.id, RT_Food))),
 			}
 			
 			if not WHEEL_WARS then 
@@ -715,10 +800,10 @@ function ArenaObserverUi_UpdateUI()
 			
 			teamSummary.WorkerNonTradePopulation = player.wins
 			
-			local squadsCount = SGroup_CountSpawned(Player_GetSquads(player.id))
+			local squadsCount = SGroup_Count(Player_GetSquads(player.id))
 			
 			teamSummary.MilitaryPopulation = teamSummary.MilitaryPopulation + squadsCount
-			teamSummary.SiegePopulation = teamSummary.SiegePopulation + SGroup_CountSpawned(Player_GetSquadsFromType(player.id, "siege"))
+			teamSummary.SiegePopulation = teamSummary.SiegePopulation + SGroup_Count(Player_GetSquadsFromType(player.id, "siege"))
 			teamSummary.MilitaryNoSiegePopulation = teamSummary.MilitaryPopulation - teamSummary.SiegePopulation
 			
 			
@@ -747,9 +832,13 @@ function ArenaObserverUi_UpdateUI()
 		end
 	end
 	
-	arena_observer_context.RoundInfo = "第".. ROUND .. "轮"
-	arena_observer_context.RoundTime = math.ceil(Timer_GetRemaining(ARENA_OBJ_TIMER)).."秒" 
-	
+	arena_observer_context.RoundInfo = Loc_FormatText("$eca6173149134b76b78757235af2aa36:83", ROUND)
+	if ARENA_OBJ_TIMER ~= nil then 
+		local sec = math.ceil(Timer_GetRemaining(ARENA_OBJ_TIMER))
+		if sec ~= nil then 
+			arena_observer_context.RoundTime = Loc_FormatText("$eca6173149134b76b78757235af2aa36:84", sec)
+		end
+	end
 	
 	arena_observer_context.MaxRound = WINNER_ROUND
 	UI_SetDataContext("arena_observer_ui", arena_observer_context)

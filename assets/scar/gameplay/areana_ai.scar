@@ -51,6 +51,7 @@ end
 
 function ArenaAI_OnRoundStart()
 	for i, player in pairs(PLAYERS) do 
+		Player_SetResource(player.id, RT_Stone, 0)
 		if not player.isHuman then 
 
 			local food = Player_GetResource(player.id, RT_Food)
@@ -507,7 +508,7 @@ end
 
 -- 是否时火枪
 function Mod_SquadIsHq(sid) 
-	return Squad_IsOfType(sid, "culverin") or Squad_IsOfType(sid, "grenadier")
+	return Squad_IsOfType(sid, "culverin") or Squad_IsOfType(sid, "grenadier") or Squad_IsOfType(sid, "villager")
 end
 
 
@@ -677,6 +678,11 @@ end
 function ArenaAI_RuleCombat()
 	ROUND_COMBAT_TIME = World_GetGameTime()
 	Rule_AddInterval(ArenaAI_Combat, 1)
+	if enable_poison_circle then 
+		for i, player in pairs(PLAYERS) do 
+			Modify_SightRadius(player.sg, 0.1)
+		end
+	end
 end
 
 function ArenaAI_OnRoundSessionEnd()
@@ -707,8 +713,16 @@ function ArenaAI_Combat()
 			end
 		end
 	else
-		Mod_InitEnemySquadCount()
-		if auto_attack_v2 then 
+		local hasAi = false
+		for i, player in pairs(PLAYERS) do 
+			if not player.isHuman then 
+				hasAi = true 				
+			end
+		end
+		if hasAi then
+			Mod_InitEnemySquadCount()
+		end 
+		if auto_attack_v2 and hasAi then 
 			Mod_AutoCombatV2()
 		else
 			-- 开启了自动战斗
@@ -734,6 +748,10 @@ function ArenaAI_TryAttack(sid)
 	if not Squad_IsValid(Squad_GetID(sid)) or not Squad_IsAlive(sid) and World_OwnsSquad(sid) then 
 		return
 	end 
+	
+	if Squad_IsOfType(sid, "trade_cart") then 
+		return
+	end
 	
 	if Mod_SquadIsCfz(sid) and (World_GetGameTime() - ROUND_COMBAT_TIME) <= 3 then 
 		return
@@ -1103,6 +1121,18 @@ end
 
 function Mod_InitSquadGroup()
 	
+	local initFlag = false
+	for _, player in pairs(PLAYERS) do 
+		if not player.isHuman then 
+			initFlag = true 
+			break
+		end
+	end
+	
+	if not AUTO_COMBAT and not initFlag then 
+		return 
+	end
+	
 	for i, team in pairs(TEAMS) do 
 		local ncSg = SGroup_CreateIfNotFound("ncSgTeam" .. team.index)	
 		SGroup_Clear(ncSg)
@@ -1159,6 +1189,7 @@ function Mod_InitSquadGroup()
 				SGroup_AddGroup(gjsSg, Player_GetSquadsFromType(player.id, "mehter_ott"))
 				SGroup_AddGroup(gjsSg, Player_GetSquadsFromType(player.id, "monk"))
 				SGroup_AddGroup(gjsSg, Player_GetSquadsFromType(player.id, "khan"))
+				SGroup_AddGroup(gjsSg, Player_GetSquadsFromType(player.id, "villager"))
 				
 				-- 弩手
 				SGroup_AddGroup(nsSg, Player_GetSquadsFromType(player.id, "crossbowman"))

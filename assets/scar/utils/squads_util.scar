@@ -1,0 +1,60 @@
+_combine_squads = {
+	building_landmark_age3_whitehall_palace_eng = {
+			unit_wynguard_footman_eng = {
+				unit_footman_wynguard_4_eng = 6,
+			},
+			unit_wynguard_army_eng = {
+				unit_spearman_4_eng = 2,
+				unit_crossbowman_4_eng = 2,
+				unit_trebuchet_4_cw_eng = 1,
+			},
+			unit_wynguard_raiders_eng = {
+				unit_horseman_4_eng = 3,
+				unit_knight_4_eng = 3,
+			},
+			unit_wynguard_rangers_eng = {
+				unit_ranger_wynguard_4_eng = 6,
+			},
+	},
+	building_wonder_age3_khanbaliq_mon = {
+			unit_khaganate_mangudai_mon = {
+				unit_khaganate_mangudai_mon = 4,
+			},
+			unit_khaganate_horsearcher_rus_mon = {
+				unit_khaganate_horsearcher_rus_mon = 5,
+			},
+			unit_khaganate_knight_rus_mon = {
+				unit_khaganate_knight_rus_mon = 3,
+			},
+			unit_khaganate_manatarms_china_mon = {
+				unit_khaganate_manatarms_china_mon = 5,
+			},
+			unit_khaganate_monk_rus_mon = {
+				unit_khaganate_monk_rus_mon = 4,
+			},
+			unit_knight_2_mon = {
+				unit_knight_2_mon = 2,
+			},
+			unit_knight_3_mon = {
+				unit_knight_3_mon = 3,
+			},
+			unit_knight_4_mon = {
+				unit_knight_4_mon = 4,
+			},
+	}
+}
+
+function SquadsUtil_GetSpawns(buildingBpName, squadBpName, count)
+	local def = {
+	}
+	def[squadBpName] = count
+	if  _combine_squads[buildingBpName] == nil or _combine_squads[buildingBpName][squadBpName] == nil then 
+		return def 
+	else 
+		return _combine_squads[buildingBpName][squadBpName]
+	end
+	
+	return def
+end
+
+

@@ -11,6 +11,9 @@ import("utils/poison_circle.scar")
 import("utils/arena_age_upgrade.scar")
 import("gameplay/winner_award.scar")
 import("gameplay/areana_ai.scar")
+import("ui/cards_ui.scar")
+import("gameplay/arena_trade_cart.scar")
+import("utils/squads_util.scar")
 
 import("utils/researches.scar")
 
@@ -296,6 +299,7 @@ end
 
 -- Called after initialization is done when game is fading up from black
 function Mod_Start()
+
 	
 	Mod_SetPlayerSpawnPos()
 	if WHEEL_WARS then 
@@ -386,7 +390,9 @@ function Mod_AddCounterTimerObj()
 	
 
 	ArenaReady_SetRoundUnReady()
-
+	
+	local GetZoom = Camera_GetZoomDist()
+	Camera_StartPanTo(Player_GetStartingPosition(localPlayer.id), 0.1, GetZoom)
 
 	
 	if AUTO_COMBAT then 
@@ -400,7 +406,6 @@ function Mod_AddCounterTimerObj()
 
 	ROUND = ROUND + 1
 	
-	UpgradeAge_AdjustCost()
 	
 	UI_CreateEventCue(Loc_FormatText("$eca6173149134b76b78757235af2aa36:12", ROUND), nil, "", "", "sfx_ui_event_queue_high_priority_play")
 	
@@ -700,15 +705,23 @@ function Mod_UpdateWheelCombat()
 	
 	local count = Mod_GetMilitaryCount()
 	
-	if count.enemy == 0 and count.ally == 0  then
+	local noneMilitrayCount = Mod_GetNoneMilitaryCount()
+	
+	-- 如果所有和非军事数量想同，那就认为是
+	local enemyNoMilitary = count.enemy == noneMilitrayCount.enemy
+	local allyNoMilitary = count.ally == noneMilitrayCount.ally
+	
+	if (count.enemy == 0 and count.ally == 0) or (enemyNoMilitary and allyNoMilitary)  then
 		-- 对手出战的玩家
 		local enemyPlayer = Mod_GetCurrentBattlePlayer(OPP_TEAM_INDEX)
 		if enemyPlayer ~= nil then 
 			enemyPlayer.isRoundOver = true
+			SGroup_DestroyAllSquads(Player_GetSquads(enemyPlayer.id))
 		end
 		local allyPlayer = Mod_GetCurrentBattlePlayer(localPlayer.team.index)
 		if allyPlayer ~= nil then 
 			allyPlayer.isRoundOver = true
+			SGroup_DestroyAllSquads(Player_GetSquads(allyPlayer.id))
 		end
 		Mod_UpdateWheelCombatRound(nil)
 		return 
@@ -741,14 +754,24 @@ function Mod_UpdateConquestRound()
 	Obj_SetCounterCount(ARENA_OBJ, count.enemy)
 	Obj_SetProgress(ARENA_OBJ, (Obj_GetCounterMax(ARENA_OBJ) - count.enemy)/Obj_GetCounterMax(ARENA_OBJ))
 	
+	local noneMilitrayCount = Mod_GetNoneMilitaryCount()
+	
+	-- 如果所有和非军事数量想同，那就认为是
+	local enemyNoMilitary = count.enemy == noneMilitrayCount.enemy
+	local allyNoMilitary = count.ally == noneMilitrayCount.ally
+	
 	local localPlayerWins = localPlayer.wins
 	
 	local winner = nil
 	--print("test....12")
-	if count.enemy == 0 and count.ally == 0 then 
+	if (count.enemy == 0 and count.ally == 0 ) or (enemyNoMilitary and allyNoMilitary) then 
 		--print("test....13")
 		Obj_Delete(ARENA_OBJ)
 		Rule_Remove(Mod_UpdateConquestRound)
+		
+		for i, player in pairs(PLAYERS) do 
+			SGroup_DestroyAllSquads(Player_GetSquads(player.id))
+		end
 		
 		UI_CreateEventCue(Loc_FormatText("$eca6173149134b76b78757235af2aa36:10", ROUND), nil, "", "", "sfx_ui_event_queue_high_priority_play")
 		
@@ -980,6 +1003,7 @@ function Mod_TpMiliraty()
 			local egCount = EGroup_Count(eg)
 			for j=1, egCount do 
 				local entity = EGroup_GetEntityAt(eg, j)
+				local entityBpName = BP_GetName(Entity_GetBlueprint(entity))
 				if Entity_HasProductionQueue(entity) then 
 					local queueSize = Entity_GetProductionQueueSize(entity)
 					if queueSize > 0 then
@@ -989,11 +1013,17 @@ function Mod_TpMiliraty()
 							Entity_CancelProductionQueueItem(entity, k)
 							if bpType == PITEM_Spawn then 
 								local bpName = BP_GetName(bp)
-								local scount = 0
-								if smap[bpName] ~= nil then 
-									scount = smap[bpName]
+								local tempSpawns = SquadsUtil_GetSpawns(entityBpName, bpName, 1)
+								for tmpBpName, tmpCount in pairs(tempSpawns) do 
+									local scount = 0
+									if smap[tmpBpName] ~= nil then 
+										scount = smap[tmpBpName]
+									end
+									smap[tmpBpName] = scount + tmpCount
 								end
-								smap[bpName] = scount + 1
+								--print("............tempSpawns..........")
+								--Util_PrintTable(tempSpawns)
+								
 								
 								-- local sgtemp = SGroup_CreateIfNotFound("sgtemp"..Player_GetID(player.id))
 								-- UnitEntry_DeploySquads(player.id, player.sg, {{sbp = BP_GetSquadBlueprint(bpName), numSquads = 1 }}, player.spawnPos)
@@ -1038,11 +1068,13 @@ function Mod_TpMiliraty()
 			if Player_GetRaceName(player.id) == "mongol" then 
 				-- 如果khan没有部署过就部署一个
 				if not player.khanSpawned then 
-					UnitEntry_DeploySquads(player.id, player.sg, {{sbp = BP_GetSquadBlueprint("unit_khan_1_mon"), numSquads = 1 }}, player.spawnPos)
+					local dep = UnitEntry_DeploySquads(player.id, player.sg, {{sbp = BP_GetSquadBlueprint("unit_khan_1_mon"), numSquads = 1 }}, player.spawnPos)
+					UnitEntry_CompleteDeploymentImmediately(dep)
 				end
 				-- 城堡帝王时代也给khan加kurultai技能
 				if Player_GetCurrentAge(player.id) >= AGE_CASTLE then 
-					SGroup_AddAbility(Player_GetSquadsFromType(player.id, "khan"), BP_GetAbilityBlueprint("kurultai_healing_aura_mon"))
+					-- SGroup_AddAbility(Player_GetSquadsFromType(player.id, "khan"), BP_GetAbilityBlueprint("kurultai_healing_aura_mon"))
+					Rule_AddOneShot(Mod_AddAbility, 20, {playerid = Player_GetID(player.id)})
 				end
 				player.khanSpawned = true
 			elseif Player_GetRaceName(player.id) == "english" then 
@@ -1051,7 +1083,28 @@ function Mod_TpMiliraty()
 			elseif Player_GetRaceName(player.id) == "ottoman" then 
 				if not player.khanSpawned then
 					UnitEntry_DeploySquads(player.id, player.sg, {{sbp = BP_GetSquadBlueprint("unit_mehter_2_ott"), numSquads = 1 }}, player.spawnPos)
+					--[[
+					if Player_GetCurrentAge(player.id) >= AGE_CASTLE then 
+						UnitEntry_DeploySquads(player.id, player.sg, {{sbp = BP_GetSquadBlueprint("unit_springald_3_ott"), numSquads = 1 }}, player.spawnPos)
+					end
+					--]]
 				end
+				player.khanSpawned = true
+			elseif Player_GetRaceName(player.id) == "malian" and Player_GetCurrentAge(player.id) >= AGE_CASTLE and SGroup_Count(player.sg) > 0 then 
+				local currentAge = Player_GetCurrentAge(player.id)
+				-- 赠送伊玛目
+				if not player.khanSpawned then
+					UnitEntry_DeploySquads(player.id, player.sg, {{sbp = BP_GetSquadBlueprint("unit_monk_3_mal"), numSquads = (currentAge - 2) * 2 }}, player.spawnPos)
+				end
+				--[[
+				if currentAge == AGE_IMPERIAL then 
+					local monkSg = Player_GetSquadsFromType(player.id, "monk")
+					if SGroup_Count(monkSg) > 0 then 
+						local tempMonk = SGroup_GetSquadAt(monkSg, 1)
+						Squad_AddAbility(tempMonk, BP_GetAbilityBlueprint("stealth_landmark_aura_mal"))
+					end
+				end
+				--]]
 				player.khanSpawned = true
 			end
 			--]]
@@ -1073,6 +1126,11 @@ function Mod_TpMiliraty()
 	
 end
 
+
+function Mod_AddAbility(context, data)
+	local playerId = Player_FromId(tonumber(data.playerid))
+	SGroup_AddAbility(Player_GetSquadsFromType(playerId, "khan"), BP_GetAbilityBlueprint("kurultai_healing_aura_mon"))
+end
 
 
 -- 获取一名敌队玩家
@@ -1107,6 +1165,35 @@ function Mod_GetMilitaryCount()
 			SGroup_Clear(sg)
 
 			sg = Player_GetSquads(player.id)
+			if Player_ObserveRelationship(player.id, localPlayer.id) == R_ENEMY then
+				enemyCount = enemyCount + SGroup_Count(sg)
+			else 
+				allyCount = allyCount + SGroup_Count(sg)
+			end
+		end
+	end
+		
+	return {
+		enemy = enemyCount,
+		ally = allyCount,
+	}
+end
+
+
+function Mod_GetNoneMilitaryCount()
+	-- 对手单位存活数量
+	local enemyCount = 0
+	-- 己方单位存活数量
+	local allyCount = 0
+	local h = World_GetHeightAt(0,0)
+	local center = World_Pos(0, 0, h)
+	for i, player in pairs(PLAYERS) do 
+		if not player.isEliminated then 
+			local sg = Player_GetSquadsFromType(player.id, "trade_cart")
+			SGroup_AddGroup(sg, Player_GetSquadsFromType(player.id, "mehter_ott"))
+			if Player_GetRaceName(player.id) ~= "rus" then 
+				SGroup_AddGroup(sg, Player_GetSquadsFromType(player.id, "monk"))
+			end
 			if Player_ObserveRelationship(player.id, localPlayer.id) == R_ENEMY then
 				enemyCount = enemyCount + SGroup_Count(sg)
 			else 

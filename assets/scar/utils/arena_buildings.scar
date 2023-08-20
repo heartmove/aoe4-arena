@@ -7,6 +7,8 @@ _arena_buildings = {
 		siege = "building_unit_siege_control_abb",
 		techInfantry = "building_tech_unit_infantry_control_abb",
 		techUniversity = "building_tech_university_control_abb" ,
+		market = "building_econ_market_control_abb",
+		tc = "building_town_center_capital_abb",
 	},
 	chinese = {
 		cavalry = "building_unit_cavalry_control_chi",
@@ -16,6 +18,8 @@ _arena_buildings = {
 		siege = "building_unit_siege_control_chi",
 		techInfantry = "building_tech_unit_infantry_control_chi",
 		techUniversity = "building_tech_university_control_chi" ,
+		market = "building_econ_market_control_chi",
+		tc = "building_town_center_capital_chi",
 	},
 	english = {
 		cavalry = "building_unit_cavalry_control_eng",
@@ -25,6 +29,8 @@ _arena_buildings = {
 		siege = "building_unit_siege_control_eng",
 		techInfantry = "building_tech_unit_infantry_control_eng",
 		techUniversity = "building_tech_university_control_eng" ,
+		market = "building_econ_market_control_eng",
+		tc = "building_town_center_capital_eng",
 	},
 	french = {
 		cavalry = "building_unit_cavalry_control_fre",
@@ -34,6 +40,8 @@ _arena_buildings = {
 		siege = "building_unit_siege_control_fre",
 		techInfantry = "building_tech_unit_infantry_control_fre",
 		techUniversity = "building_tech_university_control_fre" ,
+		market = "building_econ_market_control_fre",
+		tc = "building_town_center_capital_fre",
 	},
 	hre = {
 		cavalry = "building_unit_cavalry_control_hre",
@@ -43,6 +51,8 @@ _arena_buildings = {
 		siege = "building_unit_siege_control_hre",
 		techInfantry = "building_tech_unit_infantry_control_hre",
 		techUniversity = "building_tech_university_control_hre" ,
+		market = "building_econ_market_control_hre",
+		tc = "building_town_center_capital_hre",
 	},
 	malian = {
 		cavalry = "building_unit_cavalry_mal",
@@ -52,6 +62,8 @@ _arena_buildings = {
 		siege = "building_unit_siege_mal",
 		techInfantry = "building_tech_unit_infantry_mal",
 		techUniversity = "building_tech_university_mal" ,
+		market = "building_econ_market_mal",
+		tc = "building_town_center_capital_mal",
 	},
 	mongol = {
 		cavalry = "building_unit_cavalry_mon",
@@ -61,6 +73,8 @@ _arena_buildings = {
 		siege = "building_unit_siege_mon",
 		techInfantry = "building_tech_unit_infantry_mon",
 		techUniversity = nil ,
+		market = "building_econ_market_mon",
+		tc = "building_town_center_capital_mon",
 	},
 	ottoman = {
 		cavalry = "building_unit_cavalry_ott",
@@ -70,6 +84,8 @@ _arena_buildings = {
 		siege = "building_unit_siege_ott",
 		techInfantry = "building_tech_unit_infantry_ott",
 		techUniversity = "building_tech_university_ott" ,
+		market = "building_econ_market_ott",
+		tc = "building_town_center_capital_ott",
 	},
 	rus = {
 		cavalry = "building_unit_cavalry_control_rus",
@@ -79,6 +95,8 @@ _arena_buildings = {
 		siege = "building_unit_siege_control_rus",
 		techInfantry = "building_tech_unit_infantry_control_rus",
 		techUniversity = "building_tech_university_control_rus" ,
+		market = "building_econ_market_control_rus",
+		tc = "building_town_center_capital_rus",
 	},
 	sultanate = {
 		cavalry = "building_unit_cavalry_control_sul",
@@ -88,6 +106,8 @@ _arena_buildings = {
 		siege = "building_unit_siege_control_sul",
 		techInfantry = "building_tech_unit_infantry_control_sul",
 		techUniversity = "building_tech_university_control_sul" ,
+		market = "building_econ_market_control_sul",
+		tc = "building_town_center_capital_sul",
 	},
 }
 
@@ -152,22 +172,31 @@ end
 
 function Mod_ModifyUnitBuildTime(playerId)
 	local player_civ =  Player_GetRaceName(playerId)
-	local entityBps = BP_GetEntityBlueprintsWithType({"military", "monk"})
+	local entityBps = BP_GetEntityBlueprintsWithType({"military", "monk", "trade_cart", "villager"})
 	for j, bp in pairs(entityBps) do
 		Modify_EntityBuildTime(playerId, bp, 200)
 		local cost = Player_GetEntityBPCost(playerId, bp)
 		local food = cost.food + cost.stone + cost.gold + cost.wood
-		if player_civ == "malian" and BP_GetName(bp) ~= "unit_scout_1_mal" then 
+		-- 玩家数大于2时才减价
+		--[[
+		if player_civ == "malian" and BP_GetName(bp) ~= "unit_scout_1_mal" and #PLAYERS > 2 then 
 			food = math.ceil(food * 0.9)
 		end
+		--]]
 		if  BP_GetName(bp) == "unit_abbey_king_2" then 
 			if AUTO_COMBAT then 
 				food = 300
 			else 
-				food = 600
+				food = 350
 			end
 		elseif BP_GetName(bp) == "unit_landsknecht_3_hre" then 
 			food = 250
+		elseif string.find(BP_GetName(bp), "unit_wynguard") ~= nil then 
+			food = 1000
+		elseif string.find(BP_GetName(bp), "khaganate_") ~= nil then 
+			food = 750
+		elseif BP_GetName(bp) == "unit_war_elephant_tower2_4_sul" then 
+			food = 1250
 		end
 		
 		Modify_EntityCost(playerId, bp, RT_Food, food, MUT_Set, true)
@@ -182,6 +211,18 @@ function Mod_ModifyUnitBuildTime(playerId)
 		local ubpName = BP_GetName(bp)
 		if not string.starts(ubpName, "castle_age_") and not string.starts(ubpName, "imperial_age_")  then 
 			local food = cost.food + cost.stone + cost.gold + cost.wood
+			
+			if  player_civ == "french" and (ubpName == "upgrade_landmark_cavalry_bloodline_fre" 
+					or ubpName == "upgrade_landmark_cavalry_cantled_saddle_fre"
+					or ubpName == "upgrade_landmark_cavalry_chivalry_fre"
+					or ubpName == "upgrade_landmark_enlistment_incentives_fre"
+					or ubpName == "upgrade_landmark_ranged_crossbow_drills_fre"
+					or ubpName == "upgrade_landmark_ranged_crossbow_stirrups_fre"
+					or ubpName == "upgrade_landmark_market_trickle_fre"
+					or ubpName == "upgrade_landmark_naval_long_guns_fre")  then 
+				food = 700
+			end
+			
 			if player_civ == "sultanate" and ubpName ~= "castle_age" and ubpName ~= "imperial_age" then 
 				local bpName = BP_GetName(bp)
 				food = Delhi_GetCost(bpName)
@@ -336,6 +377,10 @@ function Mod_GetTechInfantryPos(playerId)
 end
 
 function Mod_ConstructCastleBuilding(playerId)
+	
+	if not Player_IsAlive(playerId) then 
+		return 
+	end
 
 	local position = Mod_GetTechInfantryPos(playerId)
 	
@@ -350,11 +395,34 @@ function Mod_ConstructCastleBuilding(playerId)
 		end
 		
 	elseif Player_GetRaceName(playerId) == "mongol" and Player_GetCurrentAge(playerId) == AGE_CASTLE  then 
+		--[[
 		local bp = BP_GetEntityBlueprint("building_wonder_age1_kurultai_mon")
 		local tempPosition = Util_GetOffsetPosition(position, 16, 16)
 		local entity = Entity_CreateFacing(bp, playerId, tempPosition, world_center, true)
 		Entity_Spawn(entity)
 		Entity_ForceConstruct(entity)
+		--]]
+	elseif Player_GetRaceName(playerId) == "sultanate" then 
+		local bp = BP_GetEntityBlueprint("building_landmark_age2_khiji_mosque_control_sul")
+		local tempPosition = Util_GetOffsetPosition(position, 16, 16)
+		local entity = Entity_CreateFacing(bp, playerId, tempPosition, world_center, true)
+		Entity_Spawn(entity)
+		Entity_ForceConstruct(entity)
+		--[[
+	elseif Player_GetRaceName(playerId) == "rus" then 
+		local bp = BP_GetEntityBlueprint("building_landmark_age2_trinity_lavra_control_rus")
+		local tempPosition = Util_GetOffsetPosition(position, 16, 16)
+		local entity = Entity_Create(bp, playerId, tempPosition, true)
+		Entity_Spawn(entity)
+		Entity_ForceConstruct(entity)
+		
+	elseif Player_GetRaceName(playerId) == "french" then 
+		local bp = BP_GetEntityBlueprint("building_landmark_age3_le_grande_university_fre")
+		local tempPosition = Util_GetOffsetPosition(position, 16, 16)
+		local entity = Entity_Create(bp, playerId, tempPosition, true)
+		Entity_Spawn(entity)
+		Entity_ForceConstruct(entity)
+		--]]
 	end 
 	
 	if ENABLE_SIEGE and Player_GetCurrentAge(playerId) == AGE_CASTLE then 
@@ -365,20 +433,57 @@ function Mod_ConstructCastleBuilding(playerId)
 	    local entity = Entity_Create(bp, player.id, position, true)
 		Entity_Spawn(entity)
 		Entity_ForceConstruct(entity)
+		
 	end
 	
 end
 
 function Mod_ConstructImpireBuilding(playerId)
-
+	if not Player_IsAlive(playerId) then 
+		return
+	end
+	
 	local position = Mod_GetTechInfantryPos(playerId)
-	if Player_GetRaceName(playerId) == "chinese" and Player_GetCurrentAge(playerId) == AGE_IMPERIAL then 
+	if Player_GetRaceName(playerId) == "chinese" then 
 		local bp = BP_GetEntityBlueprint("building_landmark_age3_spirit_way_control_chi")
 		local tempPosition = Util_GetOffsetPosition(position, 16, 16)
 	    local entity = Entity_CreateFacing(bp, playerId, tempPosition, world_center, true)
 		Entity_Spawn(entity)
 		Entity_ForceConstruct(entity)
+		--[[
+	elseif Player_GetRaceName(playerId) == "rus" then 
+		local bp = BP_GetEntityBlueprint("building_landmark_age3_kremlin_armoury_rus")
+		local tempPosition = Util_GetOffsetPosition(position, 16, -34)
+		local entity = Entity_Create(bp, playerId, tempPosition, true)
+		Entity_Spawn(entity)
+		Entity_ForceConstruct(entity)
+		
+	elseif Player_GetRaceName(playerId) == "english" then 
+		print("building_landmark_age3_windsor_castle_eng")
+		local bp = BP_GetEntityBlueprint("building_landmark_age3_whitehall_palace_eng")
+		local tempPosition = Util_GetOffsetPosition(position, 16, -34)
+	    local entity = Entity_Create(bp, playerId, tempPosition, true)
+		Entity_Spawn(entity)
+		Entity_ForceConstruct(entity)
+		
+	elseif Player_GetRaceName(playerId) == "mongol" then 
+		print("building_wonder_age3_khanbaliq_mon_bak")
+		local bp = BP_GetEntityBlueprint("eca6173149134b76b78757235af2aa36:building_wonder_age3_test")
+		local tempPosition = Util_GetOffsetPosition(position, 16, -34)
+	    local entity = Entity_Create(bp, playerId, tempPosition, true)
+		Entity_Spawn(entity)
+		Entity_ForceConstruct(entity)
+	elseif Player_GetRaceName(playerId) == "sultanate" then
+		print("building_landmark_age3_bijay_mandal_palace_control_sul")
+		local bp = BP_GetEntityBlueprint("building_landmark_age3_bijay_mandal_palace_control_sul")
+		local tempPosition = Util_GetOffsetPosition(position, 16, -34)
+	    local entity = Entity_Create(bp, playerId, tempPosition, true)
+		Entity_Spawn(entity)
+		Entity_ForceConstruct(entity)	
+		--]]
 	end
+	
+	
 	
 	if Player_GetCurrentAge(playerId) == AGE_IMPERIAL then 
 		local bpName = ArenaBuilding_GetBuilding(playerId, "techUniversity")
@@ -407,8 +512,6 @@ function Mod_ConstructBuilding(player, buildingType, offset, distance)
 	
 	if buildingType == "techInfantry" then 
 		
-		
-		
 		if Player_GetRaceName(player.id) == "abbasid" then 
 			bp = BP_GetEntityBlueprint("building_house_of_wisdom_control_abb")
 			tempPosition = Util_GetOffsetPosition(position, 16, 16)
@@ -416,8 +519,6 @@ function Mod_ConstructBuilding(player, buildingType, offset, distance)
 			Entity_Spawn(entity)
 			Entity_ForceConstruct(entity)
 		end
-		
-		
 		
 		if Player_GetRaceName(player.id) == "english" then 
 			bp = BP_GetEntityBlueprint("building_landmark_age1_westminster_abbey_eng")
@@ -435,6 +536,8 @@ function Mod_ConstructBuilding(player, buildingType, offset, distance)
 			Entity_Spawn(entity)
 			Entity_ForceConstruct(entity)
 		end
+		
+		
 	else
 		
 		--[[
@@ -470,5 +573,23 @@ function Mod_ConstructBuilding(player, buildingType, offset, distance)
 			Entity_Spawn(entity)
 			Entity_ForceConstruct(entity)
 		end
+	end
+	
+	-- 部署市场
+	if buildingType == "ranged" then 
+
+		local bp = BP_GetEntityBlueprint(ArenaBuilding_GetBuilding(player.id, "market"))
+		local player = Core_GetPlayersTableEntry(player.id)
+		local tempPosition = Util_GetOffsetPosition(position, 16, 16)
+	    local entity = Entity_Create(bp, player.id, tempPosition, true)
+		Entity_Spawn(entity)
+		Entity_ForceConstruct(entity)
+		
+		bp = BP_GetEntityBlueprint(ArenaBuilding_GetBuilding(player.id, "tc"))
+		tempPosition = Util_GetOffsetPosition(position, 0, -20)
+	    entity = Entity_Create(bp, player.id, tempPosition, true)
+		Entity_Spawn(entity)
+		Entity_ForceConstruct(entity)
+
 	end
 end
