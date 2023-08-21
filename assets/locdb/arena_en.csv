@@ -1,7 +1,7 @@
 ﻿ID,Pipeline,PipelineStage,Notes,TranslationNotes,Tags,Text
-1,,,Mod name.,,,Arena Mode 竞技场 V0.9.11
+1,,,Mod name.,,,Arena Mode 竞技场 V0.9.12
 2,,,Mod description.,,,"Please use the arena map(竞技场) and the tuning package (adjust the building capacity limit to 200, upgrade era), this is a pvp module, preliminary support pve     discord: @heartmove\n\nThis mode features(please use the supporting arena map, limited to two teams):\n1, each round will give the player a certain amount of resources, the player will have 30 seconds to configure the technology that needs to be upgraded as well as the production of the unit. 30 seconds later, all the technology will be immediately after the research, the troops will also enter the arena, when the elimination of all the opponent's troops can be the round of victory. The first player to win five rounds will win the game.\n2、All players start from the Feudal Age, and can click the speed up Age button on the top right to increase the speed of the Age, which costs half of the resources, and can only be clicked once per round.\n3、All units and technologies only consume food, and the amount of food consumed is the original: food + gold + wood + stone.\n4. All remaining resources and units will be cleared in each round.\t\n5. England castle network is attached to the king\n6. Poison circle mechanism\n\nOther gameplay:\n1、Automatic battle (cricket), players can not control soldiers\n2、Wheel battle: the order of players on the field each round is not fixed, when not on the field, the player is not able to operate.\n3、Technology Cards\r\n4、 and more\nAI resources:\nEasy: 90% of resources Intermediate: 100% of resources\nHard: 110% of resources   Hardest: 120% of resources \r\nRidiculous: 160% of resources   Outrageous: 180% of resources\nAbsurd: 200% of resources\n\nemail：heartmove@outlook.com"
-3,,,,,,Arena Mode 竞技场 V0.9.11
+3,,,,,,Arena Mode 竞技场 V0.9.12
 4,,,,,,Countdown to the  round %1 round% of combat readiness
 5,,,,,,round %1 round%  of combat in progress
 6,,,,,,Number of rounds won(%1 score1%:%2 score2%)
@@ -53,7 +53,7 @@
 58,,,,,,5s
 59,,,,,,invalidate
 60,,,,,,Poison circle
-61,,,,,,"At the start of each round of combat, the Fog of War expands every ten seconds (the safe zone shrinks). When units are in the Fog of War, 10 points of blood are deducted per second."
+61,,,,,,"At the start of each round of combat, the safe zone shrinks every ten seconds. When a unit is in a non-safe area, 10 points of blood are deducted per second."
 62,,,,,,You can click on the Speed Up Age button in the upper right (costs half the resources of the current round and is irrevocable)
 63,,,,,,The game will not be played properly without the supporting Arena Tuning Pack.
 64,,,,,,Winner's Reward

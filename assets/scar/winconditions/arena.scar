@@ -1014,6 +1014,8 @@ function Mod_TpMiliraty()
 							if bpType == PITEM_Spawn then 
 								local bpName = BP_GetName(bp)
 								local tempSpawns = SquadsUtil_GetSpawns(entityBpName, bpName, 1)
+								--print("............tempSpawns..........")
+								--Util_PrintTable(tempSpawns)
 								for tmpBpName, tmpCount in pairs(tempSpawns) do 
 									local scount = 0
 									if smap[tmpBpName] ~= nil then 
@@ -1021,8 +1023,7 @@ function Mod_TpMiliraty()
 									end
 									smap[tmpBpName] = scount + tmpCount
 								end
-								--print("............tempSpawns..........")
-								--Util_PrintTable(tempSpawns)
+								
 								
 								
 								-- local sgtemp = SGroup_CreateIfNotFound("sgtemp"..Player_GetID(player.id))
@@ -1083,11 +1084,11 @@ function Mod_TpMiliraty()
 			elseif Player_GetRaceName(player.id) == "ottoman" then 
 				if not player.khanSpawned then
 					UnitEntry_DeploySquads(player.id, player.sg, {{sbp = BP_GetSquadBlueprint("unit_mehter_2_ott"), numSquads = 1 }}, player.spawnPos)
-					--[[
+					
 					if Player_GetCurrentAge(player.id) >= AGE_CASTLE then 
 						UnitEntry_DeploySquads(player.id, player.sg, {{sbp = BP_GetSquadBlueprint("unit_springald_3_ott"), numSquads = 1 }}, player.spawnPos)
 					end
-					--]]
+					
 				end
 				player.khanSpawned = true
 			elseif Player_GetRaceName(player.id) == "malian" and Player_GetCurrentAge(player.id) >= AGE_CASTLE and SGroup_Count(player.sg) > 0 then 
@@ -1096,20 +1097,24 @@ function Mod_TpMiliraty()
 				if not player.khanSpawned then
 					UnitEntry_DeploySquads(player.id, player.sg, {{sbp = BP_GetSquadBlueprint("unit_monk_3_mal"), numSquads = (currentAge - 2) * 2 }}, player.spawnPos)
 				end
-				--[[
+				
 				if currentAge == AGE_IMPERIAL then 
 					local monkSg = Player_GetSquadsFromType(player.id, "monk")
+					--[[
 					if SGroup_Count(monkSg) > 0 then 
 						local tempMonk = SGroup_GetSquadAt(monkSg, 1)
 						Squad_AddAbility(tempMonk, BP_GetAbilityBlueprint("stealth_landmark_aura_mal"))
+						Rule_AddOneShot(Mod_RemoveAbility, 5, {playerid = Player_GetID(player.id)})
 					end
+					--]]
 				end
-				--]]
+				
 				player.khanSpawned = true
 			end
 			--]]
 			Cmd_FormationMove(player.sg, player.spawnPos, false, false, world_center)
 		end
+		
 		--print("test....TpMiliraty3")
 	end
 	--print("test....TpMiliraty4")
@@ -1124,6 +1129,14 @@ function Mod_TpMiliraty()
 	
 	Mod_InitSquadGroup()
 	
+end
+
+function Mod_RemoveAbility(context, data) 
+	local playerId = Player_FromId(tonumber(data.playerid))
+	local monkSg = Player_GetSquadsFromType(playerId, "monk")
+	if SGroup_Count(monkSg) > 0 then 
+		SGroup_RemoveAbility(monkSg, BP_GetAbilityBlueprint("stealth_landmark_aura_mal"))
+	end
 end
 
 

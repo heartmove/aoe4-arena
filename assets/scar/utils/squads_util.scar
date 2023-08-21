@@ -30,16 +30,16 @@ _combine_squads = {
 				unit_khaganate_manatarms_china_mon = 5,
 			},
 			unit_khaganate_monk_rus_mon = {
-				unit_khaganate_monk_rus_mon = 4,
+				unit_khaganate_monk_rus_mon = 2,
 			},
 			unit_knight_2_mon = {
-				unit_knight_2_mon = 2,
+				unit_knight_2_mon = 5,
 			},
 			unit_knight_3_mon = {
-				unit_knight_3_mon = 3,
+				unit_knight_3_mon = 5,
 			},
 			unit_knight_4_mon = {
-				unit_knight_4_mon = 4,
+				unit_knight_4_mon = 5,
 			},
 	}
 }

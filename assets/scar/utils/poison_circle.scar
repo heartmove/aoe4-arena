@@ -116,7 +116,8 @@ function PoisonCircle_Update()
 	if _poisonCircle.updateCount > 7 then 
 		return 
 	end
-	--[[
+	--  campaign_capturelocation_enemy   attributes\ui_reticule\aura_ring
+	
 	if _poisonCircle.id ~= nil then 
 		-- 存在就摧毁
 		UI_ModalVisual_Destroy(_poisonCircle.id)
@@ -124,15 +125,17 @@ function PoisonCircle_Update()
 	end
 	
 	_poisonCircle.currentRadius = _poisonCircle.radius * (1 - _poisonCircle.updateCount * 0.1)
-	_poisonCircle.id = UI_ModalVisual_CreateReticule(BP_GetReticuleBlueprint("campaign_capturelocation_enemy"), _poisonCircle.currentRadius)
+	_poisonCircle.id = UI_ModalVisual_CreateReticule(BP_GetReticuleBlueprint("aura_ring"), _poisonCircle.currentRadius)
 	UI_ModalVisual_SetPosition(_poisonCircle.id, world_center)
-	--]]
+	
+	--[[
 	_poisonCircle.currentRadius = _poisonCircle.radius * (1 - _poisonCircle.updateCount * 0.1)
 	FOW_UnExploreAll()
 	FOW_UnRevealAll()
 	for i,player in pairs(PLAYERS) do 
 		FOW_PlayerRevealArea(player.id, world_center, _poisonCircle.currentRadius, 36000)
 	end
+	--]]
 	_poisonCircle.updateCount = _poisonCircle.updateCount + 1
 end
 
@@ -140,19 +143,20 @@ end
 -- 重置毒圈
 function PoisonCircle_Reset()
 	_poisonCircle.updateCount = 0
-	--[[
+	
 	if _poisonCircle.id ~= nil then 
 		-- 存在就摧毁
 		UI_ModalVisual_Destroy(_poisonCircle.id)
 		_poisonCircle.id = nil
 	end
-	_poisonCircle.id = UI_ModalVisual_CreateReticule(BP_GetReticuleBlueprint("campaign_capturelocation_enemy"), _poisonCircle.radius)
+	_poisonCircle.id = UI_ModalVisual_CreateReticule(BP_GetReticuleBlueprint("aura_ring"), _poisonCircle.radius)
 	UI_ModalVisual_SetPosition(_poisonCircle.id, world_center)
-	--]]
 	
+	--[[
 	FOW_UnExploreAll()
 	FOW_UnRevealAll()
 	for i,player in pairs(PLAYERS) do 
 		FOW_PlayerRevealArea(player.id, world_center, _poisonCircle.radius, 36000)
 	end
+	--]]
 end

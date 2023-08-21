@@ -678,11 +678,13 @@ end
 function ArenaAI_RuleCombat()
 	ROUND_COMBAT_TIME = World_GetGameTime()
 	Rule_AddInterval(ArenaAI_Combat, 1)
+	--[[
 	if enable_poison_circle then 
 		for i, player in pairs(PLAYERS) do 
 			Modify_SightRadius(player.sg, 0.1)
 		end
 	end
+	--]]
 end
 
 function ArenaAI_OnRoundSessionEnd()
@@ -1238,7 +1240,7 @@ function Mod_GetHasSquadsEnemyPlayer(player)
 			if SGroup_CountSpawned(p.sg) > 0 then 
 				return p
 			end
-			if defaultEnemy == nil then 
+			if defaultEnemy == nil then  
 				defaultEnemy = p
 			end
 		end

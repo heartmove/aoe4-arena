@@ -23,7 +23,7 @@
 				<instance_reference name="ability" value="abilities\modal_abilities\core\age_up_imperial" List.ItemID="728756179" />
 				<instance_reference name="ability" value="abilities\modal_abilities\core\town_bell\hold_return_to_work" List.ItemID="1826390124" />
 				<instance_reference name="ability" value="abilities\modal_abilities\core\town_bell\global_return_to_work" List.ItemID="-691718676" />
-				<instance_reference name="ability" value="abilities\always_on_abilities\english\tower_outpost_alert_aura_eng" List.ItemID="-1948571387" />
+				<instance_reference name="ability" value="abilities\always_on_abilities\english\tower_outpost_alert_aura_eng" mod="eca6173149134b76b78757235af2aa36" List.ItemID="-1948571387" />
 			</list>
 		</template_reference>
 		<template_reference name="exts" value="ebpextensions\ui_ext" List.ItemID="-272167440" List.ParentItemID="-272167440">

@@ -408,7 +408,7 @@ function Mod_ConstructCastleBuilding(playerId)
 		local entity = Entity_CreateFacing(bp, playerId, tempPosition, world_center, true)
 		Entity_Spawn(entity)
 		Entity_ForceConstruct(entity)
-		--[[
+		
 	elseif Player_GetRaceName(playerId) == "rus" then 
 		local bp = BP_GetEntityBlueprint("building_landmark_age2_trinity_lavra_control_rus")
 		local tempPosition = Util_GetOffsetPosition(position, 16, 16)
@@ -422,7 +422,7 @@ function Mod_ConstructCastleBuilding(playerId)
 		local entity = Entity_Create(bp, playerId, tempPosition, true)
 		Entity_Spawn(entity)
 		Entity_ForceConstruct(entity)
-		--]]
+	
 	end 
 	
 	if ENABLE_SIEGE and Player_GetCurrentAge(playerId) == AGE_CASTLE then 
@@ -450,7 +450,7 @@ function Mod_ConstructImpireBuilding(playerId)
 	    local entity = Entity_CreateFacing(bp, playerId, tempPosition, world_center, true)
 		Entity_Spawn(entity)
 		Entity_ForceConstruct(entity)
-		--[[
+		
 	elseif Player_GetRaceName(playerId) == "rus" then 
 		local bp = BP_GetEntityBlueprint("building_landmark_age3_kremlin_armoury_rus")
 		local tempPosition = Util_GetOffsetPosition(position, 16, -34)
@@ -468,7 +468,7 @@ function Mod_ConstructImpireBuilding(playerId)
 		
 	elseif Player_GetRaceName(playerId) == "mongol" then 
 		print("building_wonder_age3_khanbaliq_mon_bak")
-		local bp = BP_GetEntityBlueprint("eca6173149134b76b78757235af2aa36:building_wonder_age3_test")
+		local bp = BP_GetEntityBlueprint("building_wonder_age3_khanbaliq_mon")
 		local tempPosition = Util_GetOffsetPosition(position, 16, -34)
 	    local entity = Entity_Create(bp, playerId, tempPosition, true)
 		Entity_Spawn(entity)
@@ -477,7 +477,14 @@ function Mod_ConstructImpireBuilding(playerId)
 		print("building_landmark_age3_bijay_mandal_palace_control_sul")
 		local bp = BP_GetEntityBlueprint("building_landmark_age3_bijay_mandal_palace_control_sul")
 		local tempPosition = Util_GetOffsetPosition(position, 16, -34)
-	    local entity = Entity_Create(bp, playerId, tempPosition, true)
+		local entity = Entity_Create(bp, playerId, tempPosition, true)
+		Entity_Spawn(entity)
+		Entity_ForceConstruct(entity)	
+		--[[
+	elseif Player_GetRaceName(playerId) == "malian" then 
+		local bp = BP_GetEntityBlueprint("building_landmark_age3_landmarkf_mal")
+		local tempPosition = Util_GetOffsetPosition(position, 16, -34)
+		local entity = Entity_Create(bp, playerId, tempPosition, true)
 		Entity_Spawn(entity)
 		Entity_ForceConstruct(entity)	
 		--]]
